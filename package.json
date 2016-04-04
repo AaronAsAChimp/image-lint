@@ -1,0 +1,22 @@
+{
+  "name": "image-lint",
+  "version": "1.0.0",
+  "description": "Find files that are incorrectly named or compressed.",
+  "main": "bin/image-lint",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "image",
+    "lint",
+    "compression"
+  ],
+  "author": "Aaron Spaulding",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
+}

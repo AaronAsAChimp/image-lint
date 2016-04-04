@@ -1,0 +1,1 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="70"><style>text { font-size: 10px; }</style><g transform="translate(10 10)"><circle cx="15" cy="15" r="15" /><text x="0" y="40">lower-snake</text></g><g transform="translate(50 10)"><circle cx="15" cy="15" r="15" /><text x="0" y="40">upper-camel</text></g></svg>

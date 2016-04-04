@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+'use strict';
+
+const InfoProvider = require('../lib/image-info.js'),
+	  WorkHandler = require('../lib/work-handler.js'),
+	  finder = require('../lib/finder.js'),
+	  LoggerFactory = require('../lib/logger.js'),
+	  minimist = require('minimist'),
+	  MINIMUM_BYTES_PER_PIXEL = 3,
+	  MINIMUM_BYTE_SAVINGS = 500;
+
+function calculate_optimial_size(dims, bpp) {
+	return ((dims.width * dims.height * dims.frames) * bpp);
+}
+
+function describe_file(dims) {
+	return 'File properties: ' + dims.width + 'x' + dims.height + ' ' + (dims.frames !== 1 ? dims.frames + ' frames' : '');
+}
+
+InfoProvider.load([
+	'../lib/image/png-info',
+	'../lib/image/gif-info',
+	'../lib/image/jpg-info',
+
+	// Identify only
+	'../lib/image/bmp-info',
+	'../lib/image/psd-info',
+]);
+
+var argv = minimist(process.argv.slice(2), {
+		'boolean': [
+			'mismatch'
+		],
+		'alias': {
+			'bytes_per_pixel': 'b',
+			'byte_savings': 's'
+		},
+		'default': {
+			'bytes_per_pixel': MINIMUM_BYTES_PER_PIXEL,
+			'byte_savings': MINIMUM_BYTE_SAVINGS,
+			'mismatch': true
+		}
+	}),
+	folder = argv._;
+
+
+var handler = new WorkHandler();
+
+handler.on('next', (file, done) => {
+	let logger = LoggerFactory.get_log(file);
+
+	//console.log(file);
+
+	InfoProvider.get_info(file, logger, argv)
+		.then((info) => {
+			let min_bpp = argv.bytes_per_pixel,
+				min_savings = argv.byte_savings,
+				size_difference = info.size - calculate_optimial_size(info.dimensions, min_bpp);
+
+			logger.info(describe_file(info.dimensions));
+
+			if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
+				logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
+				logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
+			}
+
+			if (logger.is_printable()) {
+				console.log(logger.toString());
+			}
+
+			done();
+
+		}, (err) => {
+			logger.error(err);
+			console.log(logger.toString());
+
+			done();
+		})
+		.catch((err) => {
+			logger.error(err);
+			console.log(logger.toString());
+
+			done();
+		});
+});
+
+handler.start(finder(folder, InfoProvider.get_all_extensions()));
