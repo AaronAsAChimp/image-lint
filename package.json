@@ -17,6 +17,8 @@
   "author": "Aaron Spaulding",
   "license": "MIT",
   "dependencies": {
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "node-phantom-simple": "^2.2.4",
+    "request": "^2.69.0"
   }
 }

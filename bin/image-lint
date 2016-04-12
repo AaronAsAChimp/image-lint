@@ -3,7 +3,7 @@
 
 const InfoProvider = require('../lib/image-info.js'),
 	  WorkHandler = require('../lib/work-handler.js'),
-	  finder = require('../lib/finder.js'),
+	  MultiFinder = require('../lib/finder/multi.js'),
 	  LoggerFactory = require('../lib/logger.js'),
 	  minimist = require('minimist'),
 	  MINIMUM_BYTES_PER_PIXEL = 3,
@@ -47,11 +47,32 @@ var argv = minimist(process.argv.slice(2), {
 var handler = new WorkHandler();
 
 handler.on('next', (file, done) => {
-	let logger = LoggerFactory.get_log(file);
+	let logger = LoggerFactory.get_log(file.path);
 
-	//console.log(file);
+	// console.log(file.path);
 
-	InfoProvider.get_info(file, logger, argv)
+	file.load()
+		.then((file) => {
+			// Check for empty files and exit early to prevent unnecessary work.
+			if (file.buffer.length === 0) {
+				logger.error('This is an empty file, further analsys is not possible.');
+				console.log(logger.toString());
+				done();
+				return;
+			}
+
+			return InfoProvider.get_info(file, logger, argv);
+		}, (err) => {
+			if (err.stack) {
+				logger.error(err.stack);
+			} else {
+				logger.error(err);
+			}
+
+			console.log(logger.toString());
+
+			done();
+		})
 		.then((info) => {
 			let min_bpp = argv.bytes_per_pixel,
 				min_savings = argv.byte_savings,
@@ -71,17 +92,29 @@ handler.on('next', (file, done) => {
 			done();
 
 		}, (err) => {
-			logger.error(err);
+			if (err.stack) {
+				logger.error(err.stack);
+			} else {
+				logger.error(err);
+			}
+
 			console.log(logger.toString());
 
 			done();
 		})
 		.catch((err) => {
-			logger.error(err);
+			if (err.stack) {
+				logger.error(err.stack);
+			} else {
+				logger.error(err);
+			}
+
 			console.log(logger.toString());
 
 			done();
 		});
 });
 
-handler.start(finder(folder, InfoProvider.get_all_extensions()));
+let finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
+
+handler.start(finder.get_files(folder));
