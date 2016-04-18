@@ -25,6 +25,9 @@ InfoProvider.load([
 	// Identify only
 	'../lib/image/bmp-info',
 	'../lib/image/psd-info',
+	'../lib/image/ico-info',
+	'../lib/image/tiff-info',
+	'../lib/image/webp-info',
 ]);
 
 var argv = minimist(process.argv.slice(2), {
@@ -49,6 +52,18 @@ var handler = new WorkHandler();
 handler.on('next', (file, done) => {
 	let logger = LoggerFactory.get_log(file.path);
 
+	function error_handler(err) {
+		if (err.stack) {
+			logger.error(err.stack);
+		} else {
+			logger.error(err);
+		}
+
+		console.log(logger.toString());
+
+		done();
+	}
+
 	// console.log(file.path);
 
 	file.load()
@@ -62,17 +77,7 @@ handler.on('next', (file, done) => {
 			}
 
 			return InfoProvider.get_info(file, logger, argv);
-		}, (err) => {
-			if (err.stack) {
-				logger.error(err.stack);
-			} else {
-				logger.error(err);
-			}
-
-			console.log(logger.toString());
-
-			done();
-		})
+		}, error_handler)
 		.then((info) => {
 			let min_bpp = argv.bytes_per_pixel,
 				min_savings = argv.byte_savings,
@@ -91,28 +96,8 @@ handler.on('next', (file, done) => {
 
 			done();
 
-		}, (err) => {
-			if (err.stack) {
-				logger.error(err.stack);
-			} else {
-				logger.error(err);
-			}
-
-			console.log(logger.toString());
-
-			done();
-		})
-		.catch((err) => {
-			if (err.stack) {
-				logger.error(err.stack);
-			} else {
-				logger.error(err);
-			}
-
-			console.log(logger.toString());
-
-			done();
-		});
+		}, error_handler)
+		.catch(error_handler);
 });
 
 let finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
