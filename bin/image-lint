@@ -86,7 +86,7 @@ handler.on('next', (file, done) => {
 			}
 
 			return InfoProvider.get_info(file, logger, argv);
-		}, error_handler)
+		})
 		.then((info) => {
 			let min_bpp = argv.bytes_per_pixel,
 				min_savings = argv.byte_savings,
