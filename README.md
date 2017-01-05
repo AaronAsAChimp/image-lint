@@ -2,6 +2,13 @@ image-lint
 ==========
 Find broken and poorly compressed images.
 
+Installation
+------------
+
+```sh
+$ npm install -g image-lint
+```
+
 Usage
 -----
 
