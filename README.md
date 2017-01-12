@@ -74,3 +74,32 @@ There are some checks that can't be turned off or adjusted. These issues interfe
 ### Images on the web that return an error code: 404, 500, etc. ###
 
 **Remedy:** This kind of issue can be resolved by removing the references to the missing image or correcting the path to the correct image (404 errors) or by fixing any stability issues the server is having (500 errors).
+
+Support
+-------
+
+### File Types ###
+
+A number of formats are supported, though most are only for identification purposes. If there is a format you would like supported you can file an issue in the issue tracker.
+
+| Format       | Linted | Identified    |
+|:------------:|:------:|:-------------:|
+| png          | ☑️️      |               |
+| gif          | ☑️️      |               |
+| jpg          | ☑️️      |               |
+| bmp          |        |  ☑️️            |
+| psd          |        |  ☑️️            |
+| ico / cur    |        |  ☑️️            |
+| tiff         |        |  ☑️️            |
+| webp         |        |  ☑️️            |
+
+### File Finders ###
+
+There are multiple stratagies that are used to find files to lint. The linter will determine the correct one/ones to use based the format of the path or URL passed in.
+
+| File Finder |
+|:-----------:|
+| HTTP        |
+| HTTPS       |
+| Git         |
+| Filesystem  |
