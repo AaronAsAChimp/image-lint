@@ -22,6 +22,8 @@
   "dependencies": {
     "minimist": "^1.2.0",
     "node-phantom-simple": "^2.2.4",
-    "request": "^2.79.0"
+    "nodegit": "^0.16.0",
+    "request": "^2.79.0",
+    "tmp": "^0.0.31"
   }
 }

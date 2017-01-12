@@ -8,7 +8,8 @@ const InfoProvider = require('../lib/image-info.js'),
 	  LoggerFactory = require('../lib/logger.js'),
 	  minimist = require('minimist'),
 	  MINIMUM_BYTES_PER_PIXEL = 3,
-	  MINIMUM_BYTE_SAVINGS = 500;
+	  MINIMUM_BYTE_SAVINGS = 500,
+	  DEFAULT_DIRECTORY = ['./'];
 
 function calculate_optimial_size(dims, bpp) {
 	return ((dims.width * dims.height * dims.frames) * bpp);
@@ -49,6 +50,10 @@ var argv = minimist(process.argv.slice(2), {
 	}),
 	folder = argv._;
 
+if (!folder.length) {
+	folder = DEFAULT_DIRECTORY;
+}
+
 
 var handler = new WorkHandler(),
 	hasher = new Hasher();
@@ -74,7 +79,7 @@ handler.on('next', (file, done) => {
 		.then((file) => {
 			// Check for empty files and exit early to prevent unnecessary work.
 			if (file.buffer.length === 0) {
-				throw 'This is an empty file, further analsys is not possible.';
+				throw 'This is an empty file, further analysis is not possible.';
 			}
 
 			if (argv.duplicate === true) {

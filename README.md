@@ -12,7 +12,7 @@ $ npm install -g image-lint
 Usage
 -----
 
-You can specify a list file path and URLs to run the checks against. It will attempt to find all the images in directories or used on the specified page.
+You can specify a list of file paths and URLs to run the checks against. It will attempt to find all the images in directories or used on the specified page.
 
 ```sh
 $ image-lint ./images/ http://example.com ./logos/logo1.png
