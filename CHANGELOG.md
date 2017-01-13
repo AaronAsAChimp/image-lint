@@ -4,6 +4,7 @@ NEXT
 Add support for searching Git repositories.
 Default to the current directory when running without params.
 Spelling fixes.
+Add options for help and version.
 
 1.0.1
 -----

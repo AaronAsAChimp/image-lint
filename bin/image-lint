@@ -1,119 +1,140 @@
 #!/usr/bin/env node
 'use strict';
 
-const InfoProvider = require('../lib/image-info.js'),
-	  WorkHandler = require('../lib/work-handler.js'),
-	  MultiFinder = require('../lib/finder/multi.js'),
-	  Hasher = require('../lib/hasher.js'),
-	  LoggerFactory = require('../lib/logger.js'),
+const ArgsHelper = require('../lib/args-helper.js').default,
 	  minimist = require('minimist'),
 	  MINIMUM_BYTES_PER_PIXEL = 3,
 	  MINIMUM_BYTE_SAVINGS = 500,
 	  DEFAULT_DIRECTORY = ['./'];
 
-function calculate_optimial_size(dims, bpp) {
-	return ((dims.width * dims.height * dims.frames) * bpp);
-}
+var argument_config = {
+	'boolean': [
+		'mismatch',
+		'duplicate',
+		'help',
+		'version'
+	],
+	'alias': {
+		'bytes_per_pixel': 'b',
+		'byte_savings': 's',
+		'help': 'h',
+		'version': 'v'
+	},
+	'default': {
+		'bytes_per_pixel': MINIMUM_BYTES_PER_PIXEL,
+		'byte_savings': MINIMUM_BYTE_SAVINGS,
+		'mismatch': true,
+		'duplicate': true
+	},
+	'-help-usage': 'image-lint [options] [<files/folders/urls>...]',
+	'-help-options': {
+		'mismatch': 'Find mismatches between file type and file extension.',
+		'duplicate': 'Find files that have been copied.',
+		'bytes_per_pixel': 'Set the maximum bytes per pixel before giving a warning.',
+		'byte_savings': 'Set the minimum byte savings before giving a warning.',
+		'help': 'Print this message, then exit.',
+		'version': 'Print the version number and exit.'
+	}
+};
 
-function describe_file(dims) {
-	return 'File properties: ' + dims.width + 'x' + dims.height + (dims.frames !== 1 ? ', ' + dims.frames + ' frames' : '');
-}
-
-InfoProvider.load([
-	'../lib/image/png-info',
-	'../lib/image/gif-info',
-	'../lib/image/jpg-info',
-
-	// Identify only
-	'../lib/image/bmp-info',
-	'../lib/image/psd-info',
-	'../lib/image/ico-info',
-	'../lib/image/tiff-info',
-	'../lib/image/webp-info',
-]);
-
-var argv = minimist(process.argv.slice(2), {
-		'boolean': [
-			'mismatch',
-			'duplicate'
-		],
-		'alias': {
-			'bytes_per_pixel': 'b',
-			'byte_savings': 's'
-		},
-		'default': {
-			'bytes_per_pixel': MINIMUM_BYTES_PER_PIXEL,
-			'byte_savings': MINIMUM_BYTE_SAVINGS,
-			'mismatch': true,
-			'duplicate': true
-		}
-	}),
+var argv = minimist(process.argv.slice(2), argument_config),
 	folder = argv._;
 
 if (!folder.length) {
 	folder = DEFAULT_DIRECTORY;
 }
 
+if (ArgsHelper.argv(argument_config, argv)) {
+	process.exitCode = 0;
+} else {
+	const InfoProvider = require('../lib/image-info.js'),
+		  WorkHandler = require('../lib/work-handler.js'),
+		  MultiFinder = require('../lib/finder/multi.js'),
+		  Hasher = require('../lib/hasher.js'),
+		  LoggerFactory = require('../lib/logger.js');
 
-var handler = new WorkHandler(),
-	hasher = new Hasher();
-
-handler.on('next', (file, done) => {
-	let logger = LoggerFactory.get_log(file.path);
-
-	function error_handler(err) {
-		if (err.stack) {
-			logger.error(err.stack);
-		} else {
-			logger.error(err);
-		}
-
-		console.log(logger.toString());
-
-		done();
+	function calculate_optimial_size(dims, bpp) {
+		return ((dims.width * dims.height * dims.frames) * bpp);
 	}
 
-	// console.log(file.path);
+	function describe_file(dims) {
+		return 'File properties: ' + dims.width + 'x' + dims.height + (dims.frames !== 1 ? ', ' + dims.frames + ' frames' : '');
+	}
 
-	file.load()
-		.then((file) => {
-			// Check for empty files and exit early to prevent unnecessary work.
-			if (file.buffer.length === 0) {
-				throw 'This is an empty file, further analysis is not possible.';
+	InfoProvider.load([
+		'../lib/image/png-info',
+		'../lib/image/gif-info',
+		'../lib/image/jpg-info',
+
+		// Identify only
+		'../lib/image/bmp-info',
+		'../lib/image/psd-info',
+		'../lib/image/ico-info',
+		'../lib/image/tiff-info',
+		'../lib/image/webp-info',
+	]);
+
+	var handler = new WorkHandler(),
+		hasher = new Hasher();
+
+	handler.on('next', (file, done) => {
+		let logger = LoggerFactory.get_log(file.path);
+
+		function error_handler(err) {
+			if (err.stack) {
+				logger.error(err.stack);
+			} else {
+				logger.error(err);
 			}
 
-			if (argv.duplicate === true) {
-				let found = hasher.contains(file);
-
-				if (found) {
-					logger.warn('This file is a duplicate of: ' + found);
-				}
-			}
-
-			return InfoProvider.get_info(file, logger, argv);
-		})
-		.then((info) => {
-			let min_bpp = argv.bytes_per_pixel,
-				min_savings = argv.byte_savings,
-				size_difference = info.size - calculate_optimial_size(info.dimensions, min_bpp);
-
-			logger.info(describe_file(info.dimensions));
-
-			if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
-				logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
-				logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
-			}
-
-			if (logger.is_printable()) {
-				console.log(logger.toString());
-			}
+			console.log(logger.toString());
 
 			done();
+		}
 
-		}, error_handler)
-		.catch(error_handler);
-});
+		// console.log(file.path);
 
-let finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
+		file.load()
+			.then((file) => {
+				// Check for empty files and exit early to prevent unnecessary work.
+				if (file.buffer.length === 0) {
+					throw 'This is an empty file, further analysis is not possible.';
+				}
 
-handler.start(finder.get_files(folder));
+				if (argv.duplicate === true) {
+					let found = hasher.contains(file);
+
+					if (found) {
+						logger.warn('This file is a duplicate of: ' + found);
+					}
+				}
+
+				return InfoProvider.get_info(file, logger, argv);
+			})
+			.then((info) => {
+				let min_bpp = argv.bytes_per_pixel,
+					min_savings = argv.byte_savings,
+					size_difference = info.size - calculate_optimial_size(info.dimensions, min_bpp);
+
+				logger.info(describe_file(info.dimensions));
+
+				if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
+					logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
+					logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
+				}
+
+				if (logger.is_printable()) {
+					console.log(logger.toString());
+				}
+
+				done();
+
+			}, error_handler)
+			.catch(error_handler);
+	});
+
+	let finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
+
+	handler.start(finder.get_files(folder));
+}
+
