@@ -40,7 +40,7 @@ $ image-lint -s 1024 ./images/
 
 ### File Extension Mismatch `--mismatch` ###
 
-This option will check for images whose file extension doesn't match the contents of the file. For example: if a PSD file was renamed to '.png' without it be converted. The default is true.
+This option will check for images whose file extension doesn't match the contents of the file. For example: if a PSD file was renamed to '.png' without it being converted. The default is true.
 
 ```sh
 $ image-lint --mismatch true ./images/
@@ -73,7 +73,7 @@ There are some checks that can't be turned off or adjusted. These issues interfe
 
 ### Images on the web that return an error code: 404, 500, etc. ###
 
-**Remedy:** This kind of issue can be resolved by removing the references to the missing image or correcting the path to the correct image (404 errors) or by fixing any stability issues the server is having (500 errors).
+**Remedy:** This kind of issue can be resolved by removing the references to the image, correcting the file path to the image (404 errors), or by fixing any stability issues the server is having (500 errors).
 
 Support
 -------
