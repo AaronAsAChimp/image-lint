@@ -1,6 +1,11 @@
 NEXT
 ----
 
+[Nothing Yet...]
+
+1.0.2
+-----
+
 Add support for searching Git repositories.
 Default to the current directory when running without params.
 Spelling fixes.
