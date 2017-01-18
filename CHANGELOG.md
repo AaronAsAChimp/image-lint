@@ -1,7 +1,7 @@
 NEXT
 ----
 
-[Nothing Yet...]
+Add validation for color spaces.
 
 1.0.2
 -----

@@ -1,10 +1,14 @@
 #!/usr/bin/env node
+/* @flow */
 'use strict';
 
-const ArgsHelper = require('../lib/args-helper.js').default,
+const ArgsHelper = require('../lib/args-helper').default,
 	  minimist = require('minimist'),
+	  pf = require('../lib/pixel-format'),
+	  ColorSpace = pf.ColorSpace,
 	  MINIMUM_BYTES_PER_PIXEL = 3,
 	  MINIMUM_BYTE_SAVINGS = 500,
+	  DEFAULT_COLOR_SPACES = 'G,RGB',
 	  DEFAULT_DIRECTORY = ['./'];
 
 var argument_config = {
@@ -13,6 +17,9 @@ var argument_config = {
 		'duplicate',
 		'help',
 		'version'
+	],
+	'string': [
+		'color_space'
 	],
 	'alias': {
 		'bytes_per_pixel': 'b',
@@ -23,6 +30,7 @@ var argument_config = {
 	'default': {
 		'bytes_per_pixel': MINIMUM_BYTES_PER_PIXEL,
 		'byte_savings': MINIMUM_BYTE_SAVINGS,
+		'color_space': DEFAULT_COLOR_SPACES,
 		'mismatch': true,
 		'duplicate': true
 	},
@@ -32,6 +40,7 @@ var argument_config = {
 		'duplicate': 'Find files that have been copied.',
 		'bytes_per_pixel': 'Set the maximum bytes per pixel before giving a warning.',
 		'byte_savings': 'Set the minimum byte savings before giving a warning.',
+		'color_space': 'Set the allowed color spaces separated by a comma',
 		'help': 'Print this message, then exit.',
 		'version': 'Print the version number and exit.'
 	}
@@ -75,7 +84,24 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	]);
 
 	var handler = new WorkHandler(),
-		hasher = new Hasher();
+		hasher = new Hasher(),
+		allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
+
+	// Prepare the allowed color spaces.
+	if (argv.color_space) {
+		let spaces = argv.color_space.split(',');
+
+		allowed_color_spaces = new Set();
+
+		for (let space of spaces) {
+			space = ColorSpace.from(space);
+
+			if (space) {
+				allowed_color_spaces.add(space);
+			}
+			
+		}
+	}
 
 	handler.on('next', (file, done) => {
 		let logger = LoggerFactory.get_log(file.path);
@@ -112,7 +138,8 @@ if (ArgsHelper.argv(argument_config, argv)) {
 				return InfoProvider.get_info(file, logger, argv);
 			})
 			.then((info) => {
-				let min_bpp = argv.bytes_per_pixel,
+				let color_space = info.pixel_format.color_space,
+					min_bpp = argv.bytes_per_pixel,
 					min_savings = argv.byte_savings,
 					size_difference = info.size - calculate_optimial_size(info.dimensions, min_bpp);
 
@@ -121,6 +148,10 @@ if (ArgsHelper.argv(argument_config, argv)) {
 				if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
 					logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
 					logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
+				}
+
+				if (allowed_color_spaces && allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
+					logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ argv.color_space }.`);
 				}
 
 				if (logger.is_printable()) {

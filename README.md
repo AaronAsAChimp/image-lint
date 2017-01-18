@@ -58,6 +58,18 @@ $ image-lint --duplicate true ./images/
 
 **Remedy:** This kind of issue can be resolved by removing the duplicate images, then pointing all references to the one remaining image.
 
+### Color Space Validation `--color_space` ###
+
+Color space validation will check the color space of the image and will issue a warning if it is not in the set of the allowed color spaces. This is useful to find images that have been saved for print but are used on the web. The default set is Grayscale (G), and RGB.
+
+```sh
+$ image-lint --color_space CYMK,HSV,G ./images/
+```
+
+
+
+**Remedy:** This kind of issue can be resolved by saving the image using the appropriate color mode.
+
 Other Checks
 ------------
 
@@ -103,3 +115,17 @@ There are multiple stratagies that are used to find files to lint. The linter wi
 | HTTPS       |
 | Git         |
 | Filesystem  |
+
+### Color Spaces ###
+
+When detecting color spaces the following are supported although not all formats use them.
+
+| Color Space |
+|:-----------:|
+| G           |
+| RGB         |
+| YCbCr       |
+| YCCK        |
+| LAB         |
+| HSV         |
+| CMYK        |

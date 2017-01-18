@@ -25,5 +25,8 @@
     "nodegit": "^0.16.0",
     "request": "^2.79.0",
     "tmp": "^0.0.31"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.37.4"
   }
 }
