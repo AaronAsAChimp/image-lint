@@ -104,6 +104,8 @@ A number of formats are supported, though most are only for identification purpo
 | ico / cur    |        |  ☑️️            |
 | tiff         |        |  ☑️️            |
 | webp         |        |  ☑️️            |
+| svg          |        |  ☑️️            |
+| html         |        |  ☑️️            |
 
 ### File Finders ###
 

@@ -20,6 +20,7 @@
   "author": "Aaron Spaulding",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^1.1.3",
     "minimist": "^1.2.0",
     "node-phantom-simple": "^2.2.4",
     "nodegit": "^0.16.0",
