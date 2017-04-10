@@ -2,6 +2,10 @@ NEXT
 ----
 
 Add validation for color spaces.
+Prototype folder exclusion.
+Add support for XML based files, SVG and HTML.
+Add color to the logger.
+Add truncated file detection for PNG, JPEG, GIF.
 
 1.0.2
 -----
