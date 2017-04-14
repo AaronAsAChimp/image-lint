@@ -75,9 +75,15 @@ Other Checks
 
 There are some checks that can't be turned off or adjusted. These issues interfere with the operation `image-lint` so they will always be reported.
 
-### Empty or nearly empty files. ###
+### Empty or nearly empty files ###
 
 **Remedy:** This kind of issue can be resolved by removing these images. They are not valid and will not be usable in any image processing or viewing application.
+
+### Truncated files ###
+
+Only part of the file is present. This can happen when a connection is interrupted while transferring the file.
+
+**Remedy:** This kind of issue can be resolved by getting a new copy. There is generally no means for repairing the image. The data is likely lost or unrecoverable.
 
 ### Unknown file contents ###
 
