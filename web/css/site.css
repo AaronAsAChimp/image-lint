@@ -1,0 +1,116 @@
+body {
+	font-family: "jaf-domus", sans-serif;
+	color: white;
+	background: #363636;
+	margin: 0;
+}
+
+.image-lint-app {
+	display: flex;
+}
+
+.pane {
+	padding: 20px;
+}
+
+.pane-options {
+	background: #464646;
+}
+
+.pane-dropzone {
+	flex: 1;
+}
+
+.lint-header {
+	background: #00A0B0;
+	padding: 20px;
+}
+
+.lint-title {
+	display: inline-block;
+	font-weight: 200;
+	font-size: 36px;
+	margin: 0;
+}
+
+.lint-subtitle {
+	display: inline-block;
+	font-weight: 200;
+	font-size: 18px;
+	margin: 0 0 0 15px;
+}
+
+.lint-option {
+	display: block;
+	margin: 10px 0;
+}
+
+.drop-target {
+  min-height: 150px;
+}
+
+.drop-target.active {
+  background: red;
+}
+
+.lint-results {
+	list-style: none;
+	padding: 0;
+}
+
+.lint-result {
+	margin: 15px 0px;
+	background: #464646;
+	padding-bottom: 1px; /* Prevent margin-collapse */
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.lint-result .lint-result-summary {
+	background: #707070;
+	padding: 10px 10px 10px 18px;
+}
+
+.lint-result.has-results .lint-result-summary {
+	background: #00A0B0;
+	padding: 10px 10px 10px 18px;
+}
+
+.lint-result .lint-result-summary.lint-warn {
+	background: #EDC951;
+}
+
+.lint-result .lint-result-summary.lint-error {
+	background: #EB6841;
+}
+
+.lint-result.has-error .lint-result-summary {
+	background: #CC2A36;
+}
+
+.lint-result.has-error .upload-progress,
+.lint-result.has-results .upload-progress {
+	display: none;
+}
+
+.lint-result-output {
+	font-family: monospace;
+	white-space: pre;
+	margin: 10px 10px 10px 18px;
+	display: block;
+}
+
+.progress-container {
+	width: 200px;
+	height: 7px;
+	display: inline-block;
+	background: #464646;
+	border-radius: 3px;
+	overflow: hidden;
+	margin-left: 8px;
+}
+
+.progress-container .progress-bar {
+	background: #00a0b0;
+	height: 7px;
+}

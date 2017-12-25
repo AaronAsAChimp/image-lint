@@ -1,6 +1,7 @@
 NEXT
 ----
 
+- Fix upper case file extensions.
 - Add validation for color spaces.
 - Prototype folder exclusion.
 - Add support for XML based files, SVG and HTML.

@@ -2,10 +2,10 @@
 /* @flow */
 'use strict';
 
-const ArgsHelper = require('../lib/args-helper').default,
-	  minimist = require('minimist'),
-	  pf = require('../lib/pixel-format'),
-	  ColorSpace = pf.ColorSpace,
+const minimist = require('minimist'),
+	  ArgsHelper = require('../lib/args-helper').default,
+	  linter = require('../lib/linter'),
+	  Linter = linter.default,
 	  MINIMUM_BYTES_PER_PIXEL = 3,
 	  MINIMUM_BYTE_SAVINGS = 500,
 	  DEFAULT_COLOR_SPACES = 'G,RGB',
@@ -46,132 +46,27 @@ var argument_config = {
 	}
 };
 
-var argv = minimist(process.argv.slice(2), argument_config),
-	folder = argv._;
-
-if (!folder.length) {
-	folder = DEFAULT_DIRECTORY;
-}
+var argv = minimist(process.argv.slice(2), argument_config);
 
 if (ArgsHelper.argv(argument_config, argv)) {
 	process.exitCode = 0;
 } else {
-	const InfoProvider = require('../lib/image-info.js'),
-		  WorkHandler = require('../lib/work-handler.js'),
-		  MultiFinder = require('../lib/finder/multi.js'),
-		  Hasher = require('../lib/hasher.js'),
-		  LoggerFactory = require('../lib/logger.js');
+	const MultiFinder = require('../lib/finder/multi'),
+		  InfoProvider = require('../lib/image-info'); 
 
-	function calculate_optimial_size(dims, bpp) {
-		return ((dims.width * dims.height * dims.frames) * bpp);
+	let folder = argv._,
+		finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes()),
+		cli_linter = new Linter(finder);
+
+	if (!folder.length) {
+		folder = DEFAULT_DIRECTORY;
 	}
 
-	function describe_file(dims) {
-		return 'File properties: ' + dims.width + 'x' + dims.height + (dims.frames !== 1 ? ', ' + dims.frames + ' frames' : '');
-	}
-
-	InfoProvider.load([
-		'../lib/image/png-info',
-		'../lib/image/gif-info',
-		'../lib/image/jpg-info',
-
-		// Identify only
-		'../lib/image/bmp-info',
-		'../lib/image/psd-info',
-		'../lib/image/ico-info',
-		'../lib/image/tiff-info',
-		'../lib/image/webp-info',
-		'../lib/image/svg-info',
-		'../lib/image/html-info'
-	]);
-
-	var handler = new WorkHandler(),
-		hasher = new Hasher(),
-		allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
-
-	// Prepare the allowed color spaces.
-	if (argv.color_space) {
-		let spaces = argv.color_space.split(',');
-
-		allowed_color_spaces = new Set();
-
-		for (let space of spaces) {
-			space = ColorSpace.from(space);
-
-			if (space) {
-				allowed_color_spaces.add(space);
+	cli_linter.lint(folder, argv)
+		.on('file.completed', (logger) => {
+			if (logger.is_printable()) {
+				console.log(logger.toString());
 			}
-			
-		}
-	}
-
-	handler.on('next', (file, done) => {
-		let logger = LoggerFactory.get_log(file.path);
-
-		function error_handler(err) {
-			if (err.stack) {
-				logger.error(err.stack);
-			} else {
-				logger.error(err);
-			}
-
-			console.log(logger.toString());
-
-			done();
-		}
-
-		// console.log(file.path);
-
-		file.load()
-			.then((file) => {
-				// Check for empty files and exit early to prevent unnecessary work.
-				if (file.buffer.length === 0) {
-					throw 'This is an empty file, further analysis is not possible.';
-				}
-
-				if (argv.duplicate === true) {
-					let found = hasher.contains(file);
-
-					if (found) {
-						logger.warn('This file is a duplicate of: ' + found);
-					}
-				}
-
-				return InfoProvider.get_info(file, logger, argv);
-			})
-			.then((info) => {
-				if (!info.truncated) {
-					let color_space = info.pixel_format.color_space,
-						min_bpp = argv.bytes_per_pixel,
-						min_savings = argv.byte_savings,
-						size_difference = info.size - calculate_optimial_size(info.dimensions, min_bpp);
-
-					logger.info(describe_file(info.dimensions));
-
-					if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
-						logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
-						logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
-					}
-
-					if (allowed_color_spaces && allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
-						logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ argv.color_space }.`);
-					}
-				} else {
-					logger.error('This image is truncated, further analysis is not possible.')
-				}
-
-				if (logger.is_printable()) {
-					console.log(logger.toString());
-				}
-
-				done();
-
-			}, error_handler)
-			.catch(error_handler);
-	});
-
-	let finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
-
-	handler.start(finder.get_files(folder));
+		});
 }
 
