@@ -1,5 +1,5 @@
-NEXT
-----
+1.1.0
+-----
 
 - Fix upper case file extensions.
 - Add validation for color spaces.
