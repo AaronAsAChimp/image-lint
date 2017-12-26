@@ -69,7 +69,7 @@
 	</form>
 	<script src="https://unpkg.com/vue"></script>
 	<script src="https://unpkg.com/vue-multiselect@2.0.0-beta.14"></script>
-	<script src="https://unpkg.com/ansi_up"></script>
+	<!-- <script src="https://unpkg.com/ansi_up"></script> -->
 	<script src="https://use.typekit.net/jng0woc.js"></script>
 	<script>try{Typekit.load({ async: true });}catch(e){}</script>
 	<script>
@@ -184,8 +184,14 @@
 				if (this.xhr.status > 0 && this.xhr.status < 400) {
 					this.results = this.xhr.response.results[0];
 
-					this.results.log = ansi_up
-						.ansi_to_html(this.results.log.trim());
+					let log_parts = this.results.log.trim().split('\n');
+
+					this.results.log = log_parts.map((line) => {
+						return line.trim();
+					}).join('\n');
+
+					// this.results.log = ansi_up
+					// 	.ansi_to_html(this.results.log.trim());
 						// .replace('\n', '<br />');
 
 					this.xhr = null;

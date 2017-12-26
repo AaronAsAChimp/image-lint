@@ -1,8 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --inspect-brk
 /* @flow */
 'use strict';
 
 const ArgsHelper = require('../lib/args-helper').default,
+	  chalk = require('chalk'),
 	  minimist = require('minimist'),
 	  http = require('http');
 
@@ -42,6 +43,8 @@ if (ArgsHelper.argv(argument_config, argv)) {
 		  InfoProvider = require('../lib/image-info'),
 	  	  BufferArrayFinder = require('../lib/finder/buffer'),
 		  Linter = require('../lib/linter').default;
+
+	chalk.level = 0;
 
 	let finder = new BufferArrayFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
 

@@ -15,6 +15,7 @@ body {
 
 .pane-options {
 	background: #464646;
+	max-width: 450px;
 }
 
 .pane-dropzone {
