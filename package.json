@@ -20,19 +20,18 @@
   "author": "Aaron Spaulding",
   "license": "MIT",
   "dependencies": {
-    "async-busboy": "^0.4.0",
-    "chalk": "^2.3.0",
+    "async-busboy": "^0.6.2",
+    "chalk": "^2.4.1",
     "crc": "^3.4.4",
-    "koa": "^2.2.0",
+    "koa": "^2.5.1",
     "koa-router": "^7.1.1",
-    "koa-static": "^3.0.0",
+    "koa-static": "^5.0.0",
     "minimist": "^1.2.0",
     "node-phantom-simple": "^2.2.4",
-    "nodegit": "^0.20.0",
-    "request": "^2.79.0",
-    "tmp": "^0.0.31"
+    "request": "^2.87.0",
+    "tmp": "0.0.33"
   },
   "devDependencies": {
-    "flow-bin": "^0.61.0"
+    "flow-bin": "^0.75.0"
   }
 }
