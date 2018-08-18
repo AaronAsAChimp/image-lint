@@ -1,3 +1,9 @@
+Next
+----
+
+- Bumped depencencies
+- Disable git finder
+
 1.1.0
 -----
 

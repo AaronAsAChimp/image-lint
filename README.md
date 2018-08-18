@@ -121,7 +121,6 @@ There are multiple stratagies that are used to find files to lint. The linter wi
 |:-----------:|
 | HTTP        |
 | HTTPS       |
-| Git         |
 | Filesystem  |
 
 ### Color Spaces ###
