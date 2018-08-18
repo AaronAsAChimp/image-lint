@@ -1,7 +1,8 @@
-Next
-----
+2.0.0
+-----
 
 - Bumped depencencies
+- Fix warnings with Buffers.
 - Disable git finder
 
 1.1.0
