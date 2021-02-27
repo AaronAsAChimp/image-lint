@@ -27,11 +27,11 @@
     "koa-router": "^7.1.1",
     "koa-static": "^5.0.0",
     "minimist": "^1.2.0",
-    "node-phantom-simple": "^2.2.4",
+    "puppeteer": "7.1",
     "request": "^2.87.0",
     "tmp": "0.0.33"
   },
   "devDependencies": {
-    "flow-bin": "^0.75.0"
+    "flow-bin": "^0.145.0"
   }
 }
