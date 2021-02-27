@@ -55,7 +55,7 @@ if (ArgsHelper.argv(argument_config, argv)) {
 			linter = new Linter(finder);
 
 		try {
-			({files, fields} = await busboy(ctx.req)); 
+			({files, fields} = await busboy(ctx.req));
 		} catch (e) {
 			console.log(e.stack || e.message || e);
 		}

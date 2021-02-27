@@ -52,7 +52,7 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	process.exitCode = 0;
 } else {
 	const MultiFinder = require('../lib/finder/multi'),
-		  InfoProvider = require('../lib/image-info'); 
+		  InfoProvider = require('../lib/image-info');
 
 	let folder = argv._,
 		finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes()),
@@ -69,4 +69,3 @@ if (ArgsHelper.argv(argument_config, argv)) {
 			}
 		});
 }
-
