@@ -2,7 +2,7 @@
 /* @flow */
 'use strict';
 
-const ArgsHelper = require('../lib/args-helper').default,
+const ArgsHelper = require('image-lint').ArgsHelper,
 	  chalk = require('chalk'),
 	  minimist = require('minimist'),
 	  http = require('http');
@@ -40,11 +40,13 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	const busboy = require('async-busboy');
 	const path = require('path');
 	const router = require('koa-router')(),
-		  InfoProvider = require('../lib/image-info'),
-	  	  BufferArrayFinder = require('../lib/finder/buffer'),
-		  Linter = require('../lib/linter').default;
+		  InfoProvider = require('image-lint').InfoProvider,
+		  BufferArrayFinder = require('image-lint').BufferArrayFinder,
+		  Linter = require('image-lint').Linter;
 
 	chalk.level = 0;
+
+	console.log(BufferArrayFinder);
 
 	let finder = new BufferArrayFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes());
 

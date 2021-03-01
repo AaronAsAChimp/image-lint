@@ -1,37 +1,9 @@
 {
-  "name": "image-lint",
-  "version": "2.0.0",
-  "description": "Find files that are incorrectly named or compressed.",
-  "main": "bin/image-lint",
-  "directories": {
-    "test": "test"
-  },
-  "bin": {
-    "image-lint": "bin/image-lint"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "image",
-    "lint",
-    "compression"
-  ],
-  "author": "Aaron Spaulding",
-  "license": "MIT",
-  "dependencies": {
-    "async-busboy": "^0.6.2",
-    "chalk": "^4.1.0",
-    "crc": "^3.8.0",
-    "koa": "^2.5.1",
-    "koa-router": "^7.1.1",
-    "koa-static": "^5.0.0",
-    "minimist": "^1.2.5",
-    "puppeteer": "7.1",
-    "request": "^2.88.2",
-    "tmp": "0.0.33"
-  },
-  "devDependencies": {
-    "flow-bin": "^0.145.0"
-  }
+    "name": "image-lint",
+    "private": true,
+    "version": "2.0.0",
+    "workspaces": [
+        "image-lint",
+        "image-lint-web"
+    ]
 }

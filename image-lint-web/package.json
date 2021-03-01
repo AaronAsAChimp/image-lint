@@ -1,0 +1,38 @@
+{
+    "name": "image-lint-web",
+    "version": "2.0.0",
+    "description": "A web application for image-lint",
+    "keywords": [
+        "image",
+        "lint",
+        "compression",
+        "web"
+    ],
+    "author": "Aaron Spaulding <aaron@sachimp.com>",
+    "homepage": "https://github.com/AaronAsAChimp/image-lint#readme",
+    "license": "MIT",
+    "bin": {
+        "image-lint-server": "bin/image-lint-server.js"
+    },
+    "directories": {
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AaronAsAChimp/image-lint.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/AaronAsAChimp/image-lint/issues"
+    },
+    "dependencies": {
+        "koa": "^2.5.1",
+        "koa-router": "^7.1.1",
+        "koa-static": "^5.0.0"
+    }
+}

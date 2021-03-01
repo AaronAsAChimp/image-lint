@@ -18,7 +18,9 @@ export type LinterOptions = {
 	duplicate: boolean,
 	bytes_per_pixel: number,
 	byte_savings: number,
-	mismatch: boolean
+	mismatch: boolean,
+	help: boolean,
+	version: boolean
 };
  */
 
