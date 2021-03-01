@@ -1,26 +1,14 @@
 /* @flow */
-const request = require('request'),
+const got = require('got'),
       Loader = require('../loader');
 
 class HttpLoader extends Loader {
-    load()/*: Promise<Buffer> */ {
-        return new Promise((resolve, reject) => {
-			request({
-				url: this.getPath(),
-				gzip: true,
-				encoding: null
-			}, function (err, response, body) {
-				if (err) {
-					reject(err);
-				}
+    async load()/*: Promise<Buffer> */ {
+        const response = await got(this.getPath(), {
+            responseType: 'buffer'
+        });
 
-				if (response.statusCode >= 400) {
-					reject('Encountered HTTP error: ' + response.statusMessage);
-				}
-
-				resolve(body);
-			});
-		});
+        return response.body;
     }
 }
 
