@@ -1,7 +1,8 @@
-Next
+2.1.0
 -----
 
 - Replace Phantom JS with Puppeteer in the web finder.
+- Replace request with got.
 - Refactoring and clean up.
 
 2.0.0
