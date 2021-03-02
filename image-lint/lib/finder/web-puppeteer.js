@@ -3,7 +3,6 @@
 
 const Finder = require('../finder.js'),
 	  HttpLoader = require('../loader/http'),
-	  request = require('request'),
 	  url = require('url'),
 	  path = require('path'),
 	  puppeteer = require('puppeteer');
