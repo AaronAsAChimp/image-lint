@@ -1,6 +1,6 @@
 {
     "name": "image-lint-web",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A web application for image-lint",
     "keywords": [
         "image",
