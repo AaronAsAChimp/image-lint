@@ -10,7 +10,8 @@
         "image-lint": "bin/image-lint.js"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepack": "cp ../README.md ."
     },
     "keywords": [
         "image",
