@@ -3,6 +3,7 @@
     "version": "2.1.1",
     "description": "Find files that are incorrectly named or compressed.",
     "main": "lib/api.js",
+    "repository": "github:AaronAsAChimp/image-lint",
     "directories": {
         "test": "test"
     },
@@ -10,10 +11,11 @@
         "image-lint": "bin/image-lint.js"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "prepack": "cp ../README.md ."
     },
     "keywords": [
+        "cli",
         "image",
         "lint",
         "compression"
@@ -24,12 +26,16 @@
         "async-busboy": "^0.6.2",
         "chalk": "^4.1.0",
         "crc": "^3.8.0",
+        "got": "^11.8.2",
         "minimist": "^1.2.5",
         "puppeteer": "7.1",
-        "tmp": "0.0.33",
-        "got": "^11.8.2"
+        "tmp": "0.0.33"
     },
     "devDependencies": {
-        "flow-bin": "^0.145.0"
+        "flow-bin": "^0.158.0",
+        "jest": "^26.6.3"
+    },
+    "jest": {
+        "rootDir": "lib"
     }
 }

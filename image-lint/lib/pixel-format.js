@@ -10,6 +10,8 @@ class ColorSpace {
 	static LAB: ColorSpace;
 	static HSV: ColorSpace;
 	static CMYK: ColorSpace;
+	static XYZ: ColorSpace;
+	static XYB: ColorSpace;
 
 	static all_names: Set<string>;
 
@@ -45,6 +47,8 @@ ColorSpace.YCCK = new ColorSpace('YCCK', 4);
 ColorSpace.LAB = new ColorSpace('LAB', 3);
 ColorSpace.HSV = new ColorSpace('HSV', 3);
 ColorSpace.CMYK = new ColorSpace('CMYK', 4);
+ColorSpace.XYZ = new ColorSpace('XYZ', 3);
+ColorSpace.XYB = new ColorSpace('XYB', 3);
 
 class PixelFormat {
 	/*::

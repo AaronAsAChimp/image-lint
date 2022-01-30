@@ -105,6 +105,7 @@ A number of formats are supported, though most are only for identification purpo
 | png          | ☑️️      |               |
 | gif          | ☑️️      |               |
 | jpg          | ☑️️      |               |
+| jxl          | ☑️️      |               |
 | bmp          |        |  ☑️️            |
 | psd          |        |  ☑️️            |
 | ico / cur    |        |  ☑️️            |

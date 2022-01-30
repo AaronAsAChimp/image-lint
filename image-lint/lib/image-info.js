@@ -42,6 +42,8 @@ class InfoProvider {
 	validate_magic (buffer/*: Buffer */)/*: boolean */ {
 		var buffer_magic = buffer.slice(0, this.magic.length);
 
+		// console.log('Validating magic: ' + this.magic.toString('hex') + ' === ' + buffer_magic.toString('hex'));
+
 		return Buffer.compare(this.magic, buffer_magic) === 0;
 	}
 

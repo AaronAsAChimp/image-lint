@@ -40,6 +40,7 @@ class Linter extends EventEmitter {
 			'./image/png-info',
 			'./image/gif-info',
 			'./image/jpg-info',
+			'./image/jxl-info',
 
 			// Identify only
 			'./image/bmp-info',
@@ -131,6 +132,7 @@ class Linter extends EventEmitter {
 						}
 
 						if (allowed_color_spaces && allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
+							console.log('Color Space', color_space);
 							logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
 						}
 					} else {
