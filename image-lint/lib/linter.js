@@ -7,11 +7,13 @@ const InfoProvider = require('./image-info'),
 	  ColorSpace = pf.ColorSpace,
 	  LoggerFactory = require('./logger').LoggerFactory,
 	  EventEmitter = require('events');
+const ImageIdentifier = require('./ident.js');
 
 /*::
 import type { Dimensions, ImageInfo } from './image-info';
 import type Finder from './finder';
 import type {FileDescriptor} from './finder';
+import type {Log} from './logger';
 
 export type LinterOptions = {
 	color_space: string,
@@ -24,43 +26,137 @@ export type LinterOptions = {
 };
  */
 
+require('./ident/png-ident.js');
+require('./ident/gif-ident.js');
+require('./ident/jpg-ident.js');
+require('./ident/jxl-ident.js');
+
+// Identify only
+require('./ident/bmp-ident.js');
+require('./ident/psd-ident.js');
+require('./ident/ico-ident.js');
+require('./ident/tiff-ident.js');
+require('./ident/webp-ident.js');
+require('./ident/svg-ident.js');
+require('./ident/html-ident.js');
+
+/**
+ * The image linter.
+ */
 class Linter extends EventEmitter {
 	/*::
 	finder: Finder;
 	disable_color: boolean;
 	 */
 
-	constructor (finder/*: Finder */) {
+	/**
+	 * Construct a new Linter
+	 * @param  {Finder} finder The finder to use to locate the images.
+	 */
+	constructor(finder/*: Finder */) {
 		super();
 
 		this.finder = finder;
 		this.disable_color = false;
-
-		InfoProvider.load([
-			'./image/png-info',
-			'./image/gif-info',
-			'./image/jpg-info',
-			'./image/jxl-info',
-
-			// Identify only
-			'./image/bmp-info',
-			'./image/psd-info',
-			'./image/ico-info',
-			'./image/tiff-info',
-			'./image/webp-info',
-			'./image/svg-info',
-			'./image/html-info'
-		]);
 	}
 
+	/**
+	 * Calculate the optimal size of the image.
+	 *
+	 * @param  {Dimensions} dims   The dimensions of the image.
+	 * @param  {number}     bpp    The bytes per pixel of the image.
+	 * @return {number}            The optimial size of the image.
+	 */
 	calculate_optimial_size(dims/*: Dimensions */, bpp/*: number */)/*: number */ {
 		return ((dims.width * dims.height * dims.frames) * bpp);
 	}
 
+	/**
+	 * Construct a description of an image file.
+	 *
+	 * @param  {Dimensions} dims    The dimensions of the image.
+	 * @return {string}             The description of the image.
+	 */
 	describe_file(dims/*: Dimensions */)/*: string */ {
 		return 'File properties: ' + dims.width + 'x' + dims.height + (dims.frames !== 1 ? ', ' + dims.frames + ' frames' : '');
 	}
 
+	/**
+	 * Get the information for the file.
+	 *
+	 * @param  {FileDescriptor} file    The file descriptor.
+	 * @param  {Buffer} buffer          The file buffer.
+	 * @param  {Log} logger             The logger for printing errors.
+	 * @param  {LinterOptions} options  The options for the linter.
+	 * @return {Promise<ImageInfo>}     The image info.
+	 */
+	get_info(file/*: FileDescriptor */, buffer/*: Buffer */, logger/*: Log */, options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
+		return new Promise((resolve, reject) => {
+			var extension = file.extension.toLowerCase(),
+				identifier = ImageIdentifier.from_extension(extension),
+				file_buffer/*: ?Buffer */ = null,
+				is_of_file_type = false;
+
+			if (buffer instanceof Buffer) {
+				file_buffer = buffer;
+			} else {
+				reject('Image buffer is missing, this is a bug.');
+				return;
+			}
+
+			if (identifier) {
+				is_of_file_type = identifier.is_of_file_type(file_buffer);
+			} else {
+				logger.warn('There is no information provider for "' + extension + '" files.');
+			}
+
+			// Attenpt to find the correct file type.
+			if (!identifier || !is_of_file_type) {
+				logger.info('This file is not what it seems, attempting brute force discovery of file type.');
+
+				identifier = null;
+
+				for (const candidate of ImageIdentifier.all_providers()) {
+					if (candidate.can_validate(file_buffer) && candidate.is_of_file_type(file_buffer)) {
+						identifier = candidate;
+					}
+				}
+			}
+
+			if (!is_of_file_type) {
+				let found_extension = 'unknown';
+
+				if (identifier) {
+					found_extension = identifier.get_extension();
+				}
+
+				if (options.mismatch === true) {
+					logger.warn('There is a mismatch between the file extension (' + extension + ') and the file contents (' + found_extension + ')');
+				}
+			}
+
+			if (identifier) {
+				const ProviderClass = identifier.get_info_provider();
+
+				if (!ProviderClass) {
+					reject('Unsupported file type');
+				} else {
+					const provider = new ProviderClass();
+
+					resolve(provider.get_info(file_buffer));
+				}
+			} else {
+				reject('Unknown file type');
+			}
+		});
+	}
+
+	/**
+	 * Run the linter
+	 * @param  {string[]} folder        A list of folders to look for images in.
+	 * @param  {LinterOptions} options  The options for the linter.
+	 * @return {Linter}                 The linter for chaining.
+	 */
 	lint(folder/*: string[] */, options/*: LinterOptions */)/*: Linter */ {
 		var linter = this,
 			handler = new WorkHandler(),
@@ -69,7 +165,7 @@ class Linter extends EventEmitter {
 
 		// Prepare the allowed color spaces.
 		if (options.color_space) {
-			let spaces = options.color_space.split(',');
+			const spaces = options.color_space.split(',');
 
 			allowed_color_spaces = new Set();
 
@@ -79,12 +175,11 @@ class Linter extends EventEmitter {
 				if (space) {
 					allowed_color_spaces.add(space);
 				}
-
 			}
 		}
 
 		handler.on('next', (file/*: FileDescriptor */, done/*: () => void */) => {
-			let logger = LoggerFactory.get_log(file.path);
+			const logger = LoggerFactory.get_log(file.path);
 
 			function error_handler(err/*: Error */) {
 				if (err.stack) {
@@ -108,21 +203,21 @@ class Linter extends EventEmitter {
 					}
 
 					if (options.duplicate === true) {
-						let found = hasher.contains(file.path, buffer);
+						const found = hasher.contains(file.path, buffer);
 
 						if (found) {
 							logger.warn('This file is a duplicate of: ' + found);
 						}
 					}
 
-					return InfoProvider.get_info(file, buffer, logger, options);
+					return this.get_info(file, buffer, logger, options);
 				})
 				.then((info/*: ImageInfo */) => {
 					if (!info.truncated) {
-						let color_space = info.pixel_format.color_space,
-							min_bpp = options.bytes_per_pixel,
-							min_savings = options.byte_savings,
-							size_difference = info.size - this.calculate_optimial_size(info.dimensions, min_bpp);
+						const color_space = info.pixel_format.color_space;
+						const min_bpp = options.bytes_per_pixel;
+						const min_savings = options.byte_savings;
+						const size_difference = info.size - this.calculate_optimial_size(info.dimensions, min_bpp);
 
 						logger.info(this.describe_file(info.dimensions));
 
@@ -132,17 +227,16 @@ class Linter extends EventEmitter {
 						}
 
 						if (allowed_color_spaces && allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
-							console.log('Color Space', color_space);
+							// console.log('Color Space', color_space);
 							logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
 						}
 					} else {
-						logger.error('This image is truncated, further analysis is not possible.')
+						logger.error('This image is truncated, further analysis is not possible.');
 					}
 
 					this.emit('file.completed', logger);
 
 					done();
-
 				}, error_handler)
 				.catch(error_handler);
 		});
@@ -155,7 +249,6 @@ class Linter extends EventEmitter {
 
 		return this;
 	}
-
 }
 
 module.exports.default = Linter;

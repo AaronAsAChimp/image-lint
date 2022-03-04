@@ -1,0 +1,16 @@
+{
+    "env": {
+        "es6": true
+    },
+    "extends": "google",
+    "parserOptions": {
+        "ecmaVersion": 2022
+    },
+    "rules": {
+        "indent": ["error", "tab"],
+        "no-tabs": ["off"],
+        "camelcase": ["off"],
+        "spaced-comment": ["error", "always", { "markers": [":", "::"] }],
+        "max-len": ["error", { "code": 120 }]
+    }
+}

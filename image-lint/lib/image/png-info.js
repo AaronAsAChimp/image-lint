@@ -57,14 +57,6 @@ class PNGChunk {
 }
 
 class PNGInfoProvider extends InfoProvider {
-
-	constructor () {
-		super();
-
-		this.magic = Buffer.from('89504e470d0a1a0a', 'hex');
-
-	}
-
 	get_overhead () {
 		// This is the size of the smallest possible PNG, I'm assuming it will
 		// be mostly overhead.
@@ -122,18 +114,6 @@ class PNGInfoProvider extends InfoProvider {
 
 		return format;
 	}
-
-	get_extensions() {
-		return [
-			'.png'
-		];
-	}
-
-	get_mimes() {
-		return [
-			'image/png'
-		];
-	}
 }
 
-InfoProvider.register(PNGInfoProvider);
+module.exports = PNGInfoProvider;

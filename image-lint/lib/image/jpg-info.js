@@ -17,14 +17,6 @@ const FILE_TRAILER = 0xFFD9;
 // http://www.itu.int/rec/T-REC-T.871-201105-I/en
 
 class JPGInfoProvider extends InfoProvider {
-
-	constructor () {
-		super();
-
-		this.magic = Buffer.from('ffd8ff', 'hex');
-
-	}
-
 	/**
 	 * @return Number the offset of the next chunk
 	 */
@@ -130,20 +122,6 @@ class JPGInfoProvider extends InfoProvider {
 
 		return format;
 	}
-
-	get_extensions() {
-		return [
-			'.jpg',
-			'.jpeg',
-			'.jpe'
-		];
-	}
-
-	get_mimes() {
-		return [
-			'image/jpeg'
-		];
-	}
 }
 
-InfoProvider.register(JPGInfoProvider);
+module.exports = JPGInfoProvider;

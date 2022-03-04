@@ -17,13 +17,6 @@ const IMAGE_DESCRIPTOR_OFFSET = 9; // a relative offset from the separator (0x2c
 const FILE_TRAILER = 0x3B; // A semicolon;
 
 class GIFInfoProvider extends InfoProvider {
-
-	constructor () {
-		super();
-
-		this.magic = Buffer.from('GIF');
-	}
-
 	get_overhead () {
 		// This is the size of the smallest possible GIF, I'm assuming it will
 		// be mostly overhead.
@@ -168,18 +161,6 @@ class GIFInfoProvider extends InfoProvider {
 
 		return format;
 	}
-
-	get_extensions() {
-		return [
-			'.gif'
-		];
-	}
-
-	get_mimes() {
-		return [
-			'image/gif'
-		];
-	}
 }
 
-InfoProvider.register(GIFInfoProvider);
+module.exports = GIFInfoProvider;

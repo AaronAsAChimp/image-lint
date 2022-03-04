@@ -51,12 +51,12 @@ var argv = minimist(process.argv.slice(2), argument_config);
 if (ArgsHelper.argv(argument_config, argv)) {
 	process.exitCode = 0;
 } else {
-	const MultiFinder = require('../lib/finder/multi'),
-		  InfoProvider = require('../lib/image-info');
+	const MultiFinder = require('../lib/finder/multi');
+	const ImageIdentifier = require('../lib/ident');
 
-	let folder = argv._,
-		finder = new MultiFinder(InfoProvider.get_all_extensions(), InfoProvider.get_all_mimes()),
-		cli_linter = new Linter(finder);
+	let folder = argv._;
+	const finder = new MultiFinder(ImageIdentifier.get_all_extensions(), ImageIdentifier.get_all_mimes());
+	const cli_linter = new Linter(finder);
 
 	if (!folder.length) {
 		folder = DEFAULT_DIRECTORY;

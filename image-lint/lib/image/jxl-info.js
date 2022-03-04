@@ -24,13 +24,6 @@ const MAX_BASIC_INFO_SIZE = CONTAINER_HEADER_SIZE + MAX_CODESTREAM_BASIC_INFO_SI
 // metadata: ImageMetadata
 
 class JXLInfoProvider extends InfoProvider {
-
-	constructor () {
-		super();
-
-		this.magic = Buffer.from('ff0a', 'hex');
-	}
-
 	get_overhead () {
 		// This is the size of the smallest possible JPG, I'm assuming it will
 		// be mostly overhead.
@@ -78,18 +71,6 @@ class JXLInfoProvider extends InfoProvider {
 
 		return format;
 	}
-
-	get_extensions() {
-		return [
-			'.jxl'
-		];
-	}
-
-	get_mimes() {
-		return [
-			'image/jxl'
-		];
-	}
 }
 
-InfoProvider.register(JXLInfoProvider);
+module.exports = JXLInfoProvider;
