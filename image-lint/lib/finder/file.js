@@ -13,30 +13,39 @@ import type { FileDescriptor } from '../finder';
 const EXCLUDES = new Set([
 	'node_modules',
 	'.git',
-	'.svn'
+	'.svn',
 ]);
 
+/**
+ * Find files in a file system.
+ */
 class FileFinder extends Finder {
-
+	/**
+	 * @inheritdoc
+	 */
 	get_files(initital_items/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
-		var queue = initital_items.slice(0),
-			found = [];
+		const queue = initital_items.slice(0);
 
-		if (!queue.length){
+		if (!queue.length) {
 			throw new Error('No files or folders specified');
 		}
 
 		return Promise.resolve(this._search.bind(this, queue));
 	}
 
-	*_search (queue/*: string[] */)/*: Iterable<FileDescriptor> */ {
+	/**
+	 * Traverse the file system yielding any files it finds.
+	 *
+	 * @param {stringp[]} queue  The initial queue items.
+	 */
+	* _search(queue/*: string[] */)/*: Iterable<FileDescriptor> */ {
 		while (queue.length) {
-			let file_path = queue.shift(),
-				stats = fs.lstatSync(file_path),
-				excluded = false;
+			const file_path = queue.shift();
+			const stats = fs.lstatSync(file_path);
+			let excluded = false;
 
 			// Skip any folder that is excluded.
-			for (let exclude of EXCLUDES) {
+			for (const exclude of EXCLUDES) {
 				if (file_path.endsWith(exclude)) {
 					excluded = true;
 				}
@@ -44,19 +53,19 @@ class FileFinder extends Finder {
 
 			if (!excluded) {
 				if (stats.isDirectory()) {
-					let contents = fs.readdirSync(file_path);
+					const contents = fs.readdirSync(file_path);
 
-					for (let sub_path of contents) {
+					for (const sub_path of contents) {
 						queue.push(path.join(file_path, sub_path));
 					}
 				} else if (stats.isFile()) {
-					let extension = path.extname(file_path);
+					const extension = path.extname(file_path);
 
 					if (extension && this.is_image_extension(extension)) {
 						yield {
 							'path': file_path,
 							'extension': extension,
-							'loader': new FsLoader(file_path)
+							'loader': new FsLoader(file_path),
 						};
 					}
 				}

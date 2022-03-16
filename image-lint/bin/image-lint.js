@@ -2,6 +2,10 @@
 /* @flow */
 'use strict';
 
+/*::
+import type {ExtendedOptions} from '../lib/args-helper.js';
+*/
+
 const minimist = require('minimist'),
 	  ArgsHelper = require('../lib/args-helper').default,
 	  linter = require('../lib/linter'),
@@ -11,7 +15,7 @@ const minimist = require('minimist'),
 	  DEFAULT_COLOR_SPACES = 'G,RGB',
 	  DEFAULT_DIRECTORY = ['./'];
 
-var argument_config = {
+var argument_config/*: minimistOptions */ = {
 	'boolean': [
 		'mismatch',
 		'duplicate',

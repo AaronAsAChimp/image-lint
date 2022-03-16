@@ -14,8 +14,8 @@ const COLOR_SPACE = {
 	K_GREY: 1,
 	K_XYB: 2,
 	K_UNKNOWN: 3,
-	K_XYZ: 4
-}
+	K_XYZ: 4,
+};
 const ENUM_COLOR_SPACE = new Set();
 
 ENUM_COLOR_SPACE.add(COLOR_SPACE.K_RGB);
@@ -32,7 +32,7 @@ const WHITE_POINT = {
 	K_D65: 1,
 	K_CUSTOM: 2,
 	K_E: 10,
-	K_DCI: 11
+	K_DCI: 11,
 };
 
 const ENUM_WHITE_POINT = new Set();
@@ -50,8 +50,8 @@ const PRIMARIES = {
 	K_SRGB: 1,
 	K_CUSTOM: 2,
 	K_2100: 9,
-	K_P3: 11
-}
+	K_P3: 11,
+};
 const ENUM_PRIMARIES = new Set();
 
 ENUM_PRIMARIES.add(PRIMARIES.K_SRGB);
@@ -70,8 +70,8 @@ const TRANSFER_FUNCTION = {
 	K_SRGB: 13,
 	K_PQ: 16,
 	K_DCI: 17,
-	K_HLG: 18
-}
+	K_HLG: 18,
+};
 const ENUM_TRANSFER_FUNCTION = new Set();
 
 ENUM_TRANSFER_FUNCTION.add(TRANSFER_FUNCTION.K_709);
@@ -91,8 +91,8 @@ const RENDERING_INTENT = {
 	K_PERCEPTUAL: 0,
 	K_RELATIVE: 1,
 	K_SATURATION: 2,
-	K_ABSOLUTE: 3
-}
+	K_ABSOLUTE: 3,
+};
 const ENUM_RENDERING_INTENT = new Set();
 
 ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_PERCEPTUAL);
@@ -100,7 +100,9 @@ ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_RELATIVE);
 ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_SATURATION);
 ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_ABSOLUTE);
 
-
+/**
+ * The JXL color encoding header.
+ */
 class ColorEncoding {
 	/*::
 	received_icc: boolean;
@@ -185,5 +187,5 @@ class ColorEncoding {
 
 module.exports = {
 	ColorEncoding,
-	COLOR_SPACE
+	COLOR_SPACE,
 };

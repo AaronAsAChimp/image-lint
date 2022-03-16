@@ -38,6 +38,9 @@ class IllformedStreamError extends Error {
 
 }
 
+/**
+ * The JXL bitstream.
+ */
 class BitStream {
 	/*::
 	buffer: Buffer;

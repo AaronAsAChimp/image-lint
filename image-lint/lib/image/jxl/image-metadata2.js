@@ -8,6 +8,9 @@ const {U32} = require('./bit-stream');
 const {ExtraChannelInfo} = require('./extra-channel-info');
 const {Extensions} = require('./extensions');
 
+/**
+ * The JXL image metadata 2 header
+ */
 class ImageMetadata2 {
 	/*::
 	have_preview: boolean;
@@ -76,5 +79,5 @@ class ImageMetadata2 {
 }
 
 module.exports = {
-	ImageMetadata2
+	ImageMetadata2,
 };

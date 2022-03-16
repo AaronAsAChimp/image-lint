@@ -11,6 +11,9 @@
         "no-tabs": ["off"],
         "camelcase": ["off"],
         "spaced-comment": ["error", "always", { "markers": [":", "::"] }],
-        "max-len": ["error", { "code": 120 }]
+        "max-len": ["error", {
+            "code": 120,
+            "ignoreStrings": true
+        }]
     }
 }

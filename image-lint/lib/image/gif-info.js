@@ -1,10 +1,15 @@
 /* @flow */
 'use strict';
 
+/*::
+import type {Dimensions} from '../image-info.js';
+*/
+
 const InfoProvider = require('../image-info.js'),
-	  pf = require('../pixel-format'),
-	  PixelFormat = pf.PixelFormat,
-	  ColorSpace = pf.ColorSpace;
+	  pf = require('../pixel-format');
+
+const PixelFormat = pf.PixelFormat;
+const ColorSpace = pf.ColorSpace;
 
 const VERSION_OFFSET = 0x3;
 const HEIGHT_OFFSET = 0x6;
@@ -16,100 +21,142 @@ const COLOR_TABLE_LENGTH_MASK = 0x7;
 const IMAGE_DESCRIPTOR_OFFSET = 9; // a relative offset from the separator (0x2c)
 const FILE_TRAILER = 0x3B; // A semicolon;
 
+/**
+ * A JPEG info provider.
+ */
 class GIFInfoProvider extends InfoProvider {
-	get_overhead () {
+	/**
+	 * @inheritdoc
+	 */
+	get_overhead()/*: number */ {
 		// This is the size of the smallest possible GIF, I'm assuming it will
 		// be mostly overhead.
 		return 35;
 	}
 
-	next_chunk (buffer, offset) {
-		let block_length = 2 + buffer.readUInt8(offset + 2);
+	/**
+	 * Get the offset of the next chunk.
+	 * @param  {Buffer} buffer The file buffer
+	 * @param  {number} offset The offset in the buffer.
+	 * @return {number}        The offset of the next chunk.
+	 */
+	next_chunk(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+		const block_length = 2 + buffer.readUInt8(offset + 2);
 
-		//console.log('block_length', block_length);
+		// console.log('block_length', block_length);
 
 		return offset + block_length + this.get_sub_block_length(buffer, offset + block_length + 1) + 1;
 	}
 
-	get_sub_block_length(buffer, offset) {
-		let sub_block_length = 0,
-			size_byte = buffer.readUInt8(offset);
+	/**
+	 * Get the length of the sub-block.
+	 *
+	 * @param  {Buffer} buffer The file buffer
+	 * @param  {number} offset The offset in the buffer.
+	 * @return {number}        The length of the sub-block.
+	 */
+	get_sub_block_length(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+		let sub_block_length = 0;
+		let size_byte = buffer.readUInt8(offset);
 
-		//console.log('starting searching for sub-blocks, initial sub-block size', size_byte.toString(16));
+		// console.log('starting searching for sub-blocks, initial sub-block size', size_byte.toString(16));
 		// if the initial size_byte is 0x00 then we are dealing with a non-data chunk.
 		if (size_byte !== 0) {
 			while (size_byte !== 0) {
 				size_byte = buffer.readUInt8(offset + sub_block_length);
-				//console.log(size_byte);
+				// console.log(size_byte);
 				sub_block_length += size_byte + 1;
 			}
 		} else {
 			sub_block_length = 1;
 		}
 
-		//console.log('finished searching for sub-blocks, total length is', sub_block_length + 1);
+		// console.log('finished searching for sub-blocks, total length is', sub_block_length + 1);
 
 		return sub_block_length;
 	}
 
-	get_color_table_length(buffer, offset) {
-		let color_table_bits = buffer.readUInt8(offset) & COLOR_TABLE_LENGTH_MASK;
+	/**
+	 * Get the length of the color table.
+	 *
+	 * @param  {Buffer} buffer The file buffer.
+	 * @param  {number} offset The offset in the buffer.
+	 * @return {number}        The length of the color table.
+	 */
+	get_color_table_length(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+		const color_table_bits = buffer.readUInt8(offset) & COLOR_TABLE_LENGTH_MASK;
 
-		//console.log('color table bits', color_table_bits.toString(16));
+		// console.log('color table bits', color_table_bits.toString(16));
 
 		return 3 * Math.pow(2, color_table_bits + 1);
 	}
 
-	has_color_table(buffer, offset) {
-		//console.log('has color table', !!(buffer.readUInt8(offset) & COLOR_TABLE_AVAILABLE_MASK));
+	/**
+	 * Determine if a color table exists.
+	 *
+	 * @param  {Buffer}  buffer The file buffer.
+	 * @param  {number}  offset The offset in buffer.
+	 * @return {boolean}        True if the file has a color table.
+	 */
+	has_color_table(buffer/*: Buffer */, offset/*: number */)/*: boolean */ {
+		// console.log('has color table', !!(buffer.readUInt8(offset) & COLOR_TABLE_AVAILABLE_MASK));
 		return !!(buffer.readUInt8(offset) & COLOR_TABLE_AVAILABLE_MASK);
 	}
 
-	get_version(buffer/*: Buffer */) {
+	/**
+	 * Get the version string.
+	 *
+	 * @param  {Buffer} buffer The file buffer
+	 * @return {string}        The version string.
+	 */
+	get_version(buffer/*: Buffer */)/*: string */ {
 		return buffer.toString('ascii', VERSION_OFFSET, HEIGHT_OFFSET);
 	}
 
-	get_dimensions (buffer) {
-		let frame_count = 0,
-			found = false,
-			offset = 0;
+	/**
+	 * @inheritdoc
+	 */
+	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+		let frame_count = 0;
+		let found = false;
+		let offset = 0;
 
 		if (this.has_color_table(buffer, SETTINGS_OFFSET)) {
-			let color_table_length = this.get_color_table_length(buffer, SETTINGS_OFFSET);
+			const color_table_length = this.get_color_table_length(buffer, SETTINGS_OFFSET);
 			offset = COLOR_TABLE_OFFSET + color_table_length;
 		} else {
 			offset = SETTINGS_OFFSET + 3;
 		}
 
-		//console.log(offset);
+		// console.log(offset);
 
 		while (!found) {
 			let block_header = buffer.readUInt8(offset);
 
-			//console.log('Offset of block', offset);
-			//console.log('block header (should be 0x21)', block_header.toString(16));
-			//console.log('block label', buffer.readUInt8(offset + 1).toString(16));
+			// console.log('Offset of block', offset);
+			// console.log('block header (should be 0x21)', block_header.toString(16));
+			// console.log('block label', buffer.readUInt8(offset + 1).toString(16));
 
 			if (block_header === 0x2c) {
 				frame_count++;
-				//console.log(buffer.readUInt8(offset).toString(16));
+				// console.log(buffer.readUInt8(offset).toString(16));
 				offset += IMAGE_DESCRIPTOR_OFFSET;
 				// Skip the color table, if present
 
-				//console.log('color table return', this.has_color_table(buffer, offset));
+				// console.log('color table return', this.has_color_table(buffer, offset));
 				if (this.has_color_table(buffer, offset)) {
-					//console.log('has local color table');
+					// console.log('has local color table');
 					offset += this.get_color_table_length(buffer, offset);
 				}
 				// Skip the Packed values byte and the "LZW Minimum Code Size" byte.
 				offset += 2;
 				// Skip the image data
 				offset += this.get_sub_block_length(buffer, offset);
-				//console.log('offset', offset);
-				//console.log('this should be a block header', buffer.readUInt8(offset).toString(16));
+				// console.log('offset', offset);
+				// console.log('this should be a block header', buffer.readUInt8(offset).toString(16));
 			}
 
-			//console.log('near the end', offset, buffer.length);
+			// console.log('near the end', offset, buffer.length);
 
 			if (offset + 1 >= buffer.length) {
 				// Normal Termination
@@ -130,25 +177,31 @@ class GIFInfoProvider extends InfoProvider {
 
 			offset = this.next_chunk(buffer, offset);
 
-			//console.log(offset);
+			// console.log(offset);
 		}
 
-		//console.log('gif version', this.get_version(buffer));
-		//console.log('number of frames', frame_count);
+		// console.log('gif version', this.get_version(buffer));
+		// console.log('number of frames', frame_count);
 
 		return {
 			'width': buffer.readUInt16LE(HEIGHT_OFFSET),
 			'height': buffer.readUInt16LE(WIDTH_OFFSET),
-			'frames': frame_count
+			'frames': frame_count,
 		};
 	}
 
-	is_truncated (buffer/*: Buffer */)/*: boolean */ {
+	/**
+	 * @inheritdoc
+	 */
+	is_truncated(buffer/*: Buffer */)/*: boolean */ {
 		return buffer.readUInt8(buffer.length - 1) !== FILE_TRAILER;
 	}
 
-	get_pixel_format ()/*: PixelFormat */ {
-		let format = new PixelFormat();
+	/**
+	 * @inheritdoc
+	 */
+	get_pixel_format()/*: PixelFormat */ {
+		const format = new PixelFormat();
 
 		format.color_space = ColorSpace.RGB;
 		format.indexed = true;

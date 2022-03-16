@@ -1,12 +1,11 @@
 /* @flow */
 
-const InfoProvider = require('./image-info'),
-	  WorkHandler = require('./work-handler'),
-	  Hasher = require('./hasher'),
-	  pf = require('./pixel-format'),
-	  ColorSpace = pf.ColorSpace,
-	  LoggerFactory = require('./logger').LoggerFactory,
-	  EventEmitter = require('events');
+const WorkHandler = require('./work-handler');
+const Hasher = require('./hasher');
+const pf = require('./pixel-format');
+const ColorSpace = pf.ColorSpace;
+const LoggerFactory = require('./logger').LoggerFactory;
+const EventEmitter = require('events');
 const ImageIdentifier = require('./ident.js');
 
 /*::
@@ -92,10 +91,10 @@ class Linter extends EventEmitter {
 	 */
 	get_info(file/*: FileDescriptor */, buffer/*: Buffer */, logger/*: Log */, options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
 		return new Promise((resolve, reject) => {
-			var extension = file.extension.toLowerCase(),
-				identifier = ImageIdentifier.from_extension(extension),
-				file_buffer/*: ?Buffer */ = null,
-				is_of_file_type = false;
+			const extension = file.extension.toLowerCase();
+			let identifier = ImageIdentifier.from_extension(extension);
+			let file_buffer/*: ?Buffer */ = null;
+			let is_of_file_type = false;
 
 			if (buffer instanceof Buffer) {
 				file_buffer = buffer;
@@ -158,10 +157,10 @@ class Linter extends EventEmitter {
 	 * @return {Linter}                 The linter for chaining.
 	 */
 	lint(folder/*: string[] */, options/*: LinterOptions */)/*: Linter */ {
-		var linter = this,
-			handler = new WorkHandler(),
-			hasher = new Hasher(),
-			allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
+		const linter = this;
+		const handler = new WorkHandler();
+		const hasher = new Hasher();
+		let allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
 
 		// Prepare the allowed color spaces.
 		if (options.color_space) {
@@ -181,6 +180,10 @@ class Linter extends EventEmitter {
 		handler.on('next', (file/*: FileDescriptor */, done/*: () => void */) => {
 			const logger = LoggerFactory.get_log(file.path);
 
+			/**
+			 * Handler an error from the loader
+			 * @param  {Error} err An error.
+			 */
 			function error_handler(err/*: Error */) {
 				if (err.stack) {
 					logger.error(err.stack);

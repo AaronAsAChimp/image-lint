@@ -11,11 +11,17 @@ const Finder = require('../finder.js'),
 import type { FileDescriptor } from '../finder';
 */
 
+/**
+ * Find files on a webpage. This uses Puppeteer to load the page and extract
+ * the files.
+ */
 class WebFinder extends Finder {
-
+	/**
+	 * @inheritdoc
+	 */
 	async get_files(urls/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
-		//console.log('getting urls');
-		//console.log('spinnig up phantom');
+		// console.log('getting urls');
+		// console.log('spinnig up phantom');
 		const found = [];
 		const browser = await puppeteer.launch();
 
@@ -30,23 +36,23 @@ class WebFinder extends Finder {
 			// }, 10000);
 
 			page.on('request', (req) => {
-				let found_url = req.url();
+				const found_url = req.url();
 
 				// Check that we haven't seen this URL before to save us
 				// from doing work we've already done
 				if (found_url.length && !urls_seen.has(found_url)) {
-					let url_parts = url.parse(found_url);
+					const url_parts = url.parse(found_url);
 
 					// The pathname can be null if the url is malformed.
 					if (url_parts.pathname) {
-						let ext = path.extname(url_parts.pathname);
+						const ext = path.extname(url_parts.pathname);
 
 						if (this.is_image_extension(ext)) {
 							urls_seen.add(found_url);
 							found.push({
 								'path': found_url,
 								'extension': ext,
-								'loader': new HttpLoader(found_url)
+								'loader': new HttpLoader(found_url),
 							});
 						}
 					}

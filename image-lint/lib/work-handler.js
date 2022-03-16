@@ -3,9 +3,18 @@
 
 const EventEmitter = require('events');
 
-//const MAX_ACTIVE_HANDLERS = 1;
+// const MAX_ACTIVE_HANDLERS = 1;
 const MAX_ACTIVE_HANDLERS = 10;
 
+/**
+ * Manage workloads so the async queue doesn't get filled before any work can
+ * be done. An iterable is provided to the the start method each item will be
+ * emitted for processing with the 'next' event.
+ *
+ * The 'next' event handler will be provided two parameter, the next item in the
+ * iterable and a 'done' function to be called to release the work handler back
+ * to the pool.
+ */
 class WorkHandler /*:: <T> */ extends EventEmitter {
 	/*::
 	_active_handlers: number;
@@ -13,10 +22,12 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 	_done_proxy: () => void;
 	_iterator: Iterator<T> | null;
 	*/
+
+	/**
+	 * Construct a new WorkHandler
+	 */
 	constructor() {
 		super();
-
-		var finder = this;
 
 		this._active_handlers = 0;
 		this._active_processes = 0;
@@ -26,9 +37,12 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 		this.on('handler.available', this._handler_available.bind(this));
 	}
 
+	/**
+	 * Kick off the next element in the iterable.
+	 */
 	_handler_available() {
 		if (this._iterator) {
-			var next = this._iterator.next();
+			const next = this._iterator.next();
 
 			if (next.done) {
 				this._iterator = null;
@@ -40,6 +54,9 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 		}
 	}
 
+	/**
+	 * Release the work handler to the pool.
+	 */
 	_done() {
 		this._active_handlers--;
 		this._active_processes--;
@@ -58,12 +75,15 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 		}
 	}
 
-	start(promise/*: Promise<() => Iterator<T>> */) {
+	/**
+	 * Start the work handler.
+	 * @param  {Promise<Iterable<T>>} promise An iterable of items that will
+	 *                                        be processed.
+	 */
+	start(promise/*: Promise<Iterable<T>> */) {
 		if (this._iterator) {
 			throw new Error('Work is in progress');
 		}
-
-		let handler = this;
 
 		this._active_handlers = 0;
 

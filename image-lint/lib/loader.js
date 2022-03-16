@@ -1,20 +1,38 @@
 /* @flow */
 
+/**
+ * A base class for loader instances.
+ */
 class Loader {
-    /*::
-    _path: string;
-    */
-    constructor(path/*: string */) {
-        this._path = path;
-    }
+	/*::
+	_path: string;
+	*/
 
-    getPath()/*: string */ {
-        return this._path;
-    }
+	/**
+	 * Construct a new loader instance.
+	 *
+	 * @param  {string} path The path to use for loading files.
+	 */
+	constructor(path/*: string */) {
+		this._path = path;
+	}
 
-    load()/*: Promise<Buffer> */ {
-        return Promise.reject('Not Implemented!');
-    }
+	/**
+	 * The path.
+	 * @return {string} The path.
+	 */
+	getPath()/*: string */ {
+		return this._path;
+	}
+
+	/**
+	 * Load the file at the provided path.
+	 *
+	 * @return {Promise<Buffer>}  An image file.
+	 */
+	load()/*: Promise<Buffer> */ {
+		return Promise.reject('Not Implemented!');
+	}
 }
 
 module.exports = Loader;

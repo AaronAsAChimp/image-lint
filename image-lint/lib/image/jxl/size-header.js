@@ -15,6 +15,9 @@ const XSIZE_RATIO_16X9 = 5; // xsize = floor( ysize × 16 / 9)
 const XSIZE_RATIO_5X4 = 6; // xsize = floor( ysize × 5 / 4)
 const XSIZE_RATIO_2X1 = 7; // xsize = floor( ysize × 2 / 1)
 
+/**
+ * The JXL size header
+ */
 class SizeHeader {
 	/*::
 	small: boolean;
@@ -101,5 +104,5 @@ module.exports = {
 		XSIZE_RATIO_16X9,
 		XSIZE_RATIO_5X4,
 		XSIZE_RATIO_2X1,
-	}
+	},
 };

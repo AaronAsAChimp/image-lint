@@ -11,6 +11,9 @@ interface LogCounts {
 }
 */
 
+/**
+ * A logger for writing the output to a string.
+ */
 class Log {
 	/*::
 	filename: string;
@@ -18,38 +21,67 @@ class Log {
 	count: LogCounts;
 	*/
 
-	constructor (filename/*: string */) {
+	/**
+	 * Construct a new logger, generally you should use the logger factory
+	 * instead of directly constructing this object.
+	 *
+	 * @param  {string} filename The name of the file that is being linted.
+	 */
+	constructor(filename/*: string */) {
 		this.filename = filename;
 		this.log = '';
 		this.count = {
 			'info': 0,
 			'warn': 0,
-			'error': 0
+			'error': 0,
 		};
 	}
 
-	is_printable ()/*: boolean */ {
+	/**
+	 * Determine if this should be printed.
+	 * @return {boolean} true if the log should be printed.
+	 */
+	is_printable()/*: boolean */ {
 		return this.count.warn > 0 || this.count.error > 0;
 	}
 
-	info (message/*: string */) {
+	/**
+	 * Log a message at the 'info' level.
+	 *
+	 * @param  {string} message The message to be logged.
+	 */
+	info(message/*: string */) {
 		this.count.info++;
 		this.log += '\n  INFO:  ' + message;
 	}
 
-	warn (message/*: string */) {
+	/**
+	 * Log a message at the 'warn' level.
+	 *
+	 * @param  {string} message The message to be logged.
+	 */
+	warn(message/*: string */) {
 		this.count.warn++;
 		this.log += '\n  ' + chalk.yellow('WARN:') + '  ' + message;
 	}
 
-	error (message/*: string */) {
+	/**
+	 * Log a message at the 'error' level.
+	 *
+	 * @param  {string} message The message to be logged.
+	 */
+	error(message/*: string */) {
 		this.count.error++;
 		this.log += '\n  ' + chalk.red('ERROR:') + '  ' + message;
 	}
 
-	toString ()/*: string */ {
-		let warn_count = this.count.warn.toString(),
-			error_count = this.count.error.toString();
+	/**
+	 * Convert this log to a string.
+	 * @return {string} The log output.
+	 */
+	toString()/*: string */ {
+		let warn_count = this.count.warn.toString();
+		let error_count = this.count.error.toString();
 
 		if (this.count.warn) {
 			warn_count = chalk.yellow(warn_count);
@@ -65,10 +97,17 @@ class Log {
 	}
 }
 
+/**
+ * A factory for creating new logs.
+ */
 class LoggerFactory {
-
-	static
-	get_log(filename/*: string */)/*: Log */ {
+	/**
+	 * Get a new instance of a logger.
+	 *
+	 * @param {string} filename The filename of the file being linted.
+	 * @return {Log}            The new logging instance.
+	 */
+	static get_log(filename/*: string */)/*: Log */ {
 		return new Log(filename);
 	}
 }

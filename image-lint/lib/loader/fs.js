@@ -1,19 +1,26 @@
 /* @flow */
 const fs = require('fs'),
-      Loader = require('../loader');
+	  Loader = require('../loader');
 
+/**
+ * Load files from the file system.
+ */
 class FsLoader extends Loader {
-    load()/*: Promise<Buffer> */ {
-        return new Promise((resolve, reject) => {
-            fs.readFile(this.getPath(), (err, buffer) => {
-                if (err) {
-                    reject(err);
-                }
+	/**
+	 * Load the file.
+	 * @return {Promise<Buffer>}  The loaded file.
+	 */
+	load()/*: Promise<Buffer> */ {
+		return new Promise((resolve, reject) => {
+			fs.readFile(this.getPath(), (err, buffer) => {
+				if (err) {
+					reject(err);
+				}
 
-                resolve(buffer);
-            });
-        });
-    }
+				resolve(buffer);
+			});
+		});
+	}
 }
 
 module.exports = FsLoader;

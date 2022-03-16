@@ -1,13 +1,30 @@
+/* @flow */
+
+/*::
+import type {minimistOptions, minimistOutput} from 'minimist';
+
+export type ExtendedOptions = {
+	...minimistOptions,
+	'-help-usage': string,
+	'-help-options': {
+		[name: string]: string
+	},
+}
+*/
+
+/**
+ * A helper class for command line arguments.
+ */
 class ArgsHelper {
 	/**
 	 * Process the arguments to handle the standard arguments like help
 	 * and version.
 	 *
-	 * @param  { object } config The minimist config
-	 * @param  { object } args   The parsed arguments from minimist.
-	 * @return { boolean }       Returns true if the process should exit.
+	 * @param  { ExtendedOptions } config The minimist config
+	 * @param  { object } args            The parsed arguments from minimist.
+	 * @return { boolean }                Returns true if the process should exit.
 	 */
-	static argv(config, args) {
+	static argv(config/*: ExtendedOptions */, args/*: minimistOutput */)/*: boolean */ {
 		if (args.help) {
 			return this.help(config);
 		}
@@ -19,17 +36,29 @@ class ArgsHelper {
 		return false;
 	}
 
-	static load_package_info() {
+	/**
+	 * Load the package info JSON file.
+	 *
+	 * @return {any} The package JSON.
+	 */
+	static load_package_info()/*: any */ {
 		return require('../package.json');
 	}
 
-	static print_option(config, name, description) {
-		let aliases = [name],
-			options = '',
-			default_value = '';
+	/**
+	 * Print an option for display purposes.
+	 *
+	 * @param  {ExtendedOptions} config  The argument configuration.
+	 * @param  {string} name             The name of the option.
+	 * @param  {string} description      A description of the option.
+	 */
+	static print_option(config/*: ExtendedOptions */, name/*: string */, description/*: string */) {
+		let aliases = [name];
+		let options = '';
+		let default_value = '';
 
-		if (name in config.alias) {
-			let alias = config.alias[name];
+		if (config.alias && name in config.alias) {
+			const alias = config.alias[name];
 
 			if (!Array.isArray(alias)) {
 				aliases.push(alias);
@@ -51,33 +80,47 @@ class ArgsHelper {
 			return option;
 		}).join(', ');
 
-		if ('default' in config && name in config.default) {
+		if (config.default && name in config.default) {
 			default_value = ' Default: ' + config.default[name].toString();
 		}
 
 		console.log('  ' + options + '\t' + description + default_value);
 	}
 
-	static help(config) {
-		let info = this.load_package_info();
+	/**
+	 * Add the help option to the configuration.
+	 *
+	 * @param  {any} config The argument configuration.
+	 * @return {boolean}    True if the process should exit.
+	 */
+	static help(config/*: ExtendedOptions */)/*: boolean */ {
+		const info = this.load_package_info();
 
 		console.log(`${ info.name } - ${ info.description }`);
 		console.log(`\nUsage: ${ config['-help-usage'] }`);
 		console.log('\nOptions: ');
 
 		if ('-help-options' in config) {
-			for (let option in config['-help-options']) {
-				let description = config['-help-options'][option];
+			for (const option in config['-help-options']) {
+				if (config['-help-options'].hasOwnProperty(option)) {
+					const description = config['-help-options'][option];
 
-				this.print_option(config, option, description);
+					this.print_option(config, option, description);
+				}
 			}
 		}
 
 		return true;
 	}
 
-	static version(config) {
-		let info = this.load_package_info();
+	/**
+	 * Add the version option to the configuration.
+	 *
+	 * @param  {minimistOptions} config The argument configuration.
+	 * @return {boolean}                True if the process should exit.
+	 */
+	static version(config/*: minimistOptions */)/*: boolean */ {
+		const info = this.load_package_info();
 
 		console.log(info.name + ' v' + info.version);
 
@@ -87,5 +130,5 @@ class ArgsHelper {
 
 
 module.exports = {
-	'default': ArgsHelper
+	'default': ArgsHelper,
 };

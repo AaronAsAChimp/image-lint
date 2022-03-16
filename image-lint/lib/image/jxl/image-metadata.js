@@ -6,8 +6,14 @@ import type {BitStream} from './bit-stream';
 
 const {U32} = require('./bit-stream');
 const {ColorEncoding} = require('./color-encoding');
-const {ImageMetadata2} = require('./image-metadata2.js');
 
+/*::
+import type {ImageMetadata2} from './image-metadata2.js';
+*/
+
+/**
+ * The JXL image metadata header.
+ */
 class ImageMetadata {
 	/*::
 	have_icc: boolean;
@@ -54,5 +60,5 @@ class ImageMetadata {
 }
 
 module.exports = {
-	ImageMetadata
+	ImageMetadata,
 };

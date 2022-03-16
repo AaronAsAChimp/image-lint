@@ -1,6 +1,9 @@
 /* @flow */
 'use strict';
 
+/**
+ * An enumeration of all of the color spaces
+ */
 class ColorSpace {
 	/*::
 	static G: ColorSpace;
@@ -20,13 +23,24 @@ class ColorSpace {
 
 	*/
 
-	constructor (name/*: string */, channels/*: number */) {
+	/**
+	 * Construct a new ColorSpace.
+	 * @param  {string} name     The name of the color space.
+	 * @param  {number} channels The number of channels for this color space.
+	 */
+	constructor(name/*: string */, channels/*: number */) {
 		this.name = name;
 		this.channels = channels;
 
 		ColorSpace.all_names.add(name);
 	}
 
+	/**
+	 * Get an existing color space with the given name.
+	 * @param  {string} id   The name of the color space.
+	 * @return {ColorSpace}  The color space or null if no color space exists
+	 *                       with that name.
+	 */
 	static from(id/*: string*/)/*: ColorSpace | null */ {
 		let space/*: ColorSpace | null */ = null;
 
@@ -50,6 +64,9 @@ ColorSpace.CMYK = new ColorSpace('CMYK', 4);
 ColorSpace.XYZ = new ColorSpace('XYZ', 3);
 ColorSpace.XYB = new ColorSpace('XYB', 3);
 
+/**
+ * The pixel format of an image.
+ */
 class PixelFormat {
 	/*::
 	color_space: ColorSpace;
@@ -58,6 +75,9 @@ class PixelFormat {
 	bit_depth: { [channel: string]: number};
 	*/
 
+	/**
+	 * Construct a new PixelFormat
+	 */
 	constructor() {
 		this.indexed = false;
 		this.alpha = false;
@@ -67,5 +87,5 @@ class PixelFormat {
 
 module.exports = {
 	'ColorSpace': ColorSpace,
-	'PixelFormat': PixelFormat
-}
+	'PixelFormat': PixelFormat,
+};

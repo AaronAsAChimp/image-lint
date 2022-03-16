@@ -3,6 +3,11 @@ const Finder = require('../finder.js'),
 	  tmp = require('tmp');
 
 
+/**
+ * A base class for finding files in Version Control Systems. An implementation
+ * should prepare the workspace and the this class will delegate the finding to
+ * the FileFinder.
+ */
 class VcsFinder extends Finder {
 	/**
 	 * Prepare the workspace that contains all of the files to be tested.
@@ -14,10 +19,17 @@ class VcsFinder extends Finder {
 		throw new Error('Not Implemented');
 	}
 
+	/**
+	 * Get a temporary workspace folder that the files can be placed during the
+	 * `prepare_workspace()` method @return {[type]} [description]
+	 *
+	 * @return {Promise<string>} A promise that resolves to the path of
+	 *                           the folder
+	 */
 	get_workspace() {
 		return new Promise((resolve, reject) => {
 			tmp.dir({
-				'unsafeCleanup': true
+				'unsafeCleanup': true,
 			}, (err, path, cleanup) => {
 				if (!err) {
 					resolve(path);
@@ -28,10 +40,13 @@ class VcsFinder extends Finder {
 		});
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	get_files(clone_urls) {
 		return this.prepare_workspace(clone_urls)
 			.then((paths) => {
-				let file_finder = new FileFinder(this.extensions, this.mimes);
+				const file_finder = new FileFinder(this.extensions, this.mimes);
 
 				return file_finder.get_files(paths);
 			});

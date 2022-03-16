@@ -11,7 +11,8 @@ import type { FileDescriptor } from '../finder';
 */
 
 /**
- * Use multiple strategies to find files.
+ * Use multiple strategies to find files. It will parse the paths passed to
+ * `get_files()` and use that information to choose the correct finder.
  */
 class MultiFinder extends Finder {
 	/*::
@@ -21,6 +22,11 @@ class MultiFinder extends Finder {
 	}
 	*/
 
+	/**
+	 * Construct a new MultiFinder
+	 * @param  {string[]} extensions The file extensions to look for.
+	 * @param  {string[]} mimes      The MIMEs to look for.
+	 */
 	constructor(extensions/*: string[] */, mimes/*: string[] */) {
 		super(extensions, mimes);
 
@@ -33,15 +39,17 @@ class MultiFinder extends Finder {
 		};
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	get_files(files/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
-		let finder = this,
-			split_files = {};
+		const split_files = {};
 
 		// Split the list of files into lists of files appropriate for each type
 		// of finder.
-		for (let file of files) {
-			let proto = file.split(':', 2)[0],
-				finder_type = 'file';
+		for (const file of files) {
+			const proto = file.split(':', 2)[0];
+			let finder_type = 'file';
 
 			if (proto === 'git' || file.endsWith('.git')) {
 				finder_type = 'git';
@@ -57,22 +65,22 @@ class MultiFinder extends Finder {
 		}
 
 		return new Promise((resolve, reject) => {
-			let types_completed = 0,
-				found = [],
-				files_found = (iterator) => {
-					found.push(iterator);
-					types_completed--;
+			let types_completed = 0;
+			const found = [];
+			const files_found = (iterator) => {
+				found.push(iterator);
+				types_completed--;
 
-					if (types_completed <= 0) {
-						resolve(function* () {
-							for (let iterator of found) {
-								yield* iterator();
-							}
-						});
-					}
-				};
+				if (types_completed <= 0) {
+					resolve(function* () {
+						for (const iterator of found) {
+							yield* iterator();
+						}
+					});
+				}
+			};
 
-			for (let type in this.finders) {
+			for (const type in this.finders) {
 				if (split_files[type] && split_files[type].length) {
 					types_completed++;
 

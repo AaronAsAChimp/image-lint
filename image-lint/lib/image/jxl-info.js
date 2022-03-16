@@ -1,20 +1,24 @@
 /* @flow */
 'use strict';
 
+/*::
+import type {Dimensions} from '../image-info.js';
+*/
 
 const InfoProvider = require('../image-info.js'),
-	  pf = require('../pixel-format'),
-	  PixelFormat = pf.PixelFormat,
-	  ColorSpace = pf.ColorSpace;
+	  pf = require('../pixel-format');
 
-const {U32, BitStream} = require('./jxl/bit-stream');
+const PixelFormat = pf.PixelFormat;
+const ColorSpace = pf.ColorSpace;
+
+const {/* U32, */ BitStream} = require('./jxl/bit-stream');
 const {SizeHeader} = require('./jxl/size-header');
 const {ImageMetadata} = require('./jxl/image-metadata');
 const {COLOR_SPACE} = require('./jxl/color-encoding');
 
-const CONTAINER_HEADER_SIZE = 48;
-const MAX_CODESTREAM_BASIC_INFO_SIZE = 50;
-const MAX_BASIC_INFO_SIZE = CONTAINER_HEADER_SIZE + MAX_CODESTREAM_BASIC_INFO_SIZE;
+// const CONTAINER_HEADER_SIZE = 48;
+// const MAX_CODESTREAM_BASIC_INFO_SIZE = 50;
+// const MAX_BASIC_INFO_SIZE = CONTAINER_HEADER_SIZE + MAX_CODESTREAM_BASIC_INFO_SIZE;
 
 // https://gitlab.com/wg1/jpeg-xl/-/blob/master/lib/jxl/decode.cc
 // https://arxiv.org/ftp/arxiv/papers/1908/1908.03565.pdf
@@ -23,18 +27,30 @@ const MAX_BASIC_INFO_SIZE = CONTAINER_HEADER_SIZE + MAX_CODESTREAM_BASIC_INFO_SI
 // size: SizeHeader
 // metadata: ImageMetadata
 
+/**
+ * A JPEG XL info provider.
+ */
 class JXLInfoProvider extends InfoProvider {
-	get_overhead () {
+	/**
+	 * @inheritdoc
+	 */
+	get_overhead()/*: number */ {
 		// This is the size of the smallest possible JPG, I'm assuming it will
 		// be mostly overhead.
 		return 119;
 	}
 
-	is_truncated (buffer/*: Buffer */)/*: boolean */ {
+	/**
+	 * @inheritdoc
+	 */
+	is_truncated(buffer/*: Buffer */)/*: boolean */ {
 		return buffer.readUInt8(buffer.length - 1) !== 0x00;
 	}
 
-	get_dimensions (buffer) {
+	/**
+	 * @inheritdoc
+	 */
+	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
 		const bit_stream = new BitStream(buffer, 0);
 
 		const size_header = new SizeHeader(bit_stream);
@@ -42,18 +58,21 @@ class JXLInfoProvider extends InfoProvider {
 		return {
 			width: size_header.get_xsize(),
 			height: size_header.get_ysize(),
-			frames: 1 // TODO: read this from ImageMetadata2
+			frames: 1, // TODO: read this from ImageMetadata2
 		};
 	}
 
-	get_pixel_format (buffer) {
+	/**
+	 * @inheritdoc
+	 */
+	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
 		const bit_stream = new BitStream(buffer, 0);
 
-		const size_header = new SizeHeader(bit_stream);
+		// const size_header = new SizeHeader(bit_stream);
 		const image_metadata = new ImageMetadata(bit_stream);
-		const color_encoding = image_metadata.color_encoding
+		const color_encoding = image_metadata.color_encoding;
 
-		let format = new PixelFormat();
+		const format = new PixelFormat();
 
 		if (color_encoding) {
 			if (color_encoding.color_space === COLOR_SPACE.K_GREY) {

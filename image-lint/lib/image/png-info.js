@@ -1,34 +1,42 @@
 /* @flow */
 'use strict';
 
+/*::
+import type {Dimensions} from '../image-info.js';
+*/
+
 const crc = require('crc'),
 	  InfoProvider = require('../image-info'),
-	  pf = require('../pixel-format'),
-	  PixelFormat = pf.PixelFormat,
-	  ColorSpace = pf.ColorSpace;
+	  pf = require('../pixel-format');
+
+const PixelFormat = pf.PixelFormat;
+const ColorSpace = pf.ColorSpace;
 
 const IHDR_OFFSET = 0xC;
-const SECTION_HEADER_WIDTH = 4,
-	  SECTION_LENGTH_WIDTH = 4,
-	  CRC_WIDTH = 4;
+const SECTION_HEADER_WIDTH = 4;
+const SECTION_LENGTH_WIDTH = 4;
+const CRC_WIDTH = 4;
 
-const WIDTH_OFFSET = IHDR_OFFSET + SECTION_HEADER_WIDTH,
-	  HEIGHT_OFFSET = WIDTH_OFFSET + 4,
-	  BIT_DEPTH_OFFSET = HEIGHT_OFFSET + 4,
-	  COLOR_TYPE_OFFSET = BIT_DEPTH_OFFSET + 1;
+const WIDTH_OFFSET = IHDR_OFFSET + SECTION_HEADER_WIDTH;
+const HEIGHT_OFFSET = WIDTH_OFFSET + 4;
+const BIT_DEPTH_OFFSET = HEIGHT_OFFSET + 4;
+const COLOR_TYPE_OFFSET = BIT_DEPTH_OFFSET + 1;
 
 const CHUNK_TYPE_IEND = 0x49454E44;
 
-const IEND_CRC = 0xAE426082,
-	  IEND_LENGTH = SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + CRC_WIDTH;
+// const IEND_CRC = 0xAE426082;
+const IEND_LENGTH = SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + CRC_WIDTH;
 
-const GRAYSCALE_TYPES = new Set([0, 4]),
-	  RGB_TYPES = new Set([2, 3, 6]),
-	  ALPHA_TYPES = new Set([4, 6]),
-	  INDEXED_TYPES = new Set([4]);
+const GRAYSCALE_TYPES = new Set([0, 4]);
+const RGB_TYPES = new Set([2, 3, 6]);
+const ALPHA_TYPES = new Set([4, 6]);
+const INDEXED_TYPES = new Set([4]);
 
 // http://www.libpng.org/pub/png/spec/1.2/
 
+/**
+ * A PNG chunk.
+ */
 class PNGChunk {
 	/*::
 	length: number;
@@ -36,16 +44,27 @@ class PNGChunk {
 	data: Buffer;
 	crc32: number;
 	*/
+
+	/**
+	 * Construct a new PNG chunk.
+	 * @param  {Buffer} buffer The file buffer.
+	 * @param  {number} offset The offset of the beginning of the chunk.
+	 */
 	constructor(buffer/*: Buffer */, offset/*: number */) {
 		this.length = buffer.readUInt32BE(offset);
 		this.header = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH);
 		this.data = buffer.slice(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH, this.length);
-		this.crc32 = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length)
+		this.crc32 = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length);
 	}
 
+	/**
+	 * Verify the CRC in the chunk.
+	 *
+	 * @return {boolean} True if its a valid chunk.
+	 */
 	verify()/*: boolean */ {
-		let header = Buffer.alloc(4),
-			check = null;
+		const header = Buffer.alloc(4);
+		let check = null;
 
 		header.writeUInt32BE(this.header, 0);
 
@@ -56,14 +75,23 @@ class PNGChunk {
 	}
 }
 
+/**
+ * A PNG info provider.
+ */
 class PNGInfoProvider extends InfoProvider {
-	get_overhead () {
+	/**
+	 * @inheritdoc
+	 */
+	get_overhead()/*: number */ {
 		// This is the size of the smallest possible PNG, I'm assuming it will
 		// be mostly overhead.
 		return 67;
 	}
 
-	is_truncated (buffer/*: Buffer */)/*: boolean */ {
+	/**
+	 * @inheritdoc
+	 */
+	is_truncated(buffer/*: Buffer */)/*: boolean */ {
 		let end_chunk = null;
 
 		try {
@@ -75,18 +103,24 @@ class PNGInfoProvider extends InfoProvider {
 		return end_chunk.header === CHUNK_TYPE_IEND && !end_chunk.verify();
 	}
 
-	get_dimensions (buffer) {
+	/**
+	 * @inheritdoc
+	 */
+	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
 		return {
 			width: buffer.readUInt32BE(WIDTH_OFFSET),
 			height: buffer.readUInt32BE(HEIGHT_OFFSET),
-			frames: 1
+			frames: 1,
 		};
 	}
 
-	get_pixel_format (buffer) {
-		let format = new PixelFormat(),
-			bit_depth = buffer.readInt8(BIT_DEPTH_OFFSET),
-			color_type = buffer.readInt8(COLOR_TYPE_OFFSET);
+	/**
+	 * @inheritdoc
+	 */
+	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+		const format = new PixelFormat();
+		const bit_depth = buffer.readInt8(BIT_DEPTH_OFFSET);
+		const color_type = buffer.readInt8(COLOR_TYPE_OFFSET);
 
 		// Determine the color space
 		if (RGB_TYPES.has(color_type)) {
