@@ -29,7 +29,7 @@
         "crc": "^3.8.0",
         "got": "^11.8.2",
         "minimist": "^1.2.5",
-        "puppeteer": "7.1",
+        "puppeteer": "^13.5.1",
         "tmp": "0.0.33"
     },
     "devDependencies": {

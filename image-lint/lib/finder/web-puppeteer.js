@@ -59,6 +59,10 @@ class WebFinder extends Finder {
 				}
 			});
 
+			// page.on('console', (msg) => {
+			// 	console.log('BROWSER: ' + msg.test());
+			// });
+
 			// page.on('domcontentloaded', () => {
 			// 	console.log('contentloaded');
 			//
@@ -67,7 +71,7 @@ class WebFinder extends Finder {
 
 			await page.goto(page_url);
 
-			page.close();
+			await page.close();
 		}
 
 		await browser.close();
