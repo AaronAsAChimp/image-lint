@@ -23,8 +23,6 @@
     "author": "Aaron Spaulding",
     "license": "MIT",
     "dependencies": {
-        "async-busboy": "^0.6.2",
-        "caniuse-lite": "^1.0.30001312",
         "chalk": "^4.1.0",
         "crc": "^3.8.0",
         "got": "^11.8.2",
