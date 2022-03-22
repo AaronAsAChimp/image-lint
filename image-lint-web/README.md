@@ -1,11 +1,10 @@
 # `image-lint-web`
 
-> TODO: description
 
-## Usage
+## Building the web application
 
-```
-const imageLintWeb = require('image-lint-web');
+From the project root.
 
-// TODO: DEMONSTRATE API
+```sh
+npm run build:image-lint-web --workspace=image-lint-web
 ```

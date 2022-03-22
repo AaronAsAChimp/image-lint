@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>image-lint - Find broken or poorly compressed images.</title>
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/vue-multiselect@2.0.0-beta.14/dist/vue-multiselect.min.css"></style>
+	<link rel="stylesheet" type="text/css" href="./css/site.css" />
+</head>
+<body>
+	<header class="lint-header">
+		<hgroup>
+			<h1 class="lint-title">image-lint</h1>
+			<h2 class="lint-subtitle">Find broken or poorly compressed images.</h2>
+		</hgroup>
+	</header>
+	<form class="image-lint-app">
+		<div class="pane pane-options">
+			<h3 class="lint-options-title">Options</h3>
+
+			<label class="lint-option lint-option-check">
+				<input type="checkbox" v-model="option.mismatch" />
+				Find mismatches between file type and file extension.
+			</label>
+
+			<label class="lint-option lint-option-check">
+				<input type="checkbox" v-model="option.duplicate" />
+				Find files that have been copied.
+			</label>
+			
+			<label class="lint-option lint-option-number">
+				Set the maximum bytes per pixel before giving a warning.
+				<input type="number" v-model="option.bytes_per_pixel" step="0.1" min="0" />
+			</label>
+
+			<label class="lint-option lint-option-number">
+				Set the minimum byte savings before giving a warning.
+				<input type="number" v-model="option.byte_savings" min="0" />
+			</label>
+
+			<label class="lint-option lint-option-array">
+				Set the allowed color spaces.
+
+				<vue-multiselect v-model="option.color_space" :multiple="true" :options="available.color_space" />
+			</label>
+		</div>
+		<div class="pane pane-dropzone">
+			<dropzone v-model="new_files" v-on:input="add_files">
+				<div v-if="files.length">
+					<button type="button" v-on:click="clear_finished">Clear Results</button>
+					<ul class="lint-results">
+						<li v-for="image in files" class="lint-result" v-bind:class="{ 'has-error': image.has_error(), 'has-results': image.has_results() }">
+							<details open>
+								<summary class="lint-result-summary" v-bind:class="{ 'lint-error': image.results && image.results.count.error, 'lint-warn': image.results && image.results.count.warn }">
+									{{ image.file.name }}
+									<!--<progress class="upload-progress" v-bind:value="image.progress" max="1"></progress>-->
+									<progress-bar class="upload-progress" v-bind:value="image.progress"></progress-bar>
+									<span v-if="image.has_results()"> - 
+										<span v-if="image.results.count.info">Info: {{ image.results.count.info }}<span v-if="image.results.count.warn || image.results.count.error">,</span></span>
+										<span v-if="image.results.count.warn">Warnings: {{ image.results.count.warn }}<span v-if="image.results.count.error">,</span></span>
+										<span v-if="image.results.count.error">Errors: {{ image.results.count.error }}</span>
+									</span>
+								</summary>
+								<output class="lint-result-output" v-if="image.has_results()" v-html="image.results.log"></output>
+							</details>
+						</li>
+					</ul>
+				</div>
+			</dropzone>
+		</div>
+	</form>
+	<script src="https://unpkg.com/vue@2"></script>
+	<script src="https://unpkg.com/vue-multiselect@2.0.0-beta.14"></script>
+	<!-- <script src="https://unpkg.com/ansi_up"></script> -->
+	<script src="https://use.typekit.net/jng0woc.js"></script>
+	<script>try{Typekit.load({ async: true });}catch(e){}</script>
+	<script src="./js/index.js"></script>
+</body>
+</html>
