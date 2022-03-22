@@ -15,7 +15,7 @@ import type {FileDescriptor} from './finder';
 import type {Log} from './logger';
 
 export type LinterOptions = {
-	color_space: string,
+	color_space: string[],
 	duplicate: boolean,
 	bytes_per_pixel: number,
 	byte_savings: number,
@@ -164,7 +164,7 @@ class Linter extends EventEmitter {
 
 		// Prepare the allowed color spaces.
 		if (options.color_space) {
-			const spaces = options.color_space.split(',');
+			const spaces = options.color_space;
 
 			allowed_color_spaces = new Set();
 

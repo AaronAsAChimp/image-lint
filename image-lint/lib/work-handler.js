@@ -97,14 +97,14 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 				}
 			}, (e/*: Error */) => {
 				if (e.stack) {
-					console.error('Error', e.stack);
+					console.error(`${ e.name }: ${ e.message } \n`, e);
 				} else {
 					console.error('Error', e);
 				}
 			})
 			.catch((e/*: Error */) => {
 				if (e.stack) {
-					console.error('Error', e.stack);
+					console.error(`${ e.name }: ${ e.message } \n`, e);
 				} else {
 					console.error('Error', e);
 				}

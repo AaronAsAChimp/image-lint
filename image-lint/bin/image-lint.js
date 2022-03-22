@@ -66,6 +66,8 @@ if (ArgsHelper.argv(argument_config, argv)) {
 		folder = DEFAULT_DIRECTORY;
 	}
 
+	argv.color_space = argv.color_space.split(',');
+
 	cli_linter.lint(folder, argv)
 		.on('file.completed', (logger) => {
 			if (logger.is_printable()) {

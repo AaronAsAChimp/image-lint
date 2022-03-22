@@ -25,6 +25,7 @@
         "url": "git+https://github.com/AaronAsAChimp/image-lint.git"
     },
     "scripts": {
+        "build:image-lint-web": "rm -rf ../docs && browserify web/js/index.js -d -o ../docs/js/index.js && cp -R web/index.html ../docs/index.html && cp -R web/css ../docs/css",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "bugs": {
@@ -34,5 +35,8 @@
         "koa": "^2.5.1",
         "koa-router": "^7.1.1",
         "koa-static": "^5.0.0"
+    },
+    "devDependencies": {
+        "browserify": "^17.0.0"
     }
 }

@@ -1,14 +1,16 @@
 /* @flow */
 
 const Finder = require('../finder'),
-	  FsLoader = require('../loader/fs'),
-	  path = require('path'),
-	  fs = require('fs');
+	  BlobLoader = require('../loader/blob'),
+	  path = require('path');
 
 /*::
 import type { FileDescriptor } from '../finder';
  */
 
+/**
+ * Finds files in a Browser Blob object.
+ */
 class BufferArrayFinder extends Finder {
 	/*::
 	filename: string;
@@ -16,26 +18,29 @@ class BufferArrayFinder extends Finder {
 	buffer: Buffer;
 	*/
 
-	constructor(extensions/*: string[] */, mimes/*: string[] */) {
-		super(extensions, mimes);
-	}
-
+	/**
+	 * @inheritdoc
+	 */
 	get_files(initial_files/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
 		return Promise.resolve(this._search.bind(this, initial_files));
 	}
 
-	*_search (files/*: string[] */)/*: Generator<FileDescriptor, *, *> */ {
-		for (let file of files) {
-			let extension = path.extname(file.filename);
+	/**
+	 * Traverse the file system yielding any files it finds.
+	 *
+	 * @param {Blob[]} files  The initial queue items.
+	 */
+	* _search(files/*: Blob[] */)/*: Generator<FileDescriptor, *, *> */ {
+		for (const file of files) {
+			const extension = path.extname(file.name);
 
 			yield {
-				'path': file.path,
+				'path': '',
 				'extension': extension,
-				'loader': new FsLoader(file.path)
+				'loader': new BlobLoader(file),
 			};
 		}
 	}
-
 }
 
 module.exports = BufferArrayFinder;
