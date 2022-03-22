@@ -31,3 +31,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build web linter
         run: npm run build:image-lint-web --workspace=image-lint-web
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        branch: master
+        folder: docs
