@@ -51,6 +51,12 @@ body {
 	padding: 20px;
 }
 
+.lint-header hgroup {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: baseline;
+}
+
 .lint-title {
 	display: inline-block;
 	font-weight: 200;
