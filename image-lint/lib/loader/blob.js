@@ -1,6 +1,5 @@
 /* @flow */
-const fs = require('fs'),
-	  Loader = require('../loader');
+const Loader = require('../loader');
 
 /**
  * Load files from a web browser Blob object.

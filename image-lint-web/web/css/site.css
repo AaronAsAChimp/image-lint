@@ -1,3 +1,6 @@
+@import "@fontsource/lato/300.css";
+@import "@fontsource/lato/400.css";
+
 :root {
 	--color-bg: #363636;
 	--color-bg-contrast:  white;
@@ -25,7 +28,7 @@
 }
 
 body {
-	font-family: "jaf-domus", sans-serif;
+	font-family: "Lato", sans-serif;
 	color: var(--color-bg-contrast);
 	background: var(--color-bg);
 	margin: 0;
@@ -59,14 +62,14 @@ body {
 
 .lint-title {
 	display: inline-block;
-	font-weight: 200;
+	font-weight: 300;
 	font-size: 36px;
 	margin: 0;
 }
 
 .lint-subtitle {
 	display: inline-block;
-	font-weight: 200;
+	font-weight: 300;
 	font-size: 18px;
 	margin: 0 0 0 15px;
 }

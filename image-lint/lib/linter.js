@@ -186,7 +186,7 @@ class Linter extends EventEmitter {
 			 */
 			function error_handler(err/*: Error */) {
 				if (err.stack) {
-					logger.error(err.stack);
+					logger.error(err.message + ': ' + err.stack);
 				} else {
 					logger.error(err);
 				}

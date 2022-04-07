@@ -1,7 +1,4 @@
 {
-    "name": "image-lint-web",
-    "version": "2.1.1",
-    "description": "A web application for image-lint",
     "keywords": [
         "image",
         "lint",
@@ -11,9 +8,6 @@
     "author": "Aaron Spaulding <aaron@sachimp.com>",
     "homepage": "https://github.com/AaronAsAChimp/image-lint#readme",
     "license": "MIT",
-    "bin": {
-        "image-lint-server": "bin/image-lint-server.js"
-    },
     "directories": {
         "test": "__tests__"
     },
@@ -25,15 +19,32 @@
         "url": "git+https://github.com/AaronAsAChimp/image-lint.git"
     },
     "scripts": {
-        "build:image-lint-web": "rm -rf ../docs && browserify web/js/index.js -d -o ../docs/js/index.js && cp -R web/index.html ../docs/index.html && cp -R web/css ../docs/css",
-        "test": "echo \"Error: run tests from root\" && exit 1"
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "build": "webpack --mode=production --node-env=production",
+        "build:dev": "webpack --mode=development",
+        "build:prod": "webpack --mode=production --node-env=production",
+        "watch": "webpack --watch",
+        "serve": "webpack serve"
     },
     "bugs": {
         "url": "https://github.com/AaronAsAChimp/image-lint/issues"
     },
     "dependencies": {
+        "@fontsource/lato": "^4.5.5",
+        "buffer": "^6.0.3",
+        "vue": "^2.6.14",
+        "vue-github-button": "^1.3.0",
+        "vue-multiselect": "^2.1.6"
     },
     "devDependencies": {
-        "browserify": "^17.0.0"
+        "css-loader": "^6.7.1",
+        "css-minimizer-webpack-plugin": "^3.4.1",
+        "html-webpack-plugin": "^5.5.0",
+        "mini-css-extract-plugin": "^2.6.0",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.71.0",
+        "webpack-cli": "^4.9.2",
+        "webpack-dev-server": "^4.7.4",
+        "workbox-webpack-plugin": "^6.5.2"
     }
 }
