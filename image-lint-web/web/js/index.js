@@ -1,17 +1,28 @@
 import ImageLint from 'image-lint';
-import Vue from 'vue';
+import {createApp, reactive} from 'vue';
 import Multiselect from 'vue-multiselect';
 import GithubButton from 'vue-github-button';
 
-import 'vue-multiselect/dist/vue-multiselect.min.css';
+import 'vue-multiselect/dist/vue-multiselect.css';
 import '../css/site.css';
 
-Vue.component('vue-multiselect', Multiselect);
-Vue.component('dropzone', {
+
+const body = document.body;
+const rootEl = document.createElement('div');
+const appEl = document.createElement('image-lint-app');
+
+rootEl.appendChild(appEl);
+body.appendChild(rootEl);
+
+const app = createApp({});
+
+
+app.component('vue-multiselect', Multiselect);
+app.component('dropzone', {
 	'props': {
-		'value': Array
+		'modelValue': Array
 	},
-	'template': '<div class="drop-target" v-bind:class="{ empty: !has_contents() }" ref="dropzone" v-on:drop="drop" v-on:dragover="dragover" v-on:dragenter="dragenter" v-on:dragleave="dragleave"><slot>Drop files here</slot></div>',
+	'template': '<div class="drop-target" ref="dropzone" @drop="drop" @dragover="dragover" @dragenter="dragenter" @dragleave="dragleave"><slot>Drop files here</slot></div>',
 	'methods': {
 		'files': function* (dt) {
 			let files = [];
@@ -24,18 +35,13 @@ Vue.component('dropzone', {
 				yield* dt.files;
 			}
 		},
-		has_contents() {
-			return !!this.$slots.default;
-		},
 		'drop': function (e) {
 			e.preventDefault();
 			this.$refs.dropzone.classList.remove('active');
 
-			for (let file of this.files(e.dataTransfer)) {
-				this.value.push(file);
-			}
+			const files = Array.from(this.files(e.dataTransfer));
 
-			this.$emit('input', this.value);
+			this.$emit('update:modelValue', files);
 		},
 		'dragenter': function () {
 			this.$refs.dropzone.classList.add('active');
@@ -49,25 +55,12 @@ Vue.component('dropzone', {
 	}
 });
 
-Vue.component('progress-bar', {
-	'props': {
-		'value': Number
-	},
-	'template': '<div class="progress-container"><div class="progress-bar" v-bind:style="{ width: this.progress() }"></div></div>',
-	'methods': {
-		progress: function () {
-			return (this.value * 100) + '%';
-		}
-	}
-})
-
 const finder = new ImageLint.BufferArrayFinder(ImageLint.ImageIdentifier.get_all_extensions(), ImageLint.ImageIdentifier.get_all_mimes());
 
 class ImageContainer {
 	constructor(file) {
 		this.file = file;
 		this.xhr = null
-		this.progress = 0;
 		this.results = null;
 		this.error = null;
 	}
@@ -139,13 +132,9 @@ class ImageContainer {
 			return line.trim();
 		}).join('\n');
 	}
-
-	_progress(e) {
-		this.progress = e.loaded / e.total;
-	}
 }
 
-Vue.component('image-lint-app', {
+app.component('image-lint-app', {
 	components: {
 		GithubButton
 	},
@@ -169,12 +158,10 @@ Vue.component('image-lint-app', {
 	'template': `
 <div>
 	<header class="lint-header">
-		<hgroup>
-			<h1 class="lint-title">image-lint</h1>
-			<h2 class="lint-subtitle">Find broken or poorly compressed images.</h2>
+		<h1 class="lint-title">image-lint</h1>
+		<h2 class="lint-subtitle">Find broken or poorly compressed images.</h2>
 
-			<github-button href="https://github.com/aaronasachimp/image-lint" data-size="large" data-show-count="true" aria-label="Star aaronasachimp/image-lint on GitHub">Star</github-button>
-		</hgroup>
+		<github-button href="https://github.com/aaronasachimp/image-lint" data-size="large" data-show-count="true" aria-label="Star aaronasachimp/image-lint on GitHub">Star</github-button>
 	</header>
 	<form class="image-lint-app">
 		<div class="pane pane-options">
@@ -207,7 +194,7 @@ Vue.component('image-lint-app', {
 			</label>
 		</div>
 		<div class="pane pane-dropzone">
-			<dropzone v-model="new_files" v-on:input="add_files">
+			<dropzone v-model="new_files" :class="{ empty: files.length == 0 }">
 				<div v-if="files.length">
 					<button type="button" v-on:click="clear_finished">Clear Results</button>
 					<ul class="lint-results">
@@ -215,8 +202,6 @@ Vue.component('image-lint-app', {
 							<details open>
 								<summary class="lint-result-summary" v-bind:class="{ 'lint-error': image.results && image.results.count.error, 'lint-warn': image.results && image.results.count.warn }">
 									{{ image.file.name }}
-									<!--<progress class="upload-progress" v-bind:value="image.progress" max="1"></progress>-->
-									<progress-bar class="upload-progress" v-bind:value="image.progress"></progress-bar>
 									<span v-if="image.has_results()"> - 
 										<span v-if="image.results.count.info">Info: {{ image.results.count.info }}<span v-if="image.results.count.warn || image.results.count.error">,</span></span>
 										<span v-if="image.results.count.warn">Warnings: {{ image.results.count.warn }}<span v-if="image.results.count.error">,</span></span>
@@ -233,42 +218,32 @@ Vue.component('image-lint-app', {
 	</form>
 </div>
 `,
+	'watch': {
+		new_files: {
+			deep: true,
+			handler(files) {
+				while (files.length) {
+					let file = files.shift();
+
+					// If the file doesn't have a type its probably a folder.
+					if (file.type) {
+						const container = reactive(new ImageContainer(file));
+
+						this.files.push(container);
+
+						container.check(this.option);
+					}
+				}
+			}
+		}
+	},
 	'methods': {
 		'clear_finished': function () {
 			this.files = this.files.filter((image) => {
 				return !image.has_finished();
 			});
 		},
-		'add_files': function (files) {
-			while (files.length) {
-				let file = files.shift();
-
-				// If the file doesn't have a type its probably a folder.
-				if (file.type) {
-					const container = new ImageContainer(file);
-
-					this.files.push(container);
-
-					container.check(this.option);
-				}
-			}
-		}
 	}
 })
 
-
-function bootApplication(name) {
-	const body = document.body;
-	const rootEl = document.createElement('div');
-	const appEl = document.createElement(name);
-
-	rootEl.appendChild(appEl);
-	body.appendChild(rootEl);
-
-	return new Vue({
-		'el': rootEl,
-	});
-}
-
-
-bootApplication('image-lint-app');
+app.mount(rootEl);

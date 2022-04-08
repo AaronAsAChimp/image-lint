@@ -51,10 +51,14 @@ const config = {
         new webpack.ProvidePlugin({ 
             Buffer: ['buffer', 'Buffer'] 
         }),
+        new webpack.DefinePlugin({
+            __VUE_OPTIONS_API__: true,
+            __VUE_PROD_DEVTOOLS__: false
+        }),
     ],
     resolve: {
-    alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+        alias: {
+            'vue$': 'vue/dist/vue.esm-bundler.js'
         },
         fallback: {
             "path": require.resolve("path-browserify"),
