@@ -111,7 +111,11 @@ class Linter extends EventEmitter {
 
 			// Attenpt to find the correct file type.
 			if (!identifier || !is_of_file_type) {
-				logger.info('This file is not what it seems, attempting brute force discovery of file type.');
+				if (options.mismatch === true) {
+					logger.info('This file is not what it seems, attempting brute force discovery of file type.');
+				} else {
+					logger.info('This file is not what it seems.');
+				}
 
 				identifier = null;
 
