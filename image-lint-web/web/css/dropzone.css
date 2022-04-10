@@ -1,0 +1,13 @@
+.drop-target {
+  height: 100%;
+	display: flex;
+  justify-content: center;
+}
+
+.drop-target.empty {
+	align-items: center;
+}
+
+.drop-target.active {
+  border: 2px dashed var(--color-status-good);
+}
