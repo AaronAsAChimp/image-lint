@@ -4,7 +4,6 @@ import ImageLint from 'image-lint';
 
 import 'vue-multiselect/dist/vue-multiselect.css';
 
-import {ImageContainer} from './image-container.js';
 import '../css/app.css';
 
 export default {
@@ -22,7 +21,6 @@ export default {
 				'color_space': ['G', 'RGB', 'CMYK', 'YCbCr', 'YCCK', 'LAB', 'HSV']
 			},
 			'option':  options,
-			'new_files': [],
 			'files': []
 		};
 	},
@@ -65,54 +63,19 @@ export default {
 			</label>
 		</div>
 		<div class="pane pane-dropzone">
-			<dropzone v-model="new_files" :class="{ empty: files.length == 0 }">
+			<dropzone v-model="files" :class="{ empty: files.length == 0 }">
 				<div v-if="files.length">
-					<button type="button" v-on:click="clear_finished">Clear Results</button>
-					<ul class="lint-results">
-						<li v-for="image in files" class="lint-result" v-bind:class="{ 'has-error': image.has_error(), 'has-results': image.has_results() }">
-							<details open>
-								<summary class="lint-result-summary" v-bind:class="{ 'lint-error': image.results && image.results.count.error, 'lint-warn': image.results && image.results.count.warn }">
-									{{ image.file.name }}
-									<span v-if="image.has_results()"> - 
-										<span v-if="image.results.count.info">Info: {{ image.results.count.info }}<span v-if="image.results.count.warn || image.results.count.error">,</span></span>
-										<span v-if="image.results.count.warn">Warnings: {{ image.results.count.warn }}<span v-if="image.results.count.error">,</span></span>
-										<span v-if="image.results.count.error">Errors: {{ image.results.count.error }}</span>
-									</span>
-								</summary>
-								<output class="lint-result-output" v-if="image.has_results()" v-html="image.results.log"></output>
-							</details>
-						</li>
-					</ul>
+					<button type="button" v-on:click="clear">Clear Results</button>
+					<image-collection :options="option" :files="files"></image-collection>
 				</div>
 			</dropzone>
 		</div>
 	</form>
 </div>
 `,
-	'watch': {
-		new_files: {
-			deep: true,
-			handler(files) {
-				while (files.length) {
-					let file = files.shift();
-
-					// If the file doesn't have a type its probably a folder.
-					if (file.type) {
-						const container = reactive(new ImageContainer(file));
-
-						this.files.push(container);
-
-						container.check(this.option);
-					}
-				}
-			}
-		}
-	},
 	'methods': {
-		'clear_finished': function () {
-			this.files = this.files.filter((image) => {
-				return !image.has_finished();
-			});
+		'clear': function () {
+			this.files.length = 0;
 		},
 	}
 }

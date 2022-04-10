@@ -1,0 +1,25 @@
+:root {
+	--color-bg: #363636;
+	--color-bg-contrast:  white;
+
+	--color-layer-bg: #464646;
+
+	--color-status-unknown:  #707070;
+	--color-status-good: #00A0B0;
+	--color-status-warn: #EDC951;
+	--color-status-failure: #EB6841;
+	--color-status-error:  #CC2A36;
+
+	--color-status-good-contrast:  white;
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--color-bg: white;
+		--color-bg-contrast:  #464646;
+
+		--color-layer-bg: #eaeaea;
+
+		--color-status-unknown: #b5b5b5;
+	}
+}

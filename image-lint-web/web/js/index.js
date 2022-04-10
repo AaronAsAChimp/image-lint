@@ -3,6 +3,7 @@ import Multiselect from 'vue-multiselect';
 
 import Dropzone from './dropzone.js';
 import ImageLintApp from './app.js';
+import ImageCollection from './image-collection.js';
 
 
 const body = document.body;
@@ -16,4 +17,5 @@ createApp({})
 	.component('vue-multiselect', Multiselect)
 	.component('dropzone', Dropzone)
 	.component('image-lint-app', ImageLintApp)
+	.component('image-collection', ImageCollection)
 	.mount(rootEl);

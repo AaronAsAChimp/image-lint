@@ -35,7 +35,7 @@ class BufferArrayFinder extends Finder {
 			const extension = path.extname(file.name);
 
 			yield {
-				'path': '',
+				'path': file.name,
 				'extension': extension,
 				'loader': new BlobLoader(file),
 			};
