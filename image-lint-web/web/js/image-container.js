@@ -15,9 +15,6 @@ export class ImageContainer {
 			results = null,
 			linter = new ImageLint.Linter(finder);
 
-		options.mismatch = options.mismatch === 'true';
-		options.duplicate = options.duplicate === 'true';
-
 		try {
 			results = await (new Promise((resolve, reject) => {
 				let result_list = [];

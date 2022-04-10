@@ -9,10 +9,8 @@ import type {ExtendedOptions} from '../lib/args-helper.js';
 const minimist = require('minimist'),
 	  ArgsHelper = require('../lib/args-helper').default,
 	  linter = require('../lib/linter'),
+	  defaults = require('../lib/defaults').default,
 	  Linter = linter.default,
-	  MINIMUM_BYTES_PER_PIXEL = 3,
-	  MINIMUM_BYTE_SAVINGS = 500,
-	  DEFAULT_COLOR_SPACES = 'G,RGB',
 	  DEFAULT_DIRECTORY = ['./'];
 
 var argument_config/*: minimistOptions */ = {
@@ -31,13 +29,7 @@ var argument_config/*: minimistOptions */ = {
 		'help': 'h',
 		'version': 'v'
 	},
-	'default': {
-		'bytes_per_pixel': MINIMUM_BYTES_PER_PIXEL,
-		'byte_savings': MINIMUM_BYTE_SAVINGS,
-		'color_space': DEFAULT_COLOR_SPACES,
-		'mismatch': true,
-		'duplicate': true
-	},
+	'default': defaults,
 	'-help-usage': 'image-lint [options] [<files/folders/urls>...]',
 	'-help-options': {
 		'mismatch': 'Find mismatches between file type and file extension.',

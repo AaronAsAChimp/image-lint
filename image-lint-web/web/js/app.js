@@ -1,6 +1,7 @@
 import {reactive} from 'vue';
-import Multiselect from 'vue-multiselect';
 import GithubButton from 'vue-github-button';
+import ImageLint from 'image-lint';
+
 import 'vue-multiselect/dist/vue-multiselect.css';
 
 import {ImageContainer} from './image-container.js';
@@ -11,18 +12,16 @@ export default {
 		GithubButton
 	},
 	data() {
+		const options = Object.assign({}, ImageLint.defaults);
+
+		options.color_space = options.color_space.split(',');
+
 		return {
 			'support': {},
 			'available': {
 				'color_space': ['G', 'RGB', 'CMYK', 'YCbCr', 'YCCK', 'LAB', 'HSV']
 			},
-			'option': {
-				'mismatch': true,
-				'duplicate': true,
-				'bytes_per_pixel': 3,
-				'byte_savings': 500,
-				'color_space': ['G', 'RGB']
-			},
+			'option':  options,
 			'new_files': [],
 			'files': []
 		};
