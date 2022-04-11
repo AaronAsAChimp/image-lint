@@ -19,8 +19,8 @@ export default {
 			<summary class="lint-result-summary" v-bind:class="{ 'lint-error': result && result.count.error, 'lint-warn': result && result.count.warn }">
 				{{ result.filename }}
 				<span v-if="has_results"> - 
-					<span v-if="result.count.info">Info: {{ result.count.info }}<span v-if="result.count.warn || result.count.error">,</span></span>
-					<span v-if="result.count.warn">Warnings: {{ result.count.warn }}<span v-if="result.count.error">,</span></span>
+					<span v-if="result.count.info">Info: {{ result.count.info }}<span v-if="result.count.warn || result.count.error">, </span></span>
+					<span v-if="result.count.warn">Warnings: {{ result.count.warn }}<span v-if="result.count.error">, </span></span>
 					<span v-if="result.count.error">Errors: {{ result.count.error }}</span>
 				</span>
 			</summary>
