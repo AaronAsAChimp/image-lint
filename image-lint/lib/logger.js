@@ -76,6 +76,22 @@ class Log {
 	}
 
 	/**
+	 * Get the number of errors that have been logged.
+	 * @return {number} The number of errors.
+	 */
+	get_error_count() {
+		return this.count.error;
+	}
+
+	/**
+	 * Get the number of warnings that have been logged.
+	 * @return {number} The number of warnings.
+	 */
+	get_warning_count() {
+		return this.count.warn;
+	}
+
+	/**
 	 * Convert this log to a string.
 	 * @return {string} The log output.
 	 */

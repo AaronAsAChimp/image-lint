@@ -93,6 +93,17 @@ Only part of the file is present. This can happen when a connection is interrupt
 
 **Remedy:** This kind of issue can be resolved by removing the references to the image, correcting the file path to the image (404 errors), or by fixing any stability issues the server is having (500 errors).
 
+Usage with lint-staged
+----------------------
+
+You can run image-lint prior to committing using [lint-staged](https://github.com/okonet/lint-staged) and [husky](https://github.com/typicode/husky). Assuming you've already setup these tools you can add the following to your lint-staged configuration to run image-lint.
+
+```json
+{
+    "*.{png,jpeg,jpg,gif}": "image-lint"
+}
+```
+
 Support
 -------
 

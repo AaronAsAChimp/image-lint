@@ -1,3 +1,7 @@
+Next
+----
+- Now sets an error code of 1 when any errors or warnings are issued.
+
 2.1.0
 -----
 
