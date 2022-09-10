@@ -1,0 +1,11 @@
+@import "@fontsource/lato/300.css";
+@import "@fontsource/lato/400.css";
+
+@import "./variables.css";
+
+body {
+	font-family: "Lato", sans-serif;
+	color: var(--color-bg-contrast);
+	background: var(--color-bg);
+	margin: 0;
+}

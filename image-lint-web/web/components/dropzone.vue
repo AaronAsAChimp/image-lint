@@ -1,10 +1,8 @@
-import '../css/dropzone.css';
-
+<script>
 export default {
 	'props': {
 		'modelValue': Array
 	},
-	'template': '<div class="drop-target" ref="dropzone" @drop="drop" @dragover="dragover" @dragenter="dragenter" @dragleave="dragleave"><slot>Drop files here</slot></div>',
 	'methods': {
 		'files': function* (dt) {
 			let files = [];
@@ -35,4 +33,29 @@ export default {
 			e.preventDefault();
 		}
 	}
-};
+};	
+</script>
+
+<template>
+	<div class="drop-target" ref="dropzone" @drop="drop" @dragover="dragover" @dragenter="dragenter" @dragleave="dragleave">
+		<slot>Drop files here</slot>
+	</div>
+</template>
+
+<style>
+@import "../css/variables.css";
+
+.drop-target {
+  height: 100%;
+	display: flex;
+  justify-content: center;
+}
+
+.drop-target.empty {
+	align-items: center;
+}
+
+.drop-target.active {
+  border: 2px dashed var(--color-status-good);
+}
+</style>

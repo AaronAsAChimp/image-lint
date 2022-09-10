@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const package = require('../image-lint/package.json');
 
 const isProduction = process.env.NODE_ENV == 'production';
@@ -55,10 +56,11 @@ const config = {
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false
         }),
+        new VueLoaderPlugin(),
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm-bundler.js'
+            // 'vue$': 'vue/dist/vue.esm-bundler.js'
         },
         fallback: {
             "path": require.resolve("path-browserify"),
@@ -77,6 +79,10 @@ const config = {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
+            {
+                test: /\.vue$/i,
+                loader: 'vue-loader'
+            }
         ],
     },
 };
