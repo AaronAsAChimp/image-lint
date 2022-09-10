@@ -117,6 +117,7 @@ A number of formats are supported, though most are only for identification purpo
 | gif          | ☑️️      |               |
 | jpg          | ☑️️      |               |
 | jxl          | ☑️️      |               |
+| avif / heic  | ☑️️      |               |
 | bmp          |        |  ☑️️            |
 | psd          |        |  ☑️️            |
 | ico / cur    |        |  ☑️️            |

@@ -132,7 +132,7 @@ class PNGInfoProvider extends InfoProvider {
 			format.color_space = ColorSpace.G;
 			format.bit_depth.G = bit_depth;
 		} else {
-			throw new Error('Unknown color type ' + color_type);
+			format.color_space = ColorSpace.unkownFormat(color_type);
 		}
 
 		// Determine the alpha channel

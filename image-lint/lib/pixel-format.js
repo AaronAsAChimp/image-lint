@@ -20,7 +20,7 @@ class ColorSpace {
 
 	name: string;
 	channels: number;
-
+	unk_format: string | null;
 	*/
 
 	/**
@@ -31,8 +31,19 @@ class ColorSpace {
 	constructor(name/*: string */, channels/*: number */) {
 		this.name = name;
 		this.channels = channels;
+		this.unk_format = null;
 
 		ColorSpace.all_names.add(name);
+	}
+
+	/**
+	 * If this is 'ColorSpace.UNK' return the name of the color format that
+	 * was unknown.
+	 *
+	 * @return {String} The unknown format.
+	 */
+	getUnkFormat() {
+		return this.unk_format;
 	}
 
 	/**
@@ -49,6 +60,21 @@ class ColorSpace {
 		}
 
 		return space;
+	}
+
+	/**
+	 * Construct a marker for an unknown color space.
+	 *
+	 * @param  {string} format      The name of the color space that was unknown.
+	 * @param  {number} [channels]  The number of channels.
+	 * @return {ColorSpace}         The unknown color space.
+	 */
+	static unkownFormat(format, channels=-1) {
+		const color_space = new ColorSpace('UNK', channels);
+
+		color_space.unk_format = format;
+
+		return color_space;
 	}
 }
 

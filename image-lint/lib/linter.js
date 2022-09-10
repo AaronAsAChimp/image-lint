@@ -29,6 +29,7 @@ require('./ident/png-ident.js');
 require('./ident/gif-ident.js');
 require('./ident/jpg-ident.js');
 require('./ident/jxl-ident.js');
+require('./ident/avif-ident.js');
 
 // Identify only
 require('./ident/bmp-ident.js');
@@ -233,9 +234,15 @@ class Linter extends EventEmitter {
 							logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
 						}
 
-						if (allowed_color_spaces && allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
-							// console.log('Color Space', color_space);
-							logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
+						if (allowed_color_spaces) {
+							if (color_space.name === 'UNK') {
+								const channels = color_space.channels > 0 ? color_space.channels : 'an unknown number of';
+
+								logger.error(`This image has an unknown color space ${ color_space.getUnkFormat() } with ${ channels } channels.`);
+							} else if (allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
+								// console.log('Color Space', color_space);
+								logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
+							}
 						}
 					} else {
 						logger.error('This image is truncated, further analysis is not possible.');

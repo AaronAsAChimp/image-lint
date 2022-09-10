@@ -138,6 +138,8 @@ class JPGInfoProvider extends InfoProvider {
 			format.color_space = ColorSpace.RGB;
 		} else if (channels === 4) {
 			format.color_space = ColorSpace.CMYK;
+		} else {
+			format.color_space = ColorSpace.unkownFormat('Unknown', channels);
 		}
 
 		return format;

@@ -84,7 +84,7 @@ class JXLInfoProvider extends InfoProvider {
 			} else if (color_encoding.color_space === COLOR_SPACE.K_XYB) {
 				format.color_space = ColorSpace.XYB;
 			} else {
-				throw new Error('Unknown color space.');
+				format.color_space = ColorSpace.unkownFormat(color_encoding);
 			}
 		}
 
