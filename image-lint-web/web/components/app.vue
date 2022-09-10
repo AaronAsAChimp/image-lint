@@ -3,6 +3,8 @@ import {reactive} from 'vue';
 import GithubButton from 'vue-github-button';
 import ImageLint from 'image-lint';
 
+import packageJson from '../../../image-lint/package.json';
+
 import 'vue-multiselect/dist/vue-multiselect.css';
 
 export default {
@@ -15,6 +17,9 @@ export default {
 		options.color_space = options.color_space.split(',');
 
 		return {
+			'name': packageJson.name,
+			'version': packageJson.version,
+			'description': packageJson.description,
 			'support': {},
 			'available': {
 				'color_space': ['G', 'RGB', 'CMYK', 'YCbCr', 'YCCK', 'LAB', 'HSV']
@@ -34,10 +39,11 @@ export default {
 <template>
 	<div>
 		<header class="lint-header">
-			<h1 class="lint-title">image-lint</h1>
-			<h2 class="lint-subtitle">Find broken or poorly compressed images.</h2>
+			<h1 class="lint-title">{{ name }}</h1>
+			<span class="lint-version">v{{ version }}</span>
+			<h2 class="lint-subtitle">{{ description }}</h2>
 
-			<github-button href="https://github.com/aaronasachimp/image-lint" data-size="large" data-show-count="true" aria-label="Star aaronasachimp/image-lint on GitHub">Star</github-button>
+			<github-button class="github-button" href="https://github.com/aaronasachimp/image-lint" data-size="large" data-show-count="true" aria-label="Star aaronasachimp/image-lint on GitHub">Star</github-button>
 		</header>
 		<form class="image-lint-app">
 			<div class="pane pane-options">
@@ -108,6 +114,10 @@ export default {
 .lint-header {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
+	grid-template-rows: auto 1fr;
+	grid-template-areas:
+		"title   desc button"
+		"version desc button";
 	align-items: baseline;
 }
 
@@ -116,6 +126,7 @@ export default {
 	font-weight: 300;
 	font-size: 36px;
 	margin: 0;
+	grid-area: title;
 }
 
 .lint-subtitle {
@@ -123,6 +134,18 @@ export default {
 	font-weight: 300;
 	font-size: 18px;
 	margin: 0 0 0 15px;
+	grid-area: desc;
+}
+
+.lint-version {
+	font-size: 0.8em;
+	grid-area: version;
+	justify-self: end;
+}
+
+.github-button {
+	grid-area: button;
+	align-self: center;
 }
 
 .lint-options-title {
