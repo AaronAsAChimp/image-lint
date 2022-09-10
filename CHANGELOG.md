@@ -1,6 +1,8 @@
-Next
+3.0.0-beta.0
 ----
 - Now sets an error code of 1 when any errors or warnings are issued.
+- Experimental JPEG XL support
+- Experimental AVIF / HEIC support
 
 2.1.0
 -----

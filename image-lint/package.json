@@ -4,6 +4,7 @@
     "description": "Find files that are incorrectly named or compressed.",
     "main": "lib/api.js",
     "repository": "github:AaronAsAChimp/image-lint",
+    "homepage": "https://aaronasachimp.github.io/image-lint/",
     "directories": {
         "test": "test"
     },
