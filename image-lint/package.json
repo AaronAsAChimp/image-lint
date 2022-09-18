@@ -1,6 +1,6 @@
 {
     "name": "image-lint",
-    "version": "3.0.0-beta.0",
+    "version": "3.0.0",
     "description": "Find files that are incorrectly named or compressed.",
     "main": "lib/api.js",
     "repository": "github:AaronAsAChimp/image-lint",
