@@ -1,11 +1,11 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
+import {ImageIdentifier} from '../ident.js';
 
 /**
  * An image identifier that can identify XML files.
  */
-class XMLIdentifier extends ImageIdentifier {
+export class XMLIdentifier extends ImageIdentifier {
 	/**
 	 * Get the name of the root element of this type of XML file.
 	 */
@@ -30,5 +30,3 @@ class XMLIdentifier extends ImageIdentifier {
 		return true;
 	}
 }
-
-module.exports = XMLIdentifier;

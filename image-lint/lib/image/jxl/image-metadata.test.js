@@ -1,6 +1,6 @@
-const {SizeHeader, Ratio} = require('./size-header');
-const {ImageMetadata} = require('./image-metadata');
-const {BitStream} = require('./bit-stream.js');
+import {SizeHeader, Ratio} from './size-header.js';
+import {ImageMetadata} from './image-metadata.js';
+import {BitStream} from './bit-stream.js';
 
 test('read the header for a 1px x 1px image', () => {
 	// Arrange

@@ -34,14 +34,14 @@ function dbg_byte(bits) {
 	return ('00000000' + bits.toString(2)).slice(-8);
 }
 
-class IllformedStreamError extends Error {
+export class IllformedStreamError extends Error {
 
 }
 
 /**
  * The JXL bitstream.
  */
-class BitStream {
+export class BitStream {
 	/*::
 	buffer: Buffer;
 	offset: number;
@@ -267,12 +267,8 @@ class BitStream {
 	}
 }
 
-module.exports = {
-	BitStream,
-	IllformedStreamError,
-	U32: {
-		VAL,
-		BITS,
-		BITS_OFFSET,
-	}
+export const U32 = {
+	VAL,
+	BITS,
+	BITS_OFFSET,
 };

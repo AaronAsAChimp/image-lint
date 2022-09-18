@@ -5,11 +5,8 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-const InfoProvider = require('../image-info.js'),
-	  pf = require('../pixel-format');
-
-const PixelFormat = pf.PixelFormat;
-const ColorSpace = pf.ColorSpace;
+import {InfoProvider} from '../image-info.js';
+import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
 const VERSION_OFFSET = 0x3;
 const HEIGHT_OFFSET = 0x6;
@@ -24,7 +21,7 @@ const FILE_TRAILER = 0x3B; // A semicolon;
 /**
  * A JPEG info provider.
  */
-class GIFInfoProvider extends InfoProvider {
+export class GIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
@@ -215,5 +212,3 @@ class GIFInfoProvider extends InfoProvider {
 		return format;
 	}
 }
-
-module.exports = GIFInfoProvider;

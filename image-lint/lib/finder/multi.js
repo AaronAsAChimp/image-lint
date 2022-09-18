@@ -1,10 +1,10 @@
 /* @flow */
 'use strict';
 
-const Finder = require('../finder.js'),
-	  FileFinder = require('./file.js'),
-	  WebFinder = require('./web-puppeteer.js');
-	  // GitFinder = require('./git.js');
+import {Finder} from '../finder.js';
+import {FileFinder} from './file.js';
+import {WebFinder} from './web-puppeteer.js';
+// import {GitFinder} from './git.js';
 
 /*::
 import type { FileDescriptor } from '../finder';
@@ -14,7 +14,7 @@ import type { FileDescriptor } from '../finder';
  * Use multiple strategies to find files. It will parse the paths passed to
  * `get_files()` and use that information to choose the correct finder.
  */
-class MultiFinder extends Finder {
+export class MultiFinder extends Finder {
 	/*::
 	_num_finders: number;
 	finders: {
@@ -92,5 +92,3 @@ class MultiFinder extends Finder {
 		});
 	}
 }
-
-module.exports = MultiFinder;

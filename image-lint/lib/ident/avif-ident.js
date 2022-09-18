@@ -1,7 +1,7 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
-const AVIFInfoProvider = require('../image/avif-info.js');
+import {ImageIdentifier} from '../ident.js';
+import {AVIFInfoProvider} from '../image/avif-info.js';
 
 const FTYP_START = 4;
 const FTYPE_LENGTH = 8;

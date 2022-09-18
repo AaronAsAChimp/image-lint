@@ -4,12 +4,12 @@
 import type {BitStream} from './bit-stream';
 */
 
-const {U32} = require('./bit-stream');
+import {U32} from './bit-stream.js';
 
 /**
  * The JXL extra channel info header.
  */
-class ExtraChannelInfo {
+export class ExtraChannelInfo {
 	/*::
 	meaning: number;
 	red: number;
@@ -38,7 +38,3 @@ class ExtraChannelInfo {
 		}
 	}
 }
-
-module.exports = {
-	ExtraChannelInfo,
-};

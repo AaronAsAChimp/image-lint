@@ -1,8 +1,8 @@
 /* @flow */
 
-const ImageIdentifier = require('../../lib/ident.js');
+import {ImageIdentifier} from '../../lib/ident.js';
 
-require('./webp-ident.js');
+import './webp-ident.js';
 
 test(`a webp identifier can identify an image`, () => {
 	const ident = ImageIdentifier.from_extension('.webp');

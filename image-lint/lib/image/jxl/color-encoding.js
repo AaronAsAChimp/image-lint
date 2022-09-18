@@ -9,7 +9,7 @@ import type {BitStream, CustomXY} from './bit-stream';
  *
  * @type {Object}
  */
-const COLOR_SPACE = {
+export const COLOR_SPACE = {
 	K_RGB: 0,
 	K_GREY: 1,
 	K_XYB: 2,
@@ -103,7 +103,7 @@ ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_ABSOLUTE);
 /**
  * The JXL color encoding header.
  */
-class ColorEncoding {
+export class ColorEncoding {
 	/*::
 	received_icc: boolean;
 	opaque_icc: boolean;
@@ -184,8 +184,3 @@ class ColorEncoding {
 		}
 	}
 }
-
-module.exports = {
-	ColorEncoding,
-	COLOR_SPACE,
-};

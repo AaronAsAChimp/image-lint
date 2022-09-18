@@ -1,12 +1,12 @@
-const VcsFinder = require('./vcs.js'),
-	Git = require('nodegit');
+import VcsFinder from './vcs.js';
+import Git from 'nodegit';
 
 
 /**
  * Find files located in a git repositiory. It just clones the repository and
  * delegates to the FileFinder.
  */
-class GitFinder extends VcsFinder {
+export class GitFinder extends VcsFinder {
 	/**
 	 * @inheritdoc
 	 */
@@ -25,5 +25,3 @@ class GitFinder extends VcsFinder {
 		return Promise.all(promises);
 	}
 }
-
-module.exports = GitFinder;

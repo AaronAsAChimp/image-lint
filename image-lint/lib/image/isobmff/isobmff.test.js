@@ -1,5 +1,4 @@
-const isobmff = require('./isobmff.js');
-const ISOBMFFAtom = isobmff.ISOBMFFAtom;
+import {ISOBMFFAtom} from './isobmff.js';
 
 
 test('read an ISOBMFF atom from an AVIF file.', () => {

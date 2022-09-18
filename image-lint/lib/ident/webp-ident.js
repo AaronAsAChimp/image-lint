@@ -1,8 +1,8 @@
 /* @flow */
 'use strict';
 
-const ImageIdentifier = require('../ident.js');
-const RIFFIdentifier = require('./riff-ident.js');
+import {ImageIdentifier} from '../ident.js';
+import {RIFFIdentifier} from './riff-ident.js';
 const WEBP_TYPE_TAG = 0x57454250;
 
 /**

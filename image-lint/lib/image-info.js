@@ -26,7 +26,7 @@ export interface ImageInfo {
 /**
  * Gather information about an image file.
  */
-class InfoProvider {
+export class InfoProvider {
 	/**
 	 * Calculate the number of bytes per pixel in the image.
 	 *
@@ -96,5 +96,3 @@ class InfoProvider {
 		throw new Error('Not Implemented');
 	}
 }
-
-module.exports = InfoProvider;

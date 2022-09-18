@@ -1,10 +1,10 @@
 'use strict';
 /* @flow */
 
-const Finder = require('../finder.js'),
-	  FsLoader = require('../loader/fs'),
-	  path = require('path'),
-	  fs = require('fs');
+import {Finder} from '../finder.js';
+import {FsLoader} from '../loader/fs.js';
+import path from 'path';
+import fs from 'fs';
 
 /*::
 import type { FileDescriptor } from '../finder';
@@ -19,7 +19,7 @@ const EXCLUDES = new Set([
 /**
  * Find files in a file system.
  */
-class FileFinder extends Finder {
+export class FileFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
@@ -73,5 +73,3 @@ class FileFinder extends Finder {
 		}
 	}
 }
-
-module.exports = FileFinder;

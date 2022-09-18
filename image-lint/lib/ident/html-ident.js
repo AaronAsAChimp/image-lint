@@ -1,7 +1,7 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
-const XMLIdentifier = require('./xml-ident.js');
+import {ImageIdentifier} from '../ident.js';
+import {XMLIdentifier} from './xml-ident.js';
 
 /**
  * An image identifier that identifies HTML files.

@@ -1,11 +1,11 @@
 /* @flow */
-const got = require('got'),
-	  Loader = require('../loader');
+import got from 'got';
+import {Loader} from '../loader.js';
 
 /**
  * Load files from HTTP.
  */
-class HttpLoader extends Loader {
+export class HttpLoader extends Loader {
 	/**
 	 * Load the file.
 	 * @return {Promise<Buffer>}  The loaded file.
@@ -18,5 +18,3 @@ class HttpLoader extends Loader {
 		return response.body;
 	}
 }
-
-module.exports = HttpLoader;

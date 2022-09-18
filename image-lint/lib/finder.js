@@ -1,7 +1,6 @@
 'use strict';
 /* @flow */
 
-const EventEmitter = require('events');
 
 /*::
 import type Loader from './loader';
@@ -16,7 +15,7 @@ export interface FileDescriptor {
 /**
  * A base class for finding files in different mediums.
  */
-class Finder {
+export class Finder {
 	/*::
 	extensions: string[];
 	mimes: string[];
@@ -63,5 +62,3 @@ class Finder {
 		return this.mimes.indexOf(mime) >= 0;
 	}
 }
-
-module.exports = Finder;

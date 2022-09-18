@@ -1,7 +1,7 @@
 /* @flow */
 
-const ImageIdentifier = require('../../lib/ident.js');
-const MagicNumberIdentifier = require('./magic-number-ident.js');
+import {ImageIdentifier} from '../../lib/ident.js';
+import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
  * An image identifier that identifies GIF images.

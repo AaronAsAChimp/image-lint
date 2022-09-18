@@ -1,6 +1,6 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
+import {ImageIdentifier} from '../ident.js';
 const FIRST_BYTE = 0;
 const ICO_MAGIC = 1;
 const CUR_MAGIC = 2;

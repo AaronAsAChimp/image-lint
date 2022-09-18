@@ -1,15 +1,8 @@
 /* @flow */
 
-const linter = require('./linter');
-const defaults = require('./defaults');
-const argshelper = require('./args-helper');
-const InfoProvider = require('./image-info');
-const ImageIdentifier = require('./ident');
-const BufferArrayFinder = require('./finder/buffer');
-
-exports.Linter = linter.default;
-exports.defaults = defaults.default;
-exports.ArgsHelper = argshelper.default;
-exports.InfoProvider = InfoProvider;
-exports.ImageIdentifier = ImageIdentifier;
-exports.BufferArrayFinder = BufferArrayFinder;
+export {Linter} from './linter.js';
+export {defaults} from './defaults.js';
+export {ArgsHelper} from './args-helper.js';
+export {InfoProvider} from './image-info.js';
+export {ImageIdentifier} from './ident.js';
+export {BufferArrayFinder} from './finder/buffer.js';

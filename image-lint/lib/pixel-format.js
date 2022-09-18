@@ -4,7 +4,7 @@
 /**
  * An enumeration of all of the color spaces
  */
-class ColorSpace {
+export class ColorSpace {
 	/*::
 	static G: ColorSpace;
 	static RGB: ColorSpace;
@@ -93,7 +93,7 @@ ColorSpace.XYB = new ColorSpace('XYB', 3);
 /**
  * The pixel format of an image.
  */
-class PixelFormat {
+export class PixelFormat {
 	/*::
 	color_space: ColorSpace;
 	indexed: boolean;
@@ -110,8 +110,3 @@ class PixelFormat {
 		this.bit_depth = {};
 	}
 }
-
-module.exports = {
-	'ColorSpace': ColorSpace,
-	'PixelFormat': PixelFormat,
-};

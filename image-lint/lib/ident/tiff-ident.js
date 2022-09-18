@@ -1,8 +1,7 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
-const MagicNumberIdentifier = require('./magic-number-ident.js');
-const TIFF_TAG = 0x49492A00;
+import {ImageIdentifier} from '../ident.js';
+import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
  * An image identifier that identifies TIFF images.

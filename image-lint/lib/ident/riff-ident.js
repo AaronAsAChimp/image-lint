@@ -1,14 +1,14 @@
 /* @flow */
 'use strict';
 
-const ImageIdentifier = require('../ident.js');
+import {ImageIdentifier} from '../ident.js';
 const RIFF_TAG = 0x52494646;
 const MINIMUM_SIZE = 12; // 12 == size of RIFF_TAG + skipped bytes + size of this.type_tag
 
 /**
  * An image identifier that identifies RIFF based files.
  */
-class RIFFInfoProvider extends ImageIdentifier {
+export class RIFFIdentifier extends ImageIdentifier {
 	/**
 	 * Get the type tag of this type of file.
 	 */
@@ -33,5 +33,3 @@ class RIFFInfoProvider extends ImageIdentifier {
 		return riff_magic === RIFF_TAG && type_magic === this.get_type_tag();
 	}
 }
-
-module.exports = RIFFInfoProvider;

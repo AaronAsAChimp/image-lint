@@ -2,7 +2,7 @@
 /*::
 import {test, expect} from 'jest';
 */
-const {U32, BitStream, IllformedStreamError} = require('./bit-stream.js');
+import {U32, BitStream, IllformedStreamError} from './bit-stream.js';
 
 test('read individual bits from a bit stream', () => {
 	// Arrange

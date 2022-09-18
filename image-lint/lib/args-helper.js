@@ -15,7 +15,7 @@ export type ExtendedOptions = {
 /**
  * A helper class for command line arguments.
  */
-class ArgsHelper {
+export class ArgsHelper {
 	/**
 	 * Process the arguments to handle the standard arguments like help
 	 * and version.
@@ -127,8 +127,3 @@ class ArgsHelper {
 		return true;
 	}
 }
-
-
-module.exports = {
-	'default': ArgsHelper,
-};

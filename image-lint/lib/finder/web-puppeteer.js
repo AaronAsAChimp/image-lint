@@ -1,11 +1,11 @@
 /* @flow */
 'use strict';
 
-const Finder = require('../finder.js'),
-	  HttpLoader = require('../loader/http'),
-	  url = require('url'),
-	  path = require('path'),
-	  puppeteer = require('puppeteer');
+import {Finder} from '../finder.js';
+import {HttpLoader} from '../loader/http.js';
+import url from 'url';
+import path from 'path';
+import puppeteer from 'puppeteer';
 
 /*::
 import type { FileDescriptor } from '../finder';
@@ -15,7 +15,7 @@ import type { FileDescriptor } from '../finder';
  * Find files on a webpage. This uses Puppeteer to load the page and extract
  * the files.
  */
-class WebFinder extends Finder {
+export class WebFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
@@ -79,5 +79,3 @@ class WebFinder extends Finder {
 		return found[Symbol.iterator].bind(found);
 	}
 }
-
-module.exports = WebFinder;

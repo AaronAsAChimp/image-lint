@@ -4,14 +4,14 @@
 import type {BitStream} from './bit-stream';
 */
 
-const {U32} = require('./bit-stream');
-const {ExtraChannelInfo} = require('./extra-channel-info');
-const {Extensions} = require('./extensions');
+import {U32} from './bit-stream.js';
+import {ExtraChannelInfo} from './extra-channel-info.js';
+import {Extensions} from './extensions.js';
 
 /**
  * The JXL image metadata 2 header
  */
-class ImageMetadata2 {
+export class ImageMetadata2 {
 	/*::
 	have_preview: boolean;
 	have_animation: boolean;
@@ -77,7 +77,3 @@ class ImageMetadata2 {
 		}
 	}
 }
-
-module.exports = {
-	ImageMetadata2,
-};

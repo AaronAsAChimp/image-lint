@@ -1,10 +1,10 @@
 /* @flow */
-const Loader = require('../loader');
+import Loader from '../loader.js';
 
 /**
  * Load files from a web browser Blob object.
  */
-class BlobLoader extends Loader {
+export class BlobLoader extends Loader {
 	/*::
 	_blob: Blob
 	*/
@@ -30,5 +30,3 @@ class BlobLoader extends Loader {
 		return Buffer.from(arrbuf);
 	}
 }
-
-module.exports = BlobLoader;

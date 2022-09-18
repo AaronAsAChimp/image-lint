@@ -5,11 +5,8 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-const InfoProvider = require('../image-info.js'),
-	  pf = require('../pixel-format');
-
-const PixelFormat = pf.PixelFormat;
-const ColorSpace = pf.ColorSpace;
+import {InfoProvider} from '../image-info.js';
+import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
 const MARKER_LENGTH = 2;
 const CHUNKS_WITH_DIMS = 0xF0;
@@ -24,7 +21,7 @@ const FILE_TRAILER = 0xFFD9;
 /**
  * A JPEG info provider.
  */
-class JPGInfoProvider extends InfoProvider {
+export class JPGInfoProvider extends InfoProvider {
 	/**
 	 * Get the offset of the next chunk.
 	 * @param {Buffer} buffer  The file buffer.
@@ -145,5 +142,3 @@ class JPGInfoProvider extends InfoProvider {
 		return format;
 	}
 }
-
-module.exports = JPGInfoProvider;

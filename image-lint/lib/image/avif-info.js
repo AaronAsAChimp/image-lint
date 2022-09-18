@@ -5,17 +5,15 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-const InfoProvider = require('../image-info.js');
-const pf = require('../pixel-format');
-const {RootBlock} = require('../image/isobmff/isobmff.js');
+import {InfoProvider} from '../image-info.js';
+import {PixelFormat, ColorSpace} from '../pixel-format.js';
+import {RootBlock} from '../image/isobmff/isobmff.js';
 
-const PixelFormat = pf.PixelFormat;
-const ColorSpace = pf.ColorSpace;
 
 /**
  * A AVIF info provider.
  */
-class AVIFInfoProvider extends InfoProvider {
+export class AVIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
@@ -77,5 +75,3 @@ class AVIFInfoProvider extends InfoProvider {
 		return format;
 	}
 }
-
-module.exports = AVIFInfoProvider;

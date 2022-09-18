@@ -1,8 +1,8 @@
 /* @flow */
 
-const Finder = require('../finder'),
-	  BlobLoader = require('../loader/blob'),
-	  path = require('path');
+import {Finder} from '../finder.js';
+import {BlobLoader} from '../loader/blob.js';
+import path from 'path';
 
 /*::
 import type { FileDescriptor } from '../finder';
@@ -11,7 +11,7 @@ import type { FileDescriptor } from '../finder';
 /**
  * Finds files in a Browser Blob object.
  */
-class BufferArrayFinder extends Finder {
+export class BufferArrayFinder extends Finder {
 	/*::
 	filename: string;
 	path: string;
@@ -42,5 +42,3 @@ class BufferArrayFinder extends Finder {
 		}
 	}
 }
-
-module.exports = BufferArrayFinder;

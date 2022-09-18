@@ -1,11 +1,11 @@
 /* @flow */
-const fs = require('fs'),
-	  Loader = require('../loader');
+import fs from 'fs';
+import {Loader} from '../loader.js';
 
 /**
  * Load files from the file system.
  */
-class FsLoader extends Loader {
+export class FsLoader extends Loader {
 	/**
 	 * Load the file.
 	 * @return {Promise<Buffer>}  The loaded file.
@@ -22,5 +22,3 @@ class FsLoader extends Loader {
 		});
 	}
 }
-
-module.exports = FsLoader;

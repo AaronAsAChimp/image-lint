@@ -5,12 +5,9 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-const crc = require('crc'),
-	  InfoProvider = require('../image-info'),
-	  pf = require('../pixel-format');
-
-const PixelFormat = pf.PixelFormat;
-const ColorSpace = pf.ColorSpace;
+import crc from 'crc';
+import {InfoProvider} from '../image-info.js';
+import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
 const IHDR_OFFSET = 0xC;
 const SECTION_HEADER_WIDTH = 4;
@@ -78,7 +75,7 @@ class PNGChunk {
 /**
  * A PNG info provider.
  */
-class PNGInfoProvider extends InfoProvider {
+export class PNGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
@@ -149,5 +146,3 @@ class PNGInfoProvider extends InfoProvider {
 		return format;
 	}
 }
-
-module.exports = PNGInfoProvider;

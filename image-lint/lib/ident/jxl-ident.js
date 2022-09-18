@@ -1,8 +1,8 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
-const MagicNumberIdentifier = require('./magic-number-ident.js');
-const JXLInfoProvider = require('../image/jxl-info.js');
+import {ImageIdentifier} from '../ident.js';
+import {MagicNumberIdentifier} from './magic-number-ident.js';
+import {JXLInfoProvider} from '../image/jxl-info.js';
 
 /**
  * An image identifier that identifies GIF images.

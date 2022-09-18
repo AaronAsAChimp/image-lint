@@ -1,6 +1,6 @@
-const Finder = require('../finder.js'),
-	  FileFinder = require('./file.js'),
-	  tmp = require('tmp');
+import {Finder} from '../finder.js';
+import {FileFinder} from './file.js';
+import tmp from 'tmp';
 
 
 /**
@@ -8,7 +8,7 @@ const Finder = require('../finder.js'),
  * should prepare the workspace and the this class will delegate the finding to
  * the FileFinder.
  */
-class VcsFinder extends Finder {
+export class VcsFinder extends Finder {
 	/**
 	 * Prepare the workspace that contains all of the files to be tested.
 	 *
@@ -52,5 +52,3 @@ class VcsFinder extends Finder {
 			});
 	}
 }
-
-module.exports = VcsFinder;

@@ -1,8 +1,8 @@
 /* @flow */
 
-const ImageIdentifier = require('../../lib/ident.js');
+import {ImageIdentifier} from '../../lib/ident.js';
 
-require('./svg-ident.js');
+import './svg-ident.js';
 
 test(`a SVG identifier can identify an image`, () => {
 	const ident = ImageIdentifier.from_extension('.svg');

@@ -6,29 +6,32 @@
 import type {ExtendedOptions} from '../lib/args-helper.js';
 */
 
-const minimist = require('minimist'),
-	  chalk = require('chalk'),
-	  ArgsHelper = require('../lib/args-helper').default,
-	  linter = require('../lib/linter'),
-	  defaults = require('../lib/defaults').default,
-	  Linter = linter.default,
-	  DEFAULT_DIRECTORY = ['./'];
+import minimist from 'minimist';
+import chalk from 'chalk';
+import {ArgsHelper} from '../lib/args-helper.js';
+import {Linter} from '../lib/linter.js';
+import {defaults} from '../lib/defaults.js';
+
+import {MultiFinder} from '../lib/finder/multi.js';
+import {ImageIdentifier} from '../lib/ident.js';
+
+const DEFAULT_DIRECTORY = ['./'];
 
 const argument_config/*: minimistOptions */ = {
 	'boolean': [
 		'mismatch',
 		'duplicate',
 		'help',
-		'version'
+		'version',
 	],
 	'string': [
-		'color_space'
+		'color_space',
 	],
 	'alias': {
 		'bytes_per_pixel': 'b',
 		'byte_savings': 's',
 		'help': 'h',
-		'version': 'v'
+		'version': 'v',
 	},
 	'default': defaults,
 	'-help-usage': 'image-lint [options] [<files/folders/urls>...]',
@@ -39,8 +42,8 @@ const argument_config/*: minimistOptions */ = {
 		'byte_savings': 'Set the minimum byte savings before giving a warning.',
 		'color_space': 'Set the allowed color spaces separated by a comma',
 		'help': 'Print this message, then exit.',
-		'version': 'Print the version number and exit.'
-	}
+		'version': 'Print the version number and exit.',
+	},
 };
 
 const argv = minimist(process.argv.slice(2), argument_config);
@@ -51,9 +54,6 @@ const EXIT_CODE_LINT_ERROR = 1;
 if (ArgsHelper.argv(argument_config, argv)) {
 	process.exitCode = EXIT_CODE_OK;
 } else {
-	const MultiFinder = require('../lib/finder/multi');
-	const ImageIdentifier = require('../lib/ident');
-
 	let folder = argv._;
 	let error_count = 0;
 	let warning_count = 0;

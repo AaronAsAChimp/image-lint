@@ -5,16 +5,13 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-const InfoProvider = require('../image-info.js'),
-	  pf = require('../pixel-format');
+import {InfoProvider} from '../image-info.js';
+import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
-const PixelFormat = pf.PixelFormat;
-const ColorSpace = pf.ColorSpace;
-
-const {/* U32, */ BitStream} = require('./jxl/bit-stream');
-const {SizeHeader} = require('./jxl/size-header');
-const {ImageMetadata} = require('./jxl/image-metadata');
-const {COLOR_SPACE} = require('./jxl/color-encoding');
+import {/* U32, */ BitStream} from './jxl/bit-stream.js';
+import {SizeHeader} from './jxl/size-header.js';
+import {ImageMetadata} from './jxl/image-metadata.js';
+import {COLOR_SPACE} from './jxl/color-encoding.js';
 
 // const CONTAINER_HEADER_SIZE = 48;
 // const MAX_CODESTREAM_BASIC_INFO_SIZE = 50;
@@ -30,7 +27,7 @@ const {COLOR_SPACE} = require('./jxl/color-encoding');
 /**
  * A JPEG XL info provider.
  */
-class JXLInfoProvider extends InfoProvider {
+export class JXLInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
@@ -91,5 +88,3 @@ class JXLInfoProvider extends InfoProvider {
 		return format;
 	}
 }
-
-module.exports = JXLInfoProvider;

@@ -3,7 +3,7 @@
 /**
  * A base class for loader instances.
  */
-class Loader {
+export class Loader {
 	/*::
 	_path: string;
 	*/
@@ -34,5 +34,3 @@ class Loader {
 		return Promise.reject('Not Implemented!');
 	}
 }
-
-module.exports = Loader;

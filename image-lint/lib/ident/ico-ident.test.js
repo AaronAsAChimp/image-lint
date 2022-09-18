@@ -1,8 +1,8 @@
 /* @flow */
 
-const ImageIdentifier = require('../../lib/ident.js');
+import {ImageIdentifier} from '../../lib/ident.js';
 
-require('./ico-ident.js');
+import './ico-ident.js';
 
 
 test(`an ico identifier can identify an image`, () => {

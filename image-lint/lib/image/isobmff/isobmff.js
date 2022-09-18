@@ -31,7 +31,7 @@ const MAX_BLOCKS = 2048;
 /**
  * This is a block read from an ISOBMFF encoded file.
  */
-class ISOBMFFAtom {
+export class ISOBMFFAtom {
 	/**
 	 * Construct a new ISOBMFFBlock.
 	 * @param  {number} length   The length of the block.
@@ -167,7 +167,7 @@ class NullAtom extends ISOBMFFAtom {
 /**
  * This is the root block for all ISOBMFF block, The whole file.
  */
-class RootBlock extends ISOBMFFBlock {
+export class RootBlock extends ISOBMFFBlock {
 	/**
 	 * Construct a new root block.
 	 * @param  {Buffer} buffer The buffer that contains the file.
@@ -284,9 +284,4 @@ const BLOCK_TYPES = {
 	'ispe': ISPEAtom,
 	'pixi': PIXIAtom,
 	// 'colr': COLRAtom, // Color Profile
-};
-
-module.exports = {
-	ISOBMFFAtom,
-	RootBlock,
 };

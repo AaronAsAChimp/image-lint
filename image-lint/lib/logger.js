@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-const chalk = require('chalk');
+import chalk from 'chalk';
 
 /*::
 interface LogCounts {
@@ -14,7 +14,7 @@ interface LogCounts {
 /**
  * A logger for writing the output to a string.
  */
-class Log {
+export class Log {
 	/*::
 	filename: string;
 	log: string;
@@ -116,7 +116,7 @@ class Log {
 /**
  * A factory for creating new logs.
  */
-class LoggerFactory {
+export class LoggerFactory {
 	/**
 	 * Get a new instance of a logger.
 	 *
@@ -127,6 +127,3 @@ class LoggerFactory {
 		return new Log(filename);
 	}
 }
-
-exports.LoggerFactory = LoggerFactory;
-exports.Log = Log;

@@ -1,13 +1,13 @@
 /* @flow */
 
 /*::
-import InfoProvider from "./image-info.js";
+import {InfoProvider} from "./image-info.js";
 */
 
 /**
  * Abstract class to identify the type of images.
  */
-class ImageIdentifier {
+export class ImageIdentifier {
 	/*::
 	_info_provider: InfoProvider | null
 
@@ -179,5 +179,3 @@ ImageIdentifier._mime_registry = new Map();
 ImageIdentifier._all_providers = [];
 ImageIdentifier._all_extensions = [];
 ImageIdentifier._all_mimes = [];
-
-module.exports = ImageIdentifier;

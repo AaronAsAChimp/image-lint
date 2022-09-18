@@ -1,7 +1,7 @@
 /* @flow */
 'use strict';
 
-const EventEmitter = require('events');
+import {EventEmitter} from 'events';
 
 // const MAX_ACTIVE_HANDLERS = 1;
 const MAX_ACTIVE_HANDLERS = 10;
@@ -15,7 +15,7 @@ const MAX_ACTIVE_HANDLERS = 10;
  * iterable and a 'done' function to be called to release the work handler back
  * to the pool.
  */
-class WorkHandler /*:: <T> */ extends EventEmitter {
+export class WorkHandler /*:: <T> */ extends EventEmitter {
 	/*::
 	_active_handlers: number;
 	_active_processes: number;
@@ -111,5 +111,3 @@ class WorkHandler /*:: <T> */ extends EventEmitter {
 			});
 	}
 }
-
-module.exports = WorkHandler;

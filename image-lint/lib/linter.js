@@ -1,12 +1,11 @@
 /* @flow */
 
-const WorkHandler = require('./work-handler');
-const Hasher = require('./hasher');
-const pf = require('./pixel-format');
-const ColorSpace = pf.ColorSpace;
-const LoggerFactory = require('./logger').LoggerFactory;
-const EventEmitter = require('events');
-const ImageIdentifier = require('./ident.js');
+import {WorkHandler} from './work-handler.js';
+import {Hasher} from './hasher.js';
+import {ColorSpace} from './pixel-format.js';
+import {LoggerFactory} from './logger.js';
+import {EventEmitter} from 'events';
+import {ImageIdentifier} from './ident.js';
 
 /*::
 import type { Dimensions, ImageInfo } from './image-info';
@@ -25,25 +24,25 @@ export type LinterOptions = {
 };
  */
 
-require('./ident/png-ident.js');
-require('./ident/gif-ident.js');
-require('./ident/jpg-ident.js');
-require('./ident/jxl-ident.js');
-require('./ident/avif-ident.js');
+import './ident/png-ident.js';
+import './ident/gif-ident.js';
+import './ident/jpg-ident.js';
+import './ident/jxl-ident.js';
+import './ident/avif-ident.js';
 
 // Identify only
-require('./ident/bmp-ident.js');
-require('./ident/psd-ident.js');
-require('./ident/ico-ident.js');
-require('./ident/tiff-ident.js');
-require('./ident/webp-ident.js');
-require('./ident/svg-ident.js');
-require('./ident/html-ident.js');
+import './ident/bmp-ident.js';
+import './ident/psd-ident.js';
+import './ident/ico-ident.js';
+import './ident/tiff-ident.js';
+import './ident/webp-ident.js';
+import './ident/svg-ident.js';
+import './ident/html-ident.js';
 
 /**
  * The image linter.
  */
-class Linter extends EventEmitter {
+export class Linter extends EventEmitter {
 	/*::
 	finder: Finder;
 	disable_color: boolean;
@@ -264,5 +263,3 @@ class Linter extends EventEmitter {
 		return this;
 	}
 }
-
-module.exports.default = Linter;

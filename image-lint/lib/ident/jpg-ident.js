@@ -1,8 +1,8 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
-const MagicNumberIdentifier = require('./magic-number-ident.js');
-const JPGInfoProvider = require('../image/jpg-info.js');
+import {ImageIdentifier} from '../ident.js';
+import {MagicNumberIdentifier} from './magic-number-ident.js';
+import {JPGInfoProvider} from '../image/jpg-info.js';
 
 /**
  * An image identifier that identifies JPEG images.

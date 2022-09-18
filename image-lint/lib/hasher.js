@@ -1,9 +1,10 @@
 /* @flow */
 'use strict';
 
+import crypto from 'crypto';
+
 const TRIE_DEPTH = 3;
 const HASH_TYPE = 'sha1';
-const crypto = require('crypto');
 
 /*::
 const Finder = require('./finder');
@@ -16,7 +17,7 @@ type Trie = Map<string, Map<string, Map<string, Trie>>>;
 /**
  * Find duplicate files.
  */
-class Hasher {
+export class Hasher {
 	/*::
 	trie: Trie;
 	*/
@@ -80,5 +81,3 @@ class Hasher {
 		return found_name;
 	}
 }
-
-module.exports = Hasher;

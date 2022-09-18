@@ -1,11 +1,11 @@
 /* @flow */
 
-const ImageIdentifier = require('../ident.js');
+import {ImageIdentifier} from '../ident.js';
 
 /**
  * An image identifier that uses a magic number to identify the format.
  */
-class MagicNumberIdentifier extends ImageIdentifier {
+export class MagicNumberIdentifier extends ImageIdentifier {
 	/**
 	 * Get the magic number for this file type
 	 */
@@ -34,5 +34,3 @@ class MagicNumberIdentifier extends ImageIdentifier {
 		return buffer.length >= magic.length;
 	}
 }
-
-module.exports = MagicNumberIdentifier;

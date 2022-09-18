@@ -4,7 +4,7 @@
 import type {BitStream} from './bit-stream';
 */
 
-const {U32} = require('./bit-stream.js');
+import {U32} from './bit-stream.js';
 
 const XSIZE_SEPARATE = 0; // xsize coded separately
 const XSIZE_IS_YSIZE = 1; // xsize = ysize
@@ -18,7 +18,7 @@ const XSIZE_RATIO_2X1 = 7; // xsize = floor( ysize × 2 / 1)
 /**
  * The JXL size header
  */
-class SizeHeader {
+export class SizeHeader {
 	/*::
 	small: boolean;
 	ysize: number;
@@ -93,16 +93,14 @@ class SizeHeader {
 	}
 }
 
-module.exports = {
-	SizeHeader,
-	Ratio: {
-		XSIZE_SEPARATE,
-		XSIZE_IS_YSIZE,
-		XSIZE_RATIO_12X10,
-		XSIZE_RATIO_4X3,
-		XSIZE_RATIO_3X2,
-		XSIZE_RATIO_16X9,
-		XSIZE_RATIO_5X4,
-		XSIZE_RATIO_2X1,
-	},
+
+export const Ratio = {
+	XSIZE_SEPARATE,
+	XSIZE_IS_YSIZE,
+	XSIZE_RATIO_12X10,
+	XSIZE_RATIO_4X3,
+	XSIZE_RATIO_3X2,
+	XSIZE_RATIO_16X9,
+	XSIZE_RATIO_5X4,
+	XSIZE_RATIO_2X1,
 };
