@@ -12,6 +12,7 @@ export class VcsFinder extends Finder {
 	/**
 	 * Prepare the workspace that contains all of the files to be tested.
 	 *
+	 * @abstract
 	 * @param { string[] } clone_urls An array of urls to clone.
 	 * @return {Promise<string[]>} A promise that resolves to an array of file paths.
 	 */

@@ -39,6 +39,7 @@ export class ImageIdentifier {
 	/**
 	 * Determine if the file is of the file type.
 	 *
+	 * @abstract
 	 * @param  {Buffer}  buffer The image buffer.
 	 */
 	is_of_file_type(buffer/*: Buffer */)/*: boolean */ {

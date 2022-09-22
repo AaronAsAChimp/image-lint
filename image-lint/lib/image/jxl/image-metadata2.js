@@ -23,6 +23,12 @@ export class ImageMetadata2 {
 	extra_channel_info: ExtraChannelInfo[];
 	extensions: Extensions | null;
 	*/
+
+	/**
+	 * Construct a new ImageMetadata2.
+	 *
+	 * @param  {BitStream} stream The bit stream to read the ImageMetadata2 from.
+	 */
 	constructor(stream/*: BitStream */) {
 		const all_default = stream.read_boolean();
 
@@ -44,25 +50,25 @@ export class ImageMetadata2 {
 				[U32.VAL, 0],
 				[U32.VAL, 8],
 				[U32.VAL, 16],
-				[U32.BITS, 4]
+				[U32.BITS, 4],
 			);
 			this.depth_shift = stream.read_u32(
 				[U32.VAL, 0],
 				[U32.VAL, 3],
 				[U32.VAL, 4],
-				[U32.BITS_OFFSET, 3, 1]
+				[U32.BITS_OFFSET, 3, 1],
 			);
 			this.num_extra_channels = stream.read_u32(
 				[U32.VAL, 0],
 				[U32.BITS, 4],
 				[U32.BITS_OFFSET, 8, 16],
-				[U32.BITS_OFFSET, 12, 1]
+				[U32.BITS_OFFSET, 12, 1],
 			);
 			this.extra_channel_bits = stream.read_u32(
 				[U32.VAL, 0],
 				[U32.VAL, 8],
 				[U32.VAL, 16],
-				[U32.BITS, 4]
+				[U32.BITS, 4],
 			);
 		}
 

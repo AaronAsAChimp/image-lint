@@ -30,10 +30,19 @@ export type CustomXY = {
 type EnumTable = Set<number>;
 */
 
-function dbg_byte(bits) {
-	return ('00000000' + bits.toString(2)).slice(-8);
-}
+/**
+ * Format a byte as a string.
+ * @param  {number} bits The byte as number.
+ * @return {string}      The formatted byte.
+ */
+// function dbg_byte(bits) {
+// 	return ('00000000' + bits.toString(2)).slice(-8);
+// }
 
+
+/**
+ * An error that is thrown when the stream can not be parsed.
+ */
 export class IllformedStreamError extends Error {
 
 }
@@ -48,6 +57,12 @@ export class BitStream {
 	sub_bit: number;
 	current_byte: number;
 	*/
+
+	/**
+	 * Construct a new JPEG XL Bit stream.
+	 * @param  {Buffer} buffer The buffer that contains the image.
+	 * @param  {number} offset The offset from beginning of the buffer.
+	 */
 	constructor(buffer/*: Buffer */, offset/*: number */ = 0) {
 		this.buffer = buffer;
 		this.offset = offset;
@@ -55,6 +70,15 @@ export class BitStream {
 		this.current_byte = buffer.readUInt8(offset);
 	}
 
+	/**
+	 * Read a certain number of bits from a byte.
+	 *
+	 * @param {number} byte  The byte to read from.
+	 * @param {number} offset  Which bit to start reading from.
+	 * @param {number} bits  The number of bits to read.
+	 *
+	 * @return {number} The bits that were read.
+	 */
 	read_from_byte(byte/*: number */, offset/*: number */, bits/*: number */)/*: number */ {
 		let value = byte;
 
@@ -89,6 +113,12 @@ export class BitStream {
 		return value;
 	}
 
+	/**
+	 * Read a certain number of bits from the stream.
+	 *
+	 * @param  {number} bits  The number of bits to read.
+	 * @return {number}       The bits read as a number.
+	 */
 	read_bits(bits/*: number */)/*: number */ {
 		if (bits > QUAD_WORD_SIZE) {
 			throw new Error(`Can not read more than ${ QUAD_WORD_SIZE } bits at a time. Attempting to read ${ bits }`);
@@ -108,7 +138,7 @@ export class BitStream {
 		// bytes only.
 		if (this.sub_bit > 0 && bits > start_bits) {
 			// console.log('bits needed from previous byte', start_bits);
-			bits -= start_bits
+			bits -= start_bits;
 			leftovers = this.read_from_byte(this.current_byte, this.sub_bit, start_bits);
 			shift = start_bits;
 
@@ -164,10 +194,21 @@ export class BitStream {
 		return value;
 	}
 
+	/**
+	 * Read a boolean from the stream.
+	 *
+	 * @return {boolean}  The boolean read.
+	 */
 	read_boolean()/*: boolean */ {
 		return !!this.read_bits(1);
 	}
 
+	/**
+	 * Read a 32bit unsigned integer from the stream.
+	 *
+	 * @param  {...Distribution32} distributions The distributions.
+	 * @return {number}  The number read.
+	 */
 	read_u32(...distributions/*: Distribution32 */)/*: number */ {
 		if (distributions.length > 4) {
 			throw new Error('U32: A u32 takes only 4 distributions.');
@@ -188,12 +229,18 @@ export class BitStream {
 			}
 			return (dist[2] + this.read_bits(dist[1])) % U32_MAX;
 		} else {
-			throw new Error('U32: Unknown distribution.')
+			throw new Error('U32: Unknown distribution.');
 		}
 	}
 
+	/**
+	 * Read a signed 32bit integer from the stream.
+	 *
+	 * @param  {...Distribution32} distributions The distributions.
+	 * @return {number}   The number read.
+	 */
 	read_s32(...distributions/*: Distribution32 */)/*: number */ {
-		let v = this.read_u32(...distributions);
+		const v = this.read_u32(...distributions);
 
 		if (v % 2 === 0) {
 			return v >> 1;
@@ -204,6 +251,11 @@ export class BitStream {
 		}
 	}
 
+	/**
+	 * Read a 16bit float from the stream.
+	 *
+	 * @return {number}  The number read.
+	 */
 	read_f16()/*: number */ {
 		const bits16 = this.read_bits(16);
 		const sign = bits16 >> 15;
@@ -228,29 +280,40 @@ export class BitStream {
 		return value;
 	}
 
+	/**
+	 * Read a custom X, Y from the stream.
+	 *
+	 * @return {{x: number, y: number}} The value read.
+	 */
 	read_customxy()/*: CustomXY */ {
 		return {
 			x: this.read_s32(
 				[BITS, 19],
 				[BITS_OFFSET, 19, 524288],
 				[BITS_OFFSET, 20, 1048576],
-				[BITS_OFFSET, 21, 2097152]
+				[BITS_OFFSET, 21, 2097152],
 			),
 			y: this.read_s32(
 				[BITS, 19],
 				[BITS_OFFSET, 19, 524288],
 				[BITS_OFFSET, 20, 1048576],
-				[BITS_OFFSET, 21, 2097152]
-			)
+				[BITS_OFFSET, 21, 2097152],
+			),
 		};
 	}
 
+	/**
+	 * Read an enumeration from the stream.
+	 *
+	 * @param  {EnumTable} enum_table The table of enum values.
+	 * @return {number}            The enum value read.
+	 */
 	read_enum(enum_table/*: EnumTable */)/*: number */ {
 		const value = this.read_u32(
 			[VAL, 0],
 			[VAL, 1],
 			[BITS_OFFSET, 4, 2],
-			[BITS_OFFSET, 6, 18]
+			[BITS_OFFSET, 6, 18],
 		);
 
 		if (value > 63) {
@@ -262,6 +325,11 @@ export class BitStream {
 		return value;
 	}
 
+	/**
+	 * Get the number of bits read from the stream.
+	 *
+	 * @return {number}  The number of bits read.
+	 */
 	get_bits_read()/*: number */ {
 		return (this.offset * 8) + this.sub_bit;
 	}

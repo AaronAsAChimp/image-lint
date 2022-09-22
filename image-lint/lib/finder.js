@@ -34,6 +34,7 @@ export class Finder {
 	/**
 	 * Get an iterator of unresolved file descriptors.
 	 *
+	 * @abstract
 	 * @param {string[]} initial_items The initial set of items to be searched for.
 	 */
 	get_files(initial_items/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {

@@ -15,7 +15,7 @@ test('read the header for a 1px x 1px image', () => {
 
 	// console.log('bits read: ', bit_stream.get_bits_read());
 
-    console.log(color_encoding);
+	console.log(color_encoding);
 
 	// Assert
 	expect(size_header.get_small()).toBe(false);
@@ -37,7 +37,7 @@ test('read the header for a 2px x 4px image', () => {
 
 	// console.log('bits read: ', bit_stream.get_bits_read());
 
-    console.log(color_encoding);
+	console.log(color_encoding);
 
 	// Assert
 	expect(size_header.get_small()).toBe(false);
@@ -59,7 +59,7 @@ test('read the header for a 512px x 512px image', () => {
 
 	// console.log('bits read: ', bit_stream.get_bits_read());
 
-    console.log(color_encoding);
+	console.log(color_encoding);
 
 	// Assert
 	expect(size_header.get_small()).toBe(false);

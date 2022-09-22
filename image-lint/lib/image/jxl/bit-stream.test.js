@@ -137,7 +137,7 @@ test('read a U32 "Val" from a bit stream (example 1 from specification)', () => 
 		[U32.VAL, 8],
 		[U32.VAL, 16],
 		[U32.VAL, 32],
-		[U32.BITS, 6]
+		[U32.BITS, 6],
 	);
 
 	// Assert
@@ -157,7 +157,7 @@ test('read a U32 "Bits" from a bit stream (example 2 from specification)', () =>
 		[U32.BITS, 2],
 		[U32.BITS, 4],
 		[U32.BITS, 6],
-		[U32.BITS, 8]
+		[U32.BITS, 8],
 	);
 
 	// Assert
@@ -177,7 +177,7 @@ test('read a U32 "Bits Offset" from a bit stream', () => {
 		[U32.VAL, 8],
 		[U32.VAL, 16],
 		[U32.VAL, 32],
-		[U32.BITS_OFFSET, 8, 49]
+		[U32.BITS_OFFSET, 8, 49],
 	);
 
 	// Assert

@@ -17,12 +17,18 @@ export class ExtraChannelInfo {
 	blue: number;
 	solidity: number;
 	*/
+
+	/**
+	 * Construct a new ExtraChannelInfo.
+	 *
+	 * @param  {BitStream} stream The bit stream to read teh ExtraChannelInfo from.
+	 */
 	constructor(stream/*: BitStream */) {
 		this.meaning = stream.read_u32(
 			[U32.VAL, 0],
 			[U32.VAL, 1],
 			[U32.VAL, 2],
-			[U32.BITS, 6]
+			[U32.BITS, 6],
 		);
 
 		this.red = 0;

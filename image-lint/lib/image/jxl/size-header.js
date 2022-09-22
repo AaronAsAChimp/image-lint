@@ -25,6 +25,12 @@ export class SizeHeader {
 	xsize: number;
 	ratio: number;
 	*/
+
+	/**
+	 * Construct a new SizeHeader
+	 *
+	 * @param  {BitStream} stream The bit stream to read the SizeHeader from.
+	 */
 	constructor(stream/*: BitStream */) {
 		let ysize;
 		let xsize;
@@ -37,7 +43,7 @@ export class SizeHeader {
 				[U32.BITS, 9],
 				[U32.BITS, 13],
 				[U32.BITS, 18],
-				[U32.BITS, 30]
+				[U32.BITS, 30],
 			) + 1;
 		}
 
@@ -51,7 +57,7 @@ export class SizeHeader {
 					[U32.BITS, 9],
 					[U32.BITS, 13],
 					[U32.BITS, 18],
-					[U32.BITS, 30]
+					[U32.BITS, 30],
 				) + 1;
 			}
 		} else if (this.ratio === XSIZE_IS_YSIZE) {
@@ -76,19 +82,36 @@ export class SizeHeader {
 		this.xsize = xsize;
 	}
 
+	/**
+	 * Get whether or not this is a small image.
+	 * @return {boolean} True if small, false otherwise.
+	 */
 	get_small()/*: boolean */ {
 		return this.small;
 	}
 
-	get_ysize()/*: number */{
+	/**
+	 * Get the y-size of the image.
+	 *
+	 * @return {number} The y-size.
+	 */
+	get_ysize()/*: number */ {
 		return this.ysize;
 	}
 
-	get_xsize()/*: number */{
+	/**
+	 * Get the x-size of the image.
+	 * @return {number} The x-size.
+	 */
+	get_xsize()/*: number */ {
 		return this.xsize;
 	}
 
-	get_ratio()/*: number */{
+	/**
+	 * Get the aspect ratio.
+	 * @return {number} The ratio.
+	 */
+	get_ratio()/*: number */ {
 		return this.ratio;
 	}
 }

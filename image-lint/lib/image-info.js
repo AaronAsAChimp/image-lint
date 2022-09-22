@@ -89,6 +89,7 @@ export class InfoProvider {
 	/**
 	 * Is the file truncated.
 	 *
+	 * @abstract
 	 * @param  {Buffer}    buffer A buffer containing a compressed image.
 	 * @return {Boolean}   True if the file is invalid due to it being truncated.
 	 */

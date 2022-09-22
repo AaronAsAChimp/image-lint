@@ -1,7 +1,7 @@
 <script>
-import ImageLint from 'image-lint';
+import {Linter, BufferArrayFinder, ImageIdentifier} from 'image-lint';
 
-const finder = new ImageLint.BufferArrayFinder(ImageLint.ImageIdentifier.get_all_extensions(), ImageLint.ImageIdentifier.get_all_mimes());
+const finder = new BufferArrayFinder(ImageIdentifier.get_all_extensions(), ImageIdentifier.get_all_mimes());
 
 export default {
 	'props': ['options', 'files'],
@@ -17,7 +17,7 @@ export default {
 			async handler(files, files_old) {
 				let options = this.options,
 					results = null,
-					linter = new ImageLint.Linter(finder);
+					linter = new Linter(finder);
 
 				try {
 					results = await (new Promise((resolve, reject) => {

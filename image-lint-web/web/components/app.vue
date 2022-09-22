@@ -1,7 +1,7 @@
 <script>
 import {reactive} from 'vue';
 import GithubButton from 'vue-github-button';
-import ImageLint from 'image-lint';
+import {defaults} from 'image-lint';
 
 import packageJson from '../../../image-lint/package.json';
 
@@ -12,7 +12,7 @@ export default {
 		GithubButton
 	},
 	data() {
-		const options = Object.assign({}, ImageLint.defaults);
+		const options = Object.assign({}, defaults);
 
 		options.color_space = options.color_space.split(',');
 

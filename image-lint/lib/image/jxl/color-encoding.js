@@ -119,8 +119,13 @@ export class ColorEncoding {
 	transfer_function: number;
 	rendering_intent: number;
 	*/
-	constructor(stream/*: ?BitStream */) {
 
+	/**
+	 * Construct a new ColorEncoding.
+	 *
+	 * @param  {BitStream} [stream] The bit stream to read the encoding from
+	 */
+	constructor(stream/*: ?BitStream */) {
 		this.received_icc = false;
 		this.opaque_icc = false;
 		this.color_space = COLOR_SPACE.K_RGB;

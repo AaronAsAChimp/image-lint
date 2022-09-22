@@ -1,5 +1,5 @@
 /* @flow */
-import Loader from '../loader.js';
+import {Loader} from '../loader.js';
 
 /**
  * Load files from a web browser Blob object.

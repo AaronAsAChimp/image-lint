@@ -89,7 +89,11 @@ export class Linter extends EventEmitter {
 	 * @param  {LinterOptions} options  The options for the linter.
 	 * @return {Promise<ImageInfo>}     The image info.
 	 */
-	get_info(file/*: FileDescriptor */, buffer/*: Buffer */, logger/*: Log */, options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
+	get_info(
+		file/*: FileDescriptor */,
+		buffer/*: Buffer */,
+		logger/*: Log */,
+		options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
 		return new Promise((resolve, reject) => {
 			const extension = file.extension.toLowerCase();
 			let identifier = ImageIdentifier.from_extension(extension);

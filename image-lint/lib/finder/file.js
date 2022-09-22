@@ -36,7 +36,7 @@ export class FileFinder extends Finder {
 	/**
 	 * Traverse the file system yielding any files it finds.
 	 *
-	 * @param {stringp[]} queue  The initial queue items.
+	 * @param {string[]} queue  The initial queue items.
 	 */
 	* _search(queue/*: string[] */)/*: Iterable<FileDescriptor> */ {
 		while (queue.length) {
