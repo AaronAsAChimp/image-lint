@@ -47,5 +47,4 @@ jobs:
 
       - name: Run ESLint
         run: npm run ci:lint --workspaces --no-progress
-        continue-on-error: true
 

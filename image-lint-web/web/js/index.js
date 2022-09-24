@@ -1,11 +1,11 @@
 import {createApp} from 'vue';
 import Multiselect from 'vue-multiselect';
 
-import Dropzone from '../components/dropzone.vue';
 import ImageLintApp from '../components/app.vue';
-import ImageCollection from '../components/image-collection.vue';
+import ImlImageCollection from '../components/iml-image-collection.vue';
+import ImlDropzone from '../components/iml-dropzone.vue';
 
-import "../css/index.css";
+import '../css/index.css';
 
 
 const body = document.body;
@@ -15,7 +15,7 @@ body.appendChild(rootEl);
 
 createApp(ImageLintApp)
 	.component('vue-multiselect', Multiselect)
-	.component('dropzone', Dropzone)
 	.component('image-lint-app', ImageLintApp)
-	.component('image-collection', ImageCollection)
+	.component('iml-image-collection', ImlImageCollection)
+	.component('iml-dropzone', ImlDropzone)
 	.mount(rootEl);

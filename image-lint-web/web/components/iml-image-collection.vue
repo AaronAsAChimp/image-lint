@@ -4,24 +4,44 @@ import {Linter, BufferArrayFinder, ImageIdentifier} from 'image-lint';
 const finder = new BufferArrayFinder(ImageIdentifier.get_all_extensions(), ImageIdentifier.get_all_mimes());
 
 export default {
-	'props': ['options', 'files'],
+	'props': {
+		'options': {
+			'type': Object,
+			'required': true,
+		},
+		'files': {
+			'type': Array,
+			'required': true,
+		},
+	},
 	data() {
 		return {
 			linter: null,
 			error: null,
-			results: null
+			results: null,
 		};
+	},
+	'computed': {
+		has_finished() {
+			return this.results !== null || this.error !== null;
+		},
+		has_error() {
+			return this.error !== null;
+		},
+		has_results() {
+			return this.results !== null;
+		},
 	},
 	'watch': {
 		files: {
 			async handler(files, files_old) {
-				let options = this.options,
-					results = null,
-					linter = new Linter(finder);
+				const options = this.options;
+				const linter = new Linter(finder);
+				let results = null;
 
 				try {
 					results = await (new Promise((resolve, reject) => {
-						let result_list = [];
+						const result_list = [];
 
 						linter.lint(files, options)
 							.on('file.completed', (logger) => {
@@ -38,45 +58,52 @@ export default {
 
 				this.results = results;
 			},
-			immediate: true
-		}
-	},
-	'computed': {
-		has_finished() {
-			return this.results !== null || this.error !== null;
+			immediate: true,
 		},
-		has_error() {
-			return this.error !== null;
-		},
-		has_results() {
-			return this.results !== null;
-		}
 	},
 	'methods': {
 		reformat_log(log) {
-			let log_parts = log.trim().split('\n');
+			const log_parts = log.trim().split('\n');
 
 			return log_parts.map((line) => {
 				return line.trim();
 			}).join('\n');
-		}
-	}
+		},
+	},
 };
 </script>
 
 <template>
 	<ul class="lint-results">
-		<li v-for="result in results" class="lint-result" v-bind:class="{ 'has-error': has_error, 'has-results': has_results }">
+		<li
+			v-for="result in results"
+			:key="result.filename"
+			class="lint-result"
+			:class="{ 'has-error': has_error, 'has-results': has_results }"
+		>
 			<details open>
-				<summary class="lint-result-summary" v-bind:class="{ 'lint-error': result && result.count.error, 'lint-warn': result && result.count.warn }">
+				<summary
+					class="lint-result-summary"
+					:class="{ 'lint-error': result && result.count.error, 'lint-warn': result && result.count.warn }"
+				>
 					{{ result.filename }}
-					<span v-if="has_results"> - 
-						<span v-if="result.count.info">Info: {{ result.count.info }}<span v-if="result.count.warn || result.count.error">, </span></span>
-						<span v-if="result.count.warn">Warnings: {{ result.count.warn }}<span v-if="result.count.error">, </span></span>
+					<span v-if="has_results"> -
+						<span v-if="result.count.info">
+							Info: {{ result.count.info }}<span v-if="result.count.warn || result.count.error">, </span>
+						</span>
+						<span v-if="result.count.warn">
+							Warnings: {{ result.count.warn }}<span v-if="result.count.error">, </span>
+						</span>
 						<span v-if="result.count.error">Errors: {{ result.count.error }}</span>
 					</span>
 				</summary>
-				<output class="lint-result-output" v-if="has_results" v-html="reformat_log(result.log)"></output>
+				<!-- eslint-disable vue/no-v-html -->
+				<output
+					v-if="has_results"
+					class="lint-result-output"
+					v-html="reformat_log(result.log)"
+				/>
+				<!-- eslint-enable -->
 			</details>
 		</li>
 	</ul>

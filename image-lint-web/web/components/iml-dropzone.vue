@@ -1,21 +1,23 @@
 <script>
 export default {
 	'props': {
-		'modelValue': Array
+		'modelValue': {
+			type: Array,
+			required: true,
+		},
 	},
+	'emits': ['update:modelValue'],
 	'methods': {
 		'files': function* (dt) {
-			let files = [];
-
 			if (dt.items) {
-				for (let i of dt.items) {
+				for (const i of dt.items) {
 					yield i.getAsFile();
 				}
 			} else {
 				yield* dt.files;
 			}
 		},
-		'drop': function (e) {
+		'drop': function(e) {
 			e.preventDefault();
 			this.$refs.dropzone.classList.remove('active');
 
@@ -23,21 +25,28 @@ export default {
 
 			this.$emit('update:modelValue', files);
 		},
-		'dragenter': function () {
+		'dragenter': function() {
 			this.$refs.dropzone.classList.add('active');
 		},
-		'dragleave': function () {
+		'dragleave': function() {
 			this.$refs.dropzone.classList.remove('active');
 		},
-		'dragover': function (e) {
+		'dragover': function(e) {
 			e.preventDefault();
-		}
-	}
-};	
+		},
+	},
+};
 </script>
 
 <template>
-	<div class="drop-target" ref="dropzone" @drop="drop" @dragover="dragover" @dragenter="dragenter" @dragleave="dragleave">
+	<div
+		ref="dropzone"
+		class="drop-target"
+		@drop="drop"
+		@dragover="dragover"
+		@dragenter="dragenter"
+		@dragleave="dragleave"
+	>
 		<slot>Drop files here</slot>
 	</div>
 </template>
@@ -46,9 +55,9 @@ export default {
 @import "../css/variables.css";
 
 .drop-target {
-  height: 100%;
+	height: 100%;
 	display: flex;
-  justify-content: center;
+	justify-content: center;
 }
 
 .drop-target.empty {
@@ -56,6 +65,6 @@ export default {
 }
 
 .drop-target.active {
-  border: 2px dashed var(--color-status-good);
+	border: 2px dashed var(--color-status-good);
 }
 </style>
