@@ -12,7 +12,7 @@
         "image-lint": "bin/image-lint.js"
     },
     "scripts": {
-        "test": "jest",
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest",
         "ci:lint": "eslint . --config .eslintrc.json --ext .js",
         "prepack": "cp ../README.md ."
     },

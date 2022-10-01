@@ -4,6 +4,11 @@
 import type {BitStream} from './bit-stream';
 */
 
+/**
+ * @typedef {import('./bit-stream.js').BitStream} BitStream
+ */
+
+
 import {U32} from './bit-stream.js';
 
 const XSIZE_SEPARATE = 0; // xsize coded separately

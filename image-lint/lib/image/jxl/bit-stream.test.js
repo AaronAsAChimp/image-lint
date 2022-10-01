@@ -30,6 +30,7 @@ test('read individual bits from a bit stream', () => {
 	expect(bit6).toBe(1);
 	expect(bit7).toBe(0);
 	expect(bit8).toBe(1);
+	expect(bit_stream.get_bits_read()).toBe(8);
 });
 
 test('read two bits from a bit stream', () => {
