@@ -31,6 +31,6 @@ export class Loader {
 	 * @return {Promise<Buffer>}  An image file.
 	 */
 	load()/*: Promise<Buffer> */ {
-		return Promise.reject('Not Implemented!');
+		return Promise.reject(new Error('Not Implemented!'));
 	}
 }

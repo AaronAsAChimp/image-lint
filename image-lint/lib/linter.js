@@ -103,7 +103,7 @@ export class Linter extends EventEmitter {
 			if (buffer instanceof Buffer) {
 				file_buffer = buffer;
 			} else {
-				reject('Image buffer is missing, this is a bug.');
+				reject(new Error('Image buffer is missing, this is a bug.'));
 				return;
 			}
 
@@ -146,14 +146,14 @@ export class Linter extends EventEmitter {
 				const ProviderClass = identifier.get_info_provider();
 
 				if (!ProviderClass) {
-					reject('Unsupported file type');
+					reject(new Error('Unsupported file type'));
 				} else {
 					const provider = new ProviderClass();
 
 					resolve(provider.get_info(file_buffer));
 				}
 			} else {
-				reject('Unknown file type');
+				reject(new Error('Unknown file type'));
 			}
 		});
 	}
@@ -210,7 +210,7 @@ export class Linter extends EventEmitter {
 				.then((buffer) => {
 					// Check for empty files and exit early to prevent unnecessary work.
 					if (buffer.length === 0) {
-						throw 'This is an empty file, further analysis is not possible.';
+						throw new Error('This is an empty file, further analysis is not possible.');
 					}
 
 					if (options.duplicate === true) {

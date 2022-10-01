@@ -1,4 +1,4 @@
-import {SizeHeader, Ratio} from './size-header.js';
+import {SizeHeader} from './size-header.js';
 import {ImageMetadata} from './image-metadata.js';
 import {BitStream} from './bit-stream.js';
 
