@@ -1,5 +1,11 @@
-3.0.0-beta.0
+Next
+---
+- Enforce the minimum node version of v16
+
+
+3.0.0
 ----
+
 - Now sets an error code of 1 when any errors or warnings are issued.
 - Experimental JPEG XL support
 - Experimental AVIF / HEIC support

@@ -9,6 +9,9 @@
     "author": "Aaron Spaulding <aaron@sachimp.com>",
     "homepage": "https://github.com/AaronAsAChimp/image-lint#readme",
     "license": "MIT",
+    "engines": {
+        "node": ">=16.0.0"
+    },
     "directories": {
         "test": "__tests__"
     },

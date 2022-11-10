@@ -25,6 +25,9 @@
     "type": "module",
     "author": "Aaron Spaulding",
     "license": "MIT",
+    "engines": {
+        "node": ">=16.0.0"
+    },
     "dependencies": {
         "chalk": "^4.1.0",
         "crc": "^3.8.0",
