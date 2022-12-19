@@ -40,6 +40,14 @@ import './ident/svg-ident.js';
 import './ident/html-ident.js';
 
 /**
+ * An unavoidable linter error that prevents the linter from continuing. This
+ * is mainly marker class so we don't have to print the stack trace.
+ */
+class LinterError extends Error {
+
+}
+
+/**
  * The image linter.
  */
 export class Linter extends EventEmitter {
@@ -103,7 +111,7 @@ export class Linter extends EventEmitter {
 			if (buffer instanceof Buffer) {
 				file_buffer = buffer;
 			} else {
-				reject(new Error('Image buffer is missing, this is a bug.'));
+				reject(new LinterError('Image buffer is missing, this is a bug.'));
 				return;
 			}
 
@@ -146,14 +154,14 @@ export class Linter extends EventEmitter {
 				const ProviderClass = identifier.get_info_provider();
 
 				if (!ProviderClass) {
-					reject(new Error('Unsupported file type'));
+					reject(new LinterError('Unsupported file type'));
 				} else {
 					const provider = new ProviderClass();
 
 					resolve(provider.get_info(file_buffer));
 				}
 			} else {
-				reject(new Error('Unknown file type'));
+				reject(new LinterError('Unknown file type'));
 			}
 		});
 	}
@@ -193,7 +201,11 @@ export class Linter extends EventEmitter {
 			 * @param  {Error} err An error.
 			 */
 			function error_handler(err/*: Error */) {
-				if (err.stack) {
+				if (err instanceof LinterError) {
+					// A there was a problem with the file that prevents linting
+					// from continuing.
+					logger.error(err.message);
+				} else if (err.stack) {
 					logger.error(err.message + ': ' + err.stack);
 				} else {
 					logger.error(err);
@@ -210,7 +222,7 @@ export class Linter extends EventEmitter {
 				.then((buffer) => {
 					// Check for empty files and exit early to prevent unnecessary work.
 					if (buffer.length === 0) {
-						throw new Error('This is an empty file, further analysis is not possible.');
+						throw new LinterError('This is an empty file, further analysis is not possible.');
 					}
 
 					if (options.duplicate === true) {
