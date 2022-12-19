@@ -1,5 +1,7 @@
 /* @flow */
 
+import fs from 'fs';
+
 /*::
 import type {minimistOptions, minimistOutput} from 'minimist';
 
@@ -42,7 +44,11 @@ export class ArgsHelper {
 	 * @return {any} The package JSON.
 	 */
 	static load_package_info()/*: any */ {
-		return require('../package.json');
+		// Importing JSON files doesn't work in node v16 and gives warnings in
+		// later versions.
+		const package_location = new URL('../package.json', import.meta.url);
+
+		return JSON.parse(fs.readFileSync(package_location, 'utf8'));
 	}
 
 	/**

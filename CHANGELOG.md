@@ -1,6 +1,8 @@
 Next
 ---
 - Enforce the minimum node version of v16
+- Prevent printing stack traces for linter errors.
+- Fix error when printing help.
 
 
 3.0.0
