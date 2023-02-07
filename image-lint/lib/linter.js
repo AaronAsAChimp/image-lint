@@ -3,7 +3,7 @@
 import {WorkHandler} from './work-handler.js';
 import {Hasher} from './hasher.js';
 import {ColorSpace} from './pixel-format.js';
-import {LoggerFactory} from './logger.js';
+import {ROOT_LOGGER} from './logger.js';
 import {EventEmitter} from 'events';
 import {ImageIdentifier} from './ident.js';
 
@@ -173,7 +173,6 @@ export class Linter extends EventEmitter {
 	 * @return {Linter}                 The linter for chaining.
 	 */
 	lint(folder/*: string[] */, options/*: LinterOptions */)/*: Linter */ {
-		const linter = this;
 		const handler = new WorkHandler();
 		const hasher = new Hasher();
 		let allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
@@ -194,7 +193,7 @@ export class Linter extends EventEmitter {
 		}
 
 		handler.on('next', (file/*: FileDescriptor */, done/*: () => void */) => {
-			const logger = LoggerFactory.get_log(file.path);
+			const logger = ROOT_LOGGER.get_logger(file.path);
 
 			/**
 			 * Handler an error from the loader
@@ -210,16 +209,18 @@ export class Linter extends EventEmitter {
 				} else {
 					logger.error(err);
 				}
-
-				linter.emit('file.completed', logger);
-
-				done();
 			}
 
 			// console.log(file.path);
 
 			file.loader.load()
 				.then((buffer) => {
+					// A file could still be loading when a fatal error occurs
+					// so check the status of the handler before continuing.
+					if (handler.is_stopped()) {
+						return;
+					}
+
 					// Check for empty files and exit early to prevent unnecessary work.
 					if (buffer.length === 0) {
 						throw new LinterError('This is an empty file, further analysis is not possible.');
@@ -236,6 +237,12 @@ export class Linter extends EventEmitter {
 					return this.get_info(file, buffer, logger, options);
 				})
 				.then((info/*: ImageInfo */) => {
+					// We could still be parsing a file when a fatal error
+					// occurs so check the status of the handler before continuing.
+					if (handler.is_stopped()) {
+						return;
+					}
+
 					if (!info.truncated) {
 						const color_space = info.pixel_format.color_space;
 						const min_bpp = options.bytes_per_pixel;
@@ -262,12 +269,20 @@ export class Linter extends EventEmitter {
 					} else {
 						logger.error('This image is truncated, further analysis is not possible.');
 					}
+				}, error_handler)
+				.catch(error_handler)
+				.finally(() => {
+					if (options.max_warnings >= 0 && ROOT_LOGGER.get_warning_count() > options.max_warnings) {
+						if (!handler.is_stopped()) {
+							logger.error(`Too many warnings. A maximum of ${options.max_warnings} warnings are allowed.`);
+							handler.stop();
+						}
+					}
 
 					this.emit('file.completed', logger);
 
 					done();
-				}, error_handler)
-				.catch(error_handler);
+				});
 		});
 
 		handler.on('end', () => {

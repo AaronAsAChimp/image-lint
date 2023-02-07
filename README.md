@@ -70,9 +70,20 @@ Color space validation will check the color space of the image and will issue a 
 $ image-lint --color_space CYMK,HSV,G ./images/
 ```
 
-
-
 **Remedy:** This kind of issue can be resolved by saving the image using the appropriate color mode.
+
+Adjusting the behavior of image-lint
+------------------------------------
+
+### Maximum warnings `--max_warnings` ###
+
+This flag will emit an error and stop linting when more than the maximum number of warnings are found. The default is to allow all warnings.
+
+```sh
+$ image-lint --max_warnings=10 ./images/
+```
+
+**Remedy:** Address the warnings to be at or below the maximum.
 
 Other Checks
 ------------

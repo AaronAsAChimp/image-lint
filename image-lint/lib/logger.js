@@ -3,13 +3,16 @@
 
 import chalk from 'chalk';
 
-/*::
-interface LogCounts {
-	info: number;
-	warn: number;
-	error: number;
-}
-*/
+/**
+ * @typedef {Object} LogCounts
+ * @property {number} info The count of the info logs
+ * @property {number} warn The count of the warning logs
+ * @property {number} error The count of the error logs.
+ */
+
+/**
+ * @typedef {keyof LogCounts} LogTypes
+ */
 
 /**
  * A logger for writing the output to a string.
@@ -25,16 +28,52 @@ export class Log {
 	 * Construct a new logger, generally you should use the logger factory
 	 * instead of directly constructing this object.
 	 *
-	 * @param  {string} filename The name of the file that is being linted.
+	 * @param  {string | null} filename The name of the file that is being linted.
+	 * @param  {Log | null} parent The parent logger.
 	 */
-	constructor(filename/*: string */) {
+	constructor(filename=null/*: string */, parent=null) {
+		/**
+		 * The name of the associated file if any,
+		 * @type {string}
+		 */
 		this.filename = filename;
+
+		/**
+		 * The parent logger if any.
+		 * @type {Log | null}
+		 */
+		this.parent = parent;
+
+		/**
+		 * The log messages.
+		 * @type {string}
+		 */
 		this.log = '';
+
+		this._muted = false;
+
+		/**
+		 * The log counts by type.
+		 * @type {LogCounts}
+		 */
 		this.count = {
 			'info': 0,
 			'warn': 0,
 			'error': 0,
 		};
+	}
+
+	/**
+	 * Increment the count for the givent type of log.
+	 *
+	 * @param  {LogTypes} type [description]
+	 */
+	_increment_count(type) {
+		this.count[type]++;
+
+		if (this.parent) {
+			this.parent._increment_count(type);
+		}
 	}
 
 	/**
@@ -46,12 +85,19 @@ export class Log {
 	}
 
 	/**
+	 * Stop printing new message to the log.
+	 */
+	mute() {
+		this._muted = true;
+	}
+
+	/**
 	 * Log a message at the 'info' level.
 	 *
 	 * @param  {string} message The message to be logged.
 	 */
 	info(message/*: string */) {
-		this.count.info++;
+		this._increment_count('info');
 		this.log += '\n  INFO:  ' + message;
 	}
 
@@ -61,7 +107,7 @@ export class Log {
 	 * @param  {string} message The message to be logged.
 	 */
 	warn(message/*: string */) {
-		this.count.warn++;
+		this._increment_count('warn');
 		this.log += '\n  ' + chalk.yellow('WARN:') + '  ' + message;
 	}
 
@@ -71,7 +117,7 @@ export class Log {
 	 * @param  {string} message The message to be logged.
 	 */
 	error(message/*: string */) {
-		this.count.error++;
+		this._increment_count('error');
 		this.log += '\n  ' + chalk.red('ERROR:') + '  ' + message;
 	}
 
@@ -89,6 +135,15 @@ export class Log {
 	 */
 	get_warning_count() {
 		return this.count.warn;
+	}
+
+	/**
+	 * Get a new child logger.
+	 * @param  {string} filename The name of the file being linted.
+	 * @return {Log}          	 The new logger.
+	 */
+	get_logger(filename) {
+		return new Log(filename, this);
 	}
 
 	/**
@@ -127,3 +182,5 @@ export class LoggerFactory {
 		return new Log(filename);
 	}
 }
+
+export const ROOT_LOGGER = new Log();

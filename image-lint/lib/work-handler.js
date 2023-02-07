@@ -33,6 +33,7 @@ export class WorkHandler /*:: <T> */ extends EventEmitter {
 		this._active_processes = 0;
 		this._done_proxy = this._done.bind(this);
 		this._iterator = null;
+		this._stopped = false;
 
 		this.on('handler.available', this._handler_available.bind(this));
 	}
@@ -64,15 +65,25 @@ export class WorkHandler /*:: <T> */ extends EventEmitter {
 		// console.log('handlers', this._active_handlers);
 		// console.log('processes', this._active_processes);
 
-		if (this._active_handlers >= 0) {
-			this.emit('handler.available');
-		} else {
-			throw new Error('No handlers available, did you call done?');
+		if (!this._stopped) {
+			if (this._active_handlers >= 0 && !this._stopped) {
+				this.emit('handler.available');
+			} else {
+				throw new Error('No handlers available, did you call done?');
+			}
 		}
 
 		if (this._active_processes <= 0) {
 			this.emit('end');
 		}
+	}
+
+	/**
+	 * Determine if the work handler is stopped.
+	 * @return {boolean} true if the work handler is stopped.
+	 */
+	is_stopped() {
+		return this._stopped;
 	}
 
 	/**
@@ -109,5 +120,14 @@ export class WorkHandler /*:: <T> */ extends EventEmitter {
 					console.error('Error', e);
 				}
 			});
+	}
+
+	/**
+	 * Stop the work handler before it has reached the end of the iterator. Any
+	 * currently running processes will be allowed to complete, but no new
+	 * proesses will be started.
+	 */
+	stop() {
+		this._stopped = true;
 	}
 }

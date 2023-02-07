@@ -27,6 +27,9 @@ const argument_config/*: minimistOptions */ = {
 	'string': [
 		'color_space',
 	],
+	'number': [
+		'max_warnings',
+	],
 	'alias': {
 		'bytes_per_pixel': 'b',
 		'byte_savings': 's',
@@ -40,7 +43,8 @@ const argument_config/*: minimistOptions */ = {
 		'duplicate': 'Find files that have been copied.',
 		'bytes_per_pixel': 'Set the maximum bytes per pixel before giving a warning.',
 		'byte_savings': 'Set the minimum byte savings before giving a warning.',
-		'color_space': 'Set the allowed color spaces separated by a comma',
+		'color_space': 'Set the allowed color spaces separated by a comma.',
+		'max_warnings': 'Set the maximum number of warnings allowed.',
 		'help': 'Print this message, then exit.',
 		'version': 'Print the version number and exit.',
 	},

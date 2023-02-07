@@ -8,4 +8,5 @@ export const defaults = {
 	'color_space': DEFAULT_COLOR_SPACES,
 	'mismatch': true,
 	'duplicate': true,
+	'max_warnings': -1,
 };

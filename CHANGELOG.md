@@ -1,5 +1,6 @@
 Next
 ---
+- Add a `--max_warnings` option that emits an error if there are too many warnings.
 - Enforce the minimum node version of v16
 - Prevent printing stack traces for linter errors.
 - Fix error when printing help.
