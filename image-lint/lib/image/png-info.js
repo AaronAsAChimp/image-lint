@@ -5,21 +5,14 @@
 import type {Dimensions} from '../image-info.js';
 */
 
-import crc from 'crc';
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
-
-const IHDR_OFFSET = 0xC;
-const SECTION_HEADER_WIDTH = 4;
-const SECTION_LENGTH_WIDTH = 4;
-const CRC_WIDTH = 4;
+import {PNGChunk, SECTION_LENGTH_WIDTH, SECTION_HEADER_WIDTH, CHUNK_TYPE_IEND, IHDR_OFFSET, CRC_WIDTH} from './png/chunk.js';
 
 const WIDTH_OFFSET = IHDR_OFFSET + SECTION_HEADER_WIDTH;
 const HEIGHT_OFFSET = WIDTH_OFFSET + 4;
 const BIT_DEPTH_OFFSET = HEIGHT_OFFSET + 4;
 const COLOR_TYPE_OFFSET = BIT_DEPTH_OFFSET + 1;
-
-const CHUNK_TYPE_IEND = 0x49454E44;
 
 // const IEND_CRC = 0xAE426082;
 const IEND_LENGTH = SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + CRC_WIDTH;
@@ -30,47 +23,6 @@ const ALPHA_TYPES = new Set([4, 6]);
 const INDEXED_TYPES = new Set([4]);
 
 // http://www.libpng.org/pub/png/spec/1.2/
-
-/**
- * A PNG chunk.
- */
-class PNGChunk {
-	/*::
-	length: number;
-	header: number;
-	data: Buffer;
-	crc32: number;
-	*/
-
-	/**
-	 * Construct a new PNG chunk.
-	 * @param  {Buffer} buffer The file buffer.
-	 * @param  {number} offset The offset of the beginning of the chunk.
-	 */
-	constructor(buffer/*: Buffer */, offset/*: number */) {
-		this.length = buffer.readUInt32BE(offset);
-		this.header = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH);
-		this.data = buffer.slice(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH, this.length);
-		this.crc32 = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length);
-	}
-
-	/**
-	 * Verify the CRC in the chunk.
-	 *
-	 * @return {boolean} True if its a valid chunk.
-	 */
-	verify()/*: boolean */ {
-		const header = Buffer.alloc(4);
-		let check = null;
-
-		header.writeUInt32BE(this.header, 0);
-
-		check = crc.crc32(header);
-		check = crc.crc32(this.data, check);
-
-		return check === this.crc32;
-	}
-}
 
 /**
  * A PNG info provider.

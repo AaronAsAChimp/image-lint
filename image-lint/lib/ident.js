@@ -91,11 +91,21 @@ export class ImageIdentifier {
 	}
 
 	/**
-	 * Get an instance of the info provider for this file type.
+	 * Get the class of the info provider for this file type.
 	 *
-	 * @return {InfoProvider} The info provider.
+	 * @return {typeof InfoProvider} The info provider.
 	 */
 	get_info_provider()/*: Class<InfoProvider> | null */ {
+		return null;
+	}
+
+	/**
+	 * Get an instance of the linter for specialized linting for this type
+	 * of file. Not all formats have additional linting.
+	 * @param {Bufer} buffer The image bufer.
+	 * @return {ImageLinter} The linter.
+	 */
+	get_linter(buffer) {
 		return null;
 	}
 

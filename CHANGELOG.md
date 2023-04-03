@@ -1,5 +1,10 @@
 Next
 ---
+
+- Detect files with the Acropalypse vulnerability.
+
+3.1.0
+-----
 - Add a `--max_warnings` option that emits an error if there are too many warnings.
 - Enforce the minimum node version of v16
 - Prevent printing stack traces for linter errors.

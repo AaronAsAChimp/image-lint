@@ -95,9 +95,9 @@ export class Linter extends EventEmitter {
 	 * @param  {Buffer} buffer          The file buffer.
 	 * @param  {Log} logger             The logger for printing errors.
 	 * @param  {LinterOptions} options  The options for the linter.
-	 * @return {Promise<ImageInfo>}     The image info.
+	 * @return {Promise<ImageIdentifier>}     The image info.
 	 */
-	get_info(
+	get_identifier(
 		file/*: FileDescriptor */,
 		buffer/*: Buffer */,
 		logger/*: Log */,
@@ -151,19 +151,36 @@ export class Linter extends EventEmitter {
 			}
 
 			if (identifier) {
-				const ProviderClass = identifier.get_info_provider();
-
-				if (!ProviderClass) {
-					reject(new LinterError('Unsupported file type'));
-				} else {
-					const provider = new ProviderClass();
-
-					resolve(provider.get_info(file_buffer));
-				}
+				resolve(identifier);
 			} else {
 				reject(new LinterError('Unknown file type'));
 			}
 		});
+	}
+
+	/**
+	 * Get the information for the file.
+	 *
+	 * @param  {ImageIdentifier} identifier  The file identifier.
+	 * @param  {Buffer} buffer          The file buffer.
+	 * @param  {Log} logger             The logger for printing errors.
+	 * @return {ImageInfo}     The image info.
+	 */
+	get_info(
+		identifier,
+		buffer/*: Buffer */)/*: Promise<ImageInfo> */ {
+		const ProviderClass = identifier.get_info_provider();
+		let image_info;
+
+		if (ProviderClass) {
+			const provider = new ProviderClass();
+
+			image_info = provider.get_info(buffer);
+		} else {
+			throw new LinterError('Unsupported file type');
+		}
+
+		return image_info;
 	}
 
 	/**
@@ -214,7 +231,7 @@ export class Linter extends EventEmitter {
 			// console.log(file.path);
 
 			file.loader.load()
-				.then((buffer) => {
+				.then(async (buffer) => {
 					// A file could still be loading when a fatal error occurs
 					// so check the status of the handler before continuing.
 					if (handler.is_stopped()) {
@@ -234,7 +251,15 @@ export class Linter extends EventEmitter {
 						}
 					}
 
-					return this.get_info(file, buffer, logger, options);
+					const identifier = await this.get_identifier(file, buffer, logger, options);
+					const linter = identifier.get_linter(buffer);
+
+					// Handle specialized linting logic for this type of file
+					if (linter) {
+						linter.lint(logger);
+					}
+
+					return this.get_info(identifier, buffer);
 				})
 				.then((info/*: ImageInfo */) => {
 					// We could still be parsing a file when a fatal error

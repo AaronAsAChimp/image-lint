@@ -3,6 +3,7 @@
 import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {PNGInfoProvider} from '../image/png-info.js';
+import {PNGImageLinter} from '../linter/png-linter.js';
 
 /**
  * An image identifier that identifies PNG images.
@@ -38,6 +39,13 @@ class PNGIdentifier extends MagicNumberIdentifier {
 	 */
 	get_info_provider() {
 		return PNGInfoProvider;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	get_linter(buffer) {
+		return new PNGImageLinter(buffer);
 	}
 }
 
