@@ -91,9 +91,9 @@ export class ImageIdentifier {
 	}
 
 	/**
-	 * Get the class of the info provider for this file type.
+	 * Get an instance of the info provider for this file type.
 	 *
-	 * @return {typeof InfoProvider} The info provider.
+	 * @return {InfoProvider} The info provider.
 	 */
 	get_info_provider()/*: Class<InfoProvider> | null */ {
 		return null;
