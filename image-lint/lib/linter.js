@@ -256,6 +256,7 @@ export class Linter extends EventEmitter {
 
 					// Handle specialized linting logic for this type of file
 					if (linter) {
+						// console.log(file.path);
 						linter.lint(logger);
 					}
 

@@ -3,6 +3,7 @@
 import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {JPGInfoProvider} from '../image/jpg-info.js';
+import {JPEGImageLinter} from '../linter/jpg-linter.js';
 
 /**
  * An image identifier that identifies JPEG images.
@@ -40,6 +41,13 @@ class JPGIdentifier extends MagicNumberIdentifier {
 	 */
 	get_info_provider() {
 		return JPGInfoProvider;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	get_linter(buffer) {
+		return new JPEGImageLinter(buffer);
 	}
 }
 
