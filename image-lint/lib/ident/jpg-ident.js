@@ -1,14 +1,14 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {JPGInfoProvider} from '../image/jpg-info.js';
 import {JPEGImageLinter} from '../linter/jpg-linter.js';
+import {JPEGChunk} from '../image/jpg/chunk.js';
 
 /**
  * An image identifier that identifies JPEG images.
  */
-class JPGIdentifier extends MagicNumberIdentifier {
+export default class JPGIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -49,6 +49,19 @@ class JPGIdentifier extends MagicNumberIdentifier {
 	get_linter(buffer) {
 		return new JPEGImageLinter(buffer);
 	}
-}
 
-ImageIdentifier.register(JPGIdentifier);
+
+	/**
+	 * @inheritDoc
+	 */
+	debug_print(buffer, write_stream) {
+		const chunks = JPEGChunk.get_chunks(buffer, 0);
+
+		write_stream.write(`Number of chunks: ${chunks.length}\n`);
+
+		for (const chunk of chunks) {
+			write_stream.write(chunk.describe());
+			write_stream.write('\n');
+		}
+	}
+}

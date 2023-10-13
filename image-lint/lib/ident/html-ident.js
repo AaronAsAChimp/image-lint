@@ -1,12 +1,11 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {XMLIdentifier} from './xml-ident.js';
 
 /**
  * An image identifier that identifies HTML files.
  */
-class HTMLIdentifier extends XMLIdentifier {
+export default class HTMLIdentifier extends XMLIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -35,5 +34,3 @@ class HTMLIdentifier extends XMLIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(HTMLIdentifier);

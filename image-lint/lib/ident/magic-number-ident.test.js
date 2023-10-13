@@ -1,6 +1,6 @@
 /* @flow */
 
-import {ImageIdentifier} from '../../lib/ident.js';
+import {ImageIdentifierRegistry} from '../../lib/ident-registry.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
@@ -34,15 +34,15 @@ class FoobarIdentifier extends MagicNumberIdentifier {
 }
 
 beforeEach(() => {
-	ImageIdentifier.register(FoobarIdentifier);
+	ImageIdentifierRegistry.register(FoobarIdentifier);
 });
 
 afterEach(() => {
-	ImageIdentifier.clear_registry();
+	ImageIdentifierRegistry.clear_registry();
 });
 
 test(`a magic number identifier can identify an image`, () => {
-	const ident = ImageIdentifier.from_extension('.foo');
+	const ident = ImageIdentifierRegistry.from_extension('.foo');
 	const image = Buffer.from('5E1F1EDA7A', 'hex');
 
 	expect(ident).toBeDefined();
@@ -54,7 +54,7 @@ test(`a magic number identifier can identify an image`, () => {
 });
 
 test(`a magic number identifier can reject an invalid file`, () => {
-	const ident = ImageIdentifier.from_extension('.foo');
+	const ident = ImageIdentifierRegistry.from_extension('.foo');
 	const image = Buffer.from('0000000000', 'hex');
 
 	expect(ident).toBeDefined();
@@ -65,7 +65,7 @@ test(`a magic number identifier can reject an invalid file`, () => {
 });
 
 test(`a magic number identifier can fail a truncated file`, () => {
-	const ident = ImageIdentifier.from_extension('.foo');
+	const ident = ImageIdentifierRegistry.from_extension('.foo');
 	const image = Buffer.from('5E1F1E', 'hex');
 
 	expect(ident).toBeDefined();

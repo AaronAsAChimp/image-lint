@@ -1,6 +1,5 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
@@ -8,7 +7,7 @@ import {MagicNumberIdentifier} from './magic-number-ident.js';
  *
  * https://en.wikipedia.org/wiki/BMP_file_format
  */
-class BMPIdentifier extends MagicNumberIdentifier {
+export default class BMPIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -35,5 +34,3 @@ class BMPIdentifier extends MagicNumberIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(BMPIdentifier);

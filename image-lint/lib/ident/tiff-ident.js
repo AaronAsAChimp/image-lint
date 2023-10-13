@@ -1,12 +1,11 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
  * An image identifier that identifies TIFF images.
  */
-class TIFFIdentifier extends MagicNumberIdentifier {
+export default class TIFFIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -34,5 +33,3 @@ class TIFFIdentifier extends MagicNumberIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(TIFFIdentifier);

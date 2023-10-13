@@ -9,7 +9,7 @@ const MINIMUM_SIZE = 4; // 4 == size of FIRST_BYTE + size of *_MAGIC
 /**
  * An image identifier that identifies ICO images.
  */
-class IcoIdentifier extends ImageIdentifier {
+export default class IcoIdentifier extends ImageIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -49,5 +49,3 @@ class IcoIdentifier extends ImageIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(IcoIdentifier);

@@ -5,7 +5,7 @@ import {Hasher} from './hasher.js';
 import {ColorSpace} from './pixel-format.js';
 import {ROOT_LOGGER} from './logger.js';
 import {EventEmitter} from 'events';
-import {ImageIdentifier} from './ident.js';
+import {ImageIdentifierRegistry} from './ident-registry.js';
 
 /*::
 import type { Dimensions, ImageInfo } from './image-info';
@@ -24,20 +24,10 @@ export type LinterOptions = {
 };
  */
 
-import './ident/png-ident.js';
-import './ident/gif-ident.js';
-import './ident/jpg-ident.js';
-import './ident/jxl-ident.js';
-import './ident/avif-ident.js';
+/**
+ * @typedef {import('./ident.js').ImageIdentifier} ImageIdentifier
+ */
 
-// Identify only
-import './ident/bmp-ident.js';
-import './ident/psd-ident.js';
-import './ident/ico-ident.js';
-import './ident/tiff-ident.js';
-import './ident/webp-ident.js';
-import './ident/svg-ident.js';
-import './ident/html-ident.js';
 
 /**
  * An unavoidable linter error that prevents the linter from continuing. This
@@ -104,7 +94,7 @@ export class Linter extends EventEmitter {
 		options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
 		return new Promise((resolve, reject) => {
 			const extension = file.extension.toLowerCase();
-			let identifier = ImageIdentifier.from_extension(extension);
+			let identifier = ImageIdentifierRegistry.from_extension(extension);
 			let file_buffer/*: ?Buffer */ = null;
 			let is_of_file_type = false;
 
@@ -131,7 +121,7 @@ export class Linter extends EventEmitter {
 
 				identifier = null;
 
-				for (const candidate of ImageIdentifier.all_providers()) {
+				for (const candidate of ImageIdentifierRegistry.all_providers()) {
 					if (candidate.can_validate(file_buffer) && candidate.is_of_file_type(file_buffer)) {
 						identifier = candidate;
 					}
@@ -209,14 +199,79 @@ export class Linter extends EventEmitter {
 			}
 		}
 
-		handler.on('next', (file/*: FileDescriptor */, done/*: () => void */) => {
+		handler.on('next', async (file/*: FileDescriptor */, done/*: () => void */) => {
 			const logger = ROOT_LOGGER.get_logger(file.path);
 
-			/**
-			 * Handler an error from the loader
-			 * @param  {Error} err An error.
-			 */
-			function error_handler(err/*: Error */) {
+			// console.log(file.path);
+
+			try {
+				const buffer = await file.loader.load();
+				// A file could still be loading when a fatal error occurs
+				// so check the status of the handler before continuing.
+				if (handler.is_stopped()) {
+					done();
+					return;
+				}
+
+				// Check for empty files and exit early to prevent unnecessary work.
+				if (buffer.length === 0) {
+					throw new LinterError('This is an empty file, further analysis is not possible.');
+				}
+
+				if (options.duplicate === true) {
+					const found = hasher.contains(file.path, buffer);
+
+					if (found) {
+						logger.warn('This file is a duplicate of: ' + found);
+					}
+				}
+
+				const identifier = await this.get_identifier(file, buffer, logger, options);
+
+				const info = await this.get_info(identifier, buffer);
+
+				// We could still be parsing a file when a fatal error
+				// occurs so check the status of the handler before continuing.
+				if (handler.is_stopped()) {
+					done();
+					return;
+				}
+
+				if (!info.truncated) {
+					const color_space = info.pixel_format.color_space;
+					const min_bpp = options.bytes_per_pixel;
+					const min_savings = options.byte_savings;
+					const size_difference = info.size - this.calculate_optimial_size(info.dimensions, min_bpp);
+
+					logger.info(this.describe_file(info.dimensions));
+
+					if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
+						logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
+						logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
+					}
+
+					if (allowed_color_spaces) {
+						if (color_space.name === 'UNK') {
+							const channels = color_space.channels > 0 ? color_space.channels : 'an unknown number of';
+
+							logger.error(`This image has an unknown color space ${ color_space.getUnkFormat() } with ${ channels } channels.`);
+						} else if (allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
+							// console.log('Color Space', color_space);
+							logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
+						}
+					}
+
+					const linter = identifier.get_linter(buffer);
+
+					// Handle specialized linting logic for this type of file
+					if (linter) {
+						// console.log(file.path);
+						linter.lint(logger);
+					}
+				} else {
+					logger.error('This image is truncated, further analysis is not possible.');
+				}
+			} catch (err) {
 				if (err instanceof LinterError) {
 					// A there was a problem with the file that prevents linting
 					// from continuing.
@@ -226,89 +281,18 @@ export class Linter extends EventEmitter {
 				} else {
 					logger.error(err);
 				}
+			} finally {
+				if (options.max_warnings >= 0 && ROOT_LOGGER.get_warning_count() > options.max_warnings) {
+					if (!handler.is_stopped()) {
+						logger.error(`Too many warnings. A maximum of ${options.max_warnings} warnings are allowed.`);
+						handler.stop();
+					}
+				}
+
+				this.emit('file.completed', logger);
+
+				done();
 			}
-
-			// console.log(file.path);
-
-			file.loader.load()
-				.then(async (buffer) => {
-					// A file could still be loading when a fatal error occurs
-					// so check the status of the handler before continuing.
-					if (handler.is_stopped()) {
-						return;
-					}
-
-					// Check for empty files and exit early to prevent unnecessary work.
-					if (buffer.length === 0) {
-						throw new LinterError('This is an empty file, further analysis is not possible.');
-					}
-
-					if (options.duplicate === true) {
-						const found = hasher.contains(file.path, buffer);
-
-						if (found) {
-							logger.warn('This file is a duplicate of: ' + found);
-						}
-					}
-
-					const identifier = await this.get_identifier(file, buffer, logger, options);
-					const linter = identifier.get_linter(buffer);
-
-					// Handle specialized linting logic for this type of file
-					if (linter) {
-						// console.log(file.path);
-						linter.lint(logger);
-					}
-
-					return this.get_info(identifier, buffer);
-				})
-				.then((info/*: ImageInfo */) => {
-					// We could still be parsing a file when a fatal error
-					// occurs so check the status of the handler before continuing.
-					if (handler.is_stopped()) {
-						return;
-					}
-
-					if (!info.truncated) {
-						const color_space = info.pixel_format.color_space;
-						const min_bpp = options.bytes_per_pixel;
-						const min_savings = options.byte_savings;
-						const size_difference = info.size - this.calculate_optimial_size(info.dimensions, min_bpp);
-
-						logger.info(this.describe_file(info.dimensions));
-
-						if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
-							logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
-							logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
-						}
-
-						if (allowed_color_spaces) {
-							if (color_space.name === 'UNK') {
-								const channels = color_space.channels > 0 ? color_space.channels : 'an unknown number of';
-
-								logger.error(`This image has an unknown color space ${ color_space.getUnkFormat() } with ${ channels } channels.`);
-							} else if (allowed_color_spaces.size && !allowed_color_spaces.has(color_space)) {
-								// console.log('Color Space', color_space);
-								logger.warn(`The color space of this image is ${ color_space.name }. It must be one of ${ options.color_space }.`);
-							}
-						}
-					} else {
-						logger.error('This image is truncated, further analysis is not possible.');
-					}
-				}, error_handler)
-				.catch(error_handler)
-				.finally(() => {
-					if (options.max_warnings >= 0 && ROOT_LOGGER.get_warning_count() > options.max_warnings) {
-						if (!handler.is_stopped()) {
-							logger.error(`Too many warnings. A maximum of ${options.max_warnings} warnings are allowed.`);
-							handler.stop();
-						}
-					}
-
-					this.emit('file.completed', logger);
-
-					done();
-				});
 		});
 
 		handler.on('end', () => {

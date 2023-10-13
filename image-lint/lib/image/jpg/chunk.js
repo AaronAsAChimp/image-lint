@@ -219,7 +219,7 @@ class EntropyCodedSegment extends JPEGChunk {
 	 * @return {string} The description of this chunk.
 	 */
 	describe() {
-		return 'Entropy Coded Segment';
+		return `Entropy Coded Segment (offset ${ this.offset }, length ${ this.length })`;
 	}
 
 	/**

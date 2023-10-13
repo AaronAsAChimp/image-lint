@@ -1,14 +1,14 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {PNGInfoProvider} from '../image/png-info.js';
 import {PNGImageLinter} from '../linter/png-linter.js';
+import {PNGChunk, FIRST_CHUNK_OFFSET} from '../image/png/chunk.js';
 
 /**
  * An image identifier that identifies PNG images.
  */
-class PNGIdentifier extends MagicNumberIdentifier {
+export default class PNGIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -47,6 +47,18 @@ class PNGIdentifier extends MagicNumberIdentifier {
 	get_linter(buffer) {
 		return new PNGImageLinter(buffer);
 	}
-}
 
-ImageIdentifier.register(PNGIdentifier);
+	/**
+	 * @inheritDoc
+	 */
+	debug_print(buffer, write_stream) {
+		const chunks = PNGChunk.get_chunks(buffer, FIRST_CHUNK_OFFSET);
+
+		write_stream.write(`Number of chunks: ${chunks.length}\n`);
+
+		for (const chunk of chunks) {
+			write_stream.write(chunk.describe());
+			write_stream.write('\n');
+		}
+	}
+}

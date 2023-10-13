@@ -1,0 +1,41 @@
+{
+    "name": "image-debugger",
+    "version": "3.1.0",
+    "description": "A tool for disecting images.",
+    "main": "lib/api.js",
+    "repository": "github:AaronAsAChimp/image-lint",
+    "homepage": "https://aaronasachimp.github.io/image-lint/",
+    "directories": {
+        "test": "test"
+    },
+    "bin": {
+        "image-debugger": "bin/image-debugger.js"
+    },
+    "scripts": {
+        "ci:lint": "eslint . --config .eslintrc.json --ext .js"
+    },
+    "keywords": [],
+    "type": "module",
+    "author": "Aaron Spaulding",
+    "license": "MIT",
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "dependencies": {
+        "chalk": "^4.1.0",
+        "crc": "^3.8.0",
+        "got": "^11.8.5",
+        "minimist": "^1.2.5",
+        "puppeteer": "^13.5.1",
+        "tmp": "0.0.33"
+    },
+    "devDependencies": {
+        "eslint": "^8.24.0",
+        "eslint-config-google": "^0.14.0",
+        "flow-bin": "^0.171.0",
+        "jest": "^26.6.3"
+    },
+    "jest": {
+        "rootDir": "lib"
+    }
+}

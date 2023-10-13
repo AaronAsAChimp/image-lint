@@ -104,9 +104,10 @@ export class ArgsHelper {
 
 		console.log(`${ info.name } - ${ info.description }`);
 		console.log(`\nUsage: ${ config['-help-usage'] }`);
-		console.log('\nOptions: ');
 
-		if ('-help-options' in config) {
+		if ('-help-options' in config && Object.keys(config['-help-options']).length > 0) {
+			console.log('\nOptions: ');
+
 			for (const option in config['-help-options']) {
 				if (config['-help-options'].hasOwnProperty(option)) {
 					const description = config['-help-options'][option];

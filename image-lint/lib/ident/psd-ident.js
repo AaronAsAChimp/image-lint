@@ -1,12 +1,11 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 
 /**
  * An image identifier that identifies PSD images.
  */
-class PSDIdentifier extends MagicNumberIdentifier {
+export default class PSDIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -34,5 +33,3 @@ class PSDIdentifier extends MagicNumberIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(PSDIdentifier);

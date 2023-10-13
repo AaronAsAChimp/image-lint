@@ -1,13 +1,12 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {GIFInfoProvider} from '../image/gif-info.js';
 
 /**
  * An image identifier that identifies GIF images.
  */
-class GIFIdentifier extends MagicNumberIdentifier {
+export default class GIFIdentifier extends MagicNumberIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -40,5 +39,3 @@ class GIFIdentifier extends MagicNumberIdentifier {
 		return GIFInfoProvider;
 	}
 }
-
-ImageIdentifier.register(GIFIdentifier);

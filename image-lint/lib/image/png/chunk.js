@@ -60,6 +60,16 @@ export class PNGChunk {
 	}
 
 	/**
+	 * Describe this chunk.
+	 * @return {string} The description of this chunk.
+	 */
+	describe() {
+		const name = Buffer.from(this.header.toString(16), 'hex');
+
+		return `${ name } (offset ${ this.offset }, length ${ this.length })`;
+	}
+
+	/**
 	 * Parse all of the chunks from the provided buffer.
 	 * @param  {Buffer} buffer The image buffer.
 	 * @param  {number} offset The offset of where to start parsing.

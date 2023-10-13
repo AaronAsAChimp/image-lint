@@ -1,12 +1,11 @@
 /* @flow */
 
-import {ImageIdentifier} from '../ident.js';
 import {XMLIdentifier} from './xml-ident.js';
 
 /**
  * An image identifier that identifies SVG images.
  */
-class SVGIdentifier extends XMLIdentifier {
+export default class SVGIdentifier extends XMLIdentifier {
 	/**
 	 * @inheritDoc
 	 */
@@ -32,5 +31,3 @@ class SVGIdentifier extends XMLIdentifier {
 		];
 	}
 }
-
-ImageIdentifier.register(SVGIdentifier);

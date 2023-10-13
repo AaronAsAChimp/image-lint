@@ -1,12 +1,12 @@
 /* @flow */
 
-import {ImageIdentifier} from '../../lib/ident.js';
+import {ImageIdentifierRegistry} from '../../lib/ident-registry.js';
 
 import './ico-ident.js';
 
 
 test(`an ico identifier can identify an image`, () => {
-	const ident = ImageIdentifier.from_extension('.ico');
+	const ident = ImageIdentifierRegistry.from_extension('.ico');
 	const image = Buffer.from('0000010001004040', 'hex');
 
 	expect(ident).toBeDefined();
@@ -18,7 +18,7 @@ test(`an ico identifier can identify an image`, () => {
 });
 
 test(`an ico identifier can reject an invalid file`, () => {
-	const ident = ImageIdentifier.from_extension('.ico');
+	const ident = ImageIdentifierRegistry.from_extension('.ico');
 	const image = Buffer.from('0000000000000000', 'hex');
 
 	expect(ident).toBeDefined();
@@ -29,7 +29,7 @@ test(`an ico identifier can reject an invalid file`, () => {
 });
 
 test(`an ico identifier can fail a truncated file`, () => {
-	const ident = ImageIdentifier.from_extension('.ico');
+	const ident = ImageIdentifierRegistry.from_extension('.ico');
 	const image = Buffer.from('00', 'hex');
 
 	expect(ident).toBeDefined();

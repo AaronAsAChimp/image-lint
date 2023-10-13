@@ -43,6 +43,15 @@ export class ISOBMFFAtom {
 	}
 
 	/**
+	 * Describe this atom.
+	 * @param {string} indent The indent to add to this description.
+	 * @return {string} The description of this atom.
+	 */
+	describe(indent='') {
+		return `${ indent } ${ this.tag } (length ${ this.length })\n`;
+	}
+
+	/**
 	 * Read a block from a buffer.
 	 * @param  {Buffer} buffer  The buffer object to read from.
 	 * @param  {number} offset  The offset to the beginning of the block.
@@ -132,6 +141,25 @@ class ISOBMFFBlock extends ISOBMFFAtom {
 
 			yield block;
 		}
+	}
+
+	/**
+	 * Describe this block.
+	 * @param {string} indent The indent to add to this description.
+	 * @return {string} The description of this block.
+	 */
+	describe(indent='') {
+		const desc = super.describe(indent);
+		const children = this.children;
+		let children_desc = '';
+
+		if (children) {
+			for (const child of Object.values(children)) {
+				children_desc += child.describe(indent + '    ');
+			}
+		}
+
+		return desc + children_desc;
 	}
 }
 
