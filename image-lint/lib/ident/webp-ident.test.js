@@ -1,11 +1,12 @@
 /* @flow */
 
-import {ImageIdentifier} from '../../lib/ident.js';
+import {ImageIdentifierRegistry} from '../../lib/ident-registry.js';
+import {WEBPInfoProvider} from '../image/webp-info.js';
 
 import './webp-ident.js';
 
 test(`a webp identifier can identify an image`, () => {
-	const ident = ImageIdentifier.from_extension('.webp');
+	const ident = ImageIdentifierRegistry.from_extension('.webp');
 	const image = Buffer.from('5249464696620000574542505650384C', 'hex');
 
 	expect(ident).toBeDefined();
@@ -17,7 +18,7 @@ test(`a webp identifier can identify an image`, () => {
 });
 
 test(`a webp identifier can reject an invalid file`, () => {
-	const ident = ImageIdentifier.from_extension('.webp');
+	const ident = ImageIdentifierRegistry.from_extension('.webp');
 	const image = Buffer.from('000000000000000000000000', 'hex');
 
 	expect(ident).toBeDefined();
@@ -28,7 +29,7 @@ test(`a webp identifier can reject an invalid file`, () => {
 });
 
 test(`a webp identifier can fail a truncated file`, () => {
-	const ident = ImageIdentifier.from_extension('.webp');
+	const ident = ImageIdentifierRegistry.from_extension('.webp');
 	const image = Buffer.from('52494646', 'hex');
 
 	expect(ident).toBeDefined();
