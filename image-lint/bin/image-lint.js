@@ -61,7 +61,10 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	let folder = argv._;
 	let error_count = 0;
 	let warning_count = 0;
-	const finder = new MultiFinder(ImageIdentifierRegistry.get_all_extensions(), ImageIdentifierRegistry.get_all_mimes());
+	const finder = new MultiFinder(
+		ImageIdentifierRegistry.get_all_extensions(),
+		ImageIdentifierRegistry.get_all_mimes(),
+	);
 	const cli_linter = new Linter(finder);
 
 	if (!folder.length) {

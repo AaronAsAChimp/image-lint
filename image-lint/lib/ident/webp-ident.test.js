@@ -1,7 +1,6 @@
 /* @flow */
 
 import {ImageIdentifierRegistry} from '../../lib/ident-registry.js';
-import {WEBPInfoProvider} from '../image/webp-info.js';
 
 import './webp-ident.js';
 
