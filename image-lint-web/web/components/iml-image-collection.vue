@@ -1,7 +1,10 @@
 <script>
 import {Linter, BufferArrayFinder, ImageIdentifierRegistry} from 'image-lint';
 
-const finder = new BufferArrayFinder(ImageIdentifierRegistry.get_all_extensions(), ImageIdentifierRegistry.get_all_mimes());
+const finder = new BufferArrayFinder(
+	ImageIdentifierRegistry.get_all_extensions(),
+	ImageIdentifierRegistry.get_all_mimes(),
+);
 
 export default {
 	'props': {
