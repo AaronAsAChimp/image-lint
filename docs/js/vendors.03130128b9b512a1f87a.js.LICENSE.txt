@@ -1,4 +1,10 @@
 /*!
+  * vue-router v4.2.5
+  * (c) 2023 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
@@ -6,10 +12,12 @@
  */
 
 /*!
- * github-buttons v2.21.1
- * (c) 2021 なつき
+ * github-buttons v2.27.0
+ * (c) 2023 なつき
  * @license BSD-2-Clause
  */
+
+/*! #__NO_SIDE_EFFECTS__ */
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 

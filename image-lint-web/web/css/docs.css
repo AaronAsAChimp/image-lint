@@ -1,0 +1,44 @@
+@import "./variables.css";
+
+.docs-page {
+	padding: 20px;
+}
+
+.docs-page pre {
+	padding: 2em;
+}
+
+.docs-page h1,
+.docs-page h2 {
+	margin: 2em 0 0.5em;
+}
+
+.docs-page p {
+	line-height: 1.8;
+	margin: 0.5em 0;
+}
+
+.docs-page .toc {
+	background: var(--color-layer-bg);
+	padding: 1em;
+}
+
+.docs-page .toc-level {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.docs-page .toc-level .toc-level {
+	padding-left: 0.6em;
+}
+
+.docs-page .toc-link {
+	display: block;
+	padding: 0.4em;
+	text-decoration: none;
+}
+
+.docs-page .toc-link-h1 {
+	font-weight: bold;
+}

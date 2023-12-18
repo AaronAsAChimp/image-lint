@@ -1,16 +1,17 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const {VueLoaderPlugin} = require('vue-loader');
-const packageJson = require('../image-lint/package.json');
+import path from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import {VueLoaderPlugin} from 'vue-loader';
+import packageJson from '../image-lint/package.json' assert {"type": "json"};
+import {fileURLToPath} from 'url';
 
 const isProduction = process.env.NODE_ENV == 'production';
 
 
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const config = {
 	entry: './web/js/index.js',
@@ -62,10 +63,10 @@ const config = {
 			// 'vue$': 'vue/dist/vue.esm-bundler.js'
 		},
 		fallback: {
-			'path': require.resolve('path-browserify'),
-			'crypto': require.resolve('crypto-browserify'),
-			'stream': require.resolve('stream-browserify'),
-			'buffer': require.resolve('buffer/'),
+			'path': fileURLToPath(import.meta.resolve('path-browserify')),
+			'crypto': fileURLToPath(import.meta.resolve('crypto-browserify')),
+			'stream': fileURLToPath(import.meta.resolve('stream-browserify')),
+			'buffer': fileURLToPath(import.meta.resolve('buffer/')),
 		},
 	},
 	module: {
@@ -82,11 +83,28 @@ const config = {
 				test: /\.vue$/i,
 				loader: 'vue-loader',
 			},
+			{
+				test: /\.md$/i,
+				use: [
+					'vue-loader',
+					{
+						loader: fileURLToPath(import.meta.resolve('./html-to-vue-loader.js')),
+						options: {
+							className: 'docs-page',
+							styleSheet: '../css/docs.css',
+						}
+					},
+					{
+						loader: fileURLToPath(import.meta.resolve('./remark-loader.js')),
+						options: {},
+					},
+				],
+			},
 		],
 	},
 };
 
-module.exports = () => {
+export default () => {
 	if (isProduction) {
 		config.mode = 'production';
 

@@ -1,6 +1,7 @@
 :root {
 	--color-bg: #363636;
 	--color-bg-contrast:  white;
+	--color-bg-contrast-layer: rgba(255, 255, 255, 0.3);
 
 	--color-layer-bg: #464646;
 
@@ -9,6 +10,8 @@
 	--color-status-warn: #EDC951;
 	--color-status-failure: #EB6841;
 	--color-status-error:  #CC2A36;
+
+	--color-status-good-light: #00bed1; /* Lightened 10% */
 
 	--color-status-good-contrast:  white;
 }

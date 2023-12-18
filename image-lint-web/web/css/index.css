@@ -1,5 +1,6 @@
 @import "@fontsource/lato/300.css";
 @import "@fontsource/lato/400.css";
+@import "@fontsource/lato/700.css";
 
 @import "./variables.css";
 
@@ -8,4 +9,12 @@ body {
 	color: var(--color-bg-contrast);
 	background: var(--color-bg);
 	margin: 0;
+}
+
+a {
+	color: var(--color-status-good);
+}
+
+a:hover {
+	color: var(--color-status-good-light);
 }
