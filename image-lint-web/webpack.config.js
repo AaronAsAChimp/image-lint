@@ -4,10 +4,13 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import {VueLoaderPlugin} from 'vue-loader';
-import packageJson from '../image-lint/package.json' assert {"type": "json"};
+// import packageJson from '../image-lint/package.json';
 import {fileURLToPath} from 'url';
+import {readFile} from 'fs/promises';
 
 const isProduction = process.env.NODE_ENV == 'production';
+
+const packageJson = JSON.parse(await readFile(fileURLToPath(import.meta.resolve('../image-lint/package.json'))));
 
 
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
@@ -92,7 +95,7 @@ const config = {
 						options: {
 							className: 'docs-page',
 							styleSheet: '../css/docs.css',
-						}
+						},
 					},
 					{
 						loader: fileURLToPath(import.meta.resolve('./remark-loader.js')),
