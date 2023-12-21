@@ -9,7 +9,6 @@ import {fileURLToPath} from 'url';
 import {readFile} from 'fs/promises';
 
 const isProduction = process.env.NODE_ENV == 'production';
-
 const packageJson = JSON.parse(await readFile(fileURLToPath(import.meta.resolve('../image-lint/package.json'))));
 
 
@@ -46,6 +45,9 @@ const config = {
 		],
 	},
 	plugins: [
+		new webpack.EnvironmentPlugin({
+			'BASE_PATH': '/',
+		}),
 		new HtmlWebpackPlugin({
 			title: `${ packageJson.name } - ${ packageJson.version }`,
 			meta: {

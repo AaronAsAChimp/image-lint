@@ -18,6 +18,7 @@ const rootEl = document.createElement('div');
 body.appendChild(rootEl);
 
 const router = createRouter({
+	base: process.env.BASE_PATH,
 	history: createWebHistory(),
 	routes: [
 		{
