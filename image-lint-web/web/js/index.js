@@ -11,6 +11,11 @@ import ImlDropzone from '../components/iml-dropzone.vue';
 
 import '../css/index.css';
 
+const params = new URLSearchParams(window.location.search);
+
+if (params.has('url')) {
+	window.history.replaceState(null, null, decodeURIComponent(params.get('url')));
+}
 
 const body = document.body;
 const rootEl = document.createElement('div');
