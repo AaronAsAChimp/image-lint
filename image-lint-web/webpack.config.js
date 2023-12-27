@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import {VueLoaderPlugin} from 'vue-loader';
 // import packageJson from '../image-lint/package.json';
 import {fileURLToPath} from 'url';
@@ -14,12 +15,13 @@ const packageJson = JSON.parse(await readFile(fileURLToPath(import.meta.resolve(
 
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const DOCS_DIR = path.resolve(__dirname, '../docs');
 
 const config = {
 	entry: './web/js/index.js',
 	devtool: isProduction ? 'source-map' : 'eval',
 	output: {
-		path: path.resolve(__dirname, '../docs'),
+		path: DOCS_DIR,
 		filename: 'js/[name].[contenthash].js',
 		clean: true,
 	},
@@ -62,6 +64,14 @@ const config = {
 			__VUE_PROD_DEVTOOLS__: false,
 		}),
 		new VueLoaderPlugin(),
+		new CopyPlugin({
+			patterns: [
+				{
+					from: 'web/404.html',
+					to: DOCS_DIR,
+				},
+			],
+		}),
 	],
 	resolve: {
 		alias: {
