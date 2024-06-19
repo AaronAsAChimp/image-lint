@@ -29,7 +29,10 @@ export class PNGChunk {
 		this.offset = offset;
 		this.length = buffer.readUInt32BE(offset);
 		this.header = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH);
-		this.data = buffer.slice(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH, this.length);
+		this.data = buffer.subarray(
+			offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH,
+			offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length,
+		);
 		this.crc32 = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length);
 	}
 
@@ -66,7 +69,7 @@ export class PNGChunk {
 	describe() {
 		const name = Buffer.from(this.header.toString(16), 'hex');
 
-		return `${ name } (offset ${ this.offset }, length ${ this.length })`;
+		return `${ name } (offset ${ this.offset }, length ${ this.length }, crc32 0x${ this.crc32.toString(16) } ${ this.verify() ? '\u2713' : '\u2717' })`;
 	}
 
 	/**

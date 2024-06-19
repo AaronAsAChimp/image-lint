@@ -9,6 +9,7 @@ test(`reading an IHDR chunk from a PNG file`, () => {
 
 	// Assert
 	expect(chunks[0].header).toBe(0x49484452);
+	expect(chunks[0].verify()).toBe(true);
 });
 
 test(`reading an IEND chunk from a PNG file`, () => {
@@ -20,4 +21,5 @@ test(`reading an IEND chunk from a PNG file`, () => {
 
 	// Assert
 	expect(chunks[0].header).toBe(0x49454E44);
+	expect(chunks[0].verify()).toBe(true);
 });
