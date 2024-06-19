@@ -3,6 +3,7 @@
   "transformers": {
     "*.md": [ "./remark-transformer.js" ],
     "template:*.md": [ "./remark-transformer.js" ],
+    "style:*.md": [ "./remark-transformer.js" ],
     "custom:*.md": [ "./remark-transformer.js" ]
   }
 }

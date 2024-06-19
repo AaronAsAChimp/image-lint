@@ -14,8 +14,12 @@ import rehypeStringify from 'rehype-stringify';
  * @return {Promise<String>} The module content
  */
 export default new Transformer({
-	async transform({asset}) {
-		const md = asset.getCode();
+	async transform({config, options, asset}) {
+		// console.log(options);
+		// const classAttr = options.className ? ` class="${ options.className}"` : '';
+		// const styleSheet = options.styleSheet ? `@import "${ options.styleSheet }";` : '';
+
+		const md = await asset.getCode();
 		const html = await unified()
 			.use(remarkParse)
 			.use(remarkRehype)
@@ -25,17 +29,21 @@ export default new Transformer({
 			.use(rehypeStringify)
 			.process(md);
 
+		// console.log(`md: ${ md }`);
+		// console.log(`html: ${ html }`);
+
 		asset.type = 'vue';
 		asset.setCode(`
 <script></script>
 
 <template>
-	<div>
+	<div class="docs-page">
 	${ html.toString() }
 	</div>
 </template>
 
 <style>
+@import "../css/docs.css";
 </style>
 `);
 
