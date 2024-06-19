@@ -11,7 +11,9 @@ export default {
 		'files': function* (dt) {
 			if (dt.items) {
 				for (const i of dt.items) {
-					yield i.getAsFile();
+					if (i.kind === 'file') {
+						yield i.getAsFile();
+					}
 				}
 			} else {
 				yield* dt.files;
