@@ -16,7 +16,7 @@ import rehypeStringify from 'rehype-stringify';
 export default new Transformer({
 	async transform({asset}) {
 		const md = asset.getCode();
-		const html = unified()
+		const html = await unified()
 			.use(remarkParse)
 			.use(remarkRehype)
 			.use(rehypeShiki)
