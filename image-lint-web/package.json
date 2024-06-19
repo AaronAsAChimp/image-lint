@@ -12,9 +12,14 @@
     "engines": {
         "node": ">=16.0.0"
     },
+    "browserslist": "> 0.5%, last 2 versions, not dead",
     "directories": {
         "test": "__tests__"
     },
+    "source": [
+        "web/index.html",
+        "web/404.html"
+    ],
     "files": [
         "lib"
     ],
@@ -25,11 +30,8 @@
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1",
         "ci:lint": "eslint . --config .eslintrc.json --ext .js,.vue",
-        "build": "BASE_PATH=\"/image-lint/\" webpack --mode=production --node-env=production",
-        "build:dev": "webpack --mode=development",
-        "build:prod": " BASE_PATH=\"/image-lint/\" webpack --mode=production --node-env=production",
-        "watch": "webpack --watch",
-        "serve": "webpack serve"
+        "build": "BASE_PATH=\"/image-lint/\" parcel build --dist-dir ../docs",
+        "serve": "parcel --dist-dir ../docs"
     },
     "bugs": {
         "url": "https://github.com/AaronAsAChimp/image-lint/issues"
@@ -47,14 +49,13 @@
         "vue-router": "^4.2.5"
     },
     "devDependencies": {
-        "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.1",
-        "css-minimizer-webpack-plugin": "^3.4.1",
+        "@parcel/transformer-vue": "^2.12.0",
         "eslint": "^8.24.0",
         "eslint-config-google": "^0.14.0",
         "eslint-plugin-vue": "^9.5.1",
-        "html-webpack-plugin": "^5.5.0",
-        "mini-css-extract-plugin": "^2.6.0",
+        "parcel": "^2.12.0",
+        "parcel-transformer-markdown": "^3.0.1",
+        "process": "^0.11.10",
         "rehype-shiki": "^0.0.9",
         "rehype-slug": "^6.0.0",
         "rehype-stringify": "^10.0.0",
@@ -62,13 +63,8 @@
         "remark-parse": "^11.0.0",
         "remark-rehype": "^11.0.0",
         "stream-browserify": "^3.0.0",
-        "style-loader": "^3.3.1",
         "unified": "^11.0.4",
-        "vue-loader": "^17.0.0",
-        "vue-template-compiler": "^2.7.10",
-        "webpack": "^5.89.0",
-        "webpack-cli": "^4.9.2",
-        "webpack-dev-server": "^4.7.4"
+        "vue-template-compiler": "^2.7.10"
     },
     "version": "3.1.0"
 }

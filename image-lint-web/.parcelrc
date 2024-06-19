@@ -1,0 +1,8 @@
+{
+  "extends": "@parcel/config-default",
+  "transformers": {
+    "*.md": [ "./remark-transformer.js" ],
+    "template:*.md": [ "./remark-transformer.js" ],
+    "custom:*.md": [ "./remark-transformer.js" ]
+  }
+}

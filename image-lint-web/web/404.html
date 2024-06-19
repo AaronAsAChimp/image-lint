@@ -15,8 +15,9 @@
 			url += window.location.hash;
 		}
 
-		window.location = '/?url=' + encodeURIComponent(url);
+		window.location = (typeof process.env.BASE_PATH !== 'undefined' ? process.env.BASE_PATH : '') + '?url=' + encodeURIComponent(url);
 	</script>
 </head>
-<body></body>
+<body>
+</body>
 </html>

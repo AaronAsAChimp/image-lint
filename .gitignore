@@ -6,6 +6,10 @@
 # Copyrighted test images, that I do not have permission to redistribute.
 image-lint/test/images/copyright
 
+### Parcel ###
+
+.parcel-cache
+
 ### Node ###
 # Logs
 logs
