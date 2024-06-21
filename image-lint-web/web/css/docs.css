@@ -1,7 +1,7 @@
 @import "./variables.css";
 
 .docs-page {
-	padding: 20px;
+	padding: 2em;
 }
 
 .docs-page pre {
@@ -45,8 +45,9 @@
 	background: var(--color-layer-bg);
 	padding: 1em;
 	float: right;
-	position: sticky;
 	top: 0;	
+	max-width: 30%;
+	margin-right: 0;
 }
 
 .docs-page .toc-level {
