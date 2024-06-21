@@ -8,7 +8,10 @@
 	padding: 2em;
 }
 
-.docs-page h1,
+.docs-page h1 {
+	margin: 1em 0 0.5em;
+}
+
 .docs-page h2 {
 	margin: 2em 0 0.5em;
 }
@@ -21,6 +24,9 @@
 .docs-page .toc {
 	background: var(--color-layer-bg);
 	padding: 1em;
+	float: right;
+	position: sticky;
+	top: 0;	
 }
 
 .docs-page .toc-level {
@@ -41,4 +47,11 @@
 
 .docs-page .toc-link-h1 {
 	font-weight: bold;
+}
+
+@media (width < 800px) {
+	.docs-page .toc {
+		position: static;
+		float: none;
+	}
 }
