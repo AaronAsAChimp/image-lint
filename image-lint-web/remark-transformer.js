@@ -2,6 +2,7 @@ import {Transformer} from '@parcel/plugin';
 import {unified} from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
+import remarkGfm from 'remark-gfm';
 import rehypeToc from 'rehype-toc';
 import rehypeSlug from 'rehype-slug';
 import rehypeShiki from 'rehype-shiki';
@@ -23,6 +24,7 @@ export default new Transformer({
 		const html = await unified()
 			.use(remarkParse)
 			.use(remarkRehype)
+			.use(remarkGfm)
 			.use(rehypeShiki)
 			.use(rehypeSlug)
 			.use(rehypeToc)

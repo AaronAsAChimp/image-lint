@@ -21,6 +21,26 @@
 	margin: 0.5em 0;
 }
 
+.docs-page table {
+	margin: 0 auto;
+	background: #505050;
+	border-collapse: collapse;
+}
+
+.docs-page thead {
+	background: #656565;
+}
+
+.docs-page tbody tr:nth-child(even) {
+	background: #434343;
+}
+
+.docs-page th,
+.docs-page td {
+	padding: 0.6em 1.2em;
+/*	border: 1px solid black;*/
+}
+
 .docs-page .toc {
 	background: var(--color-layer-bg);
 	padding: 1em;
