@@ -3,6 +3,7 @@ Next
 
 - Detect files with the Acropalypse vulnerability.
 - Add validation for file type.
+- Bump puppeteer version to v22.12.1
 
 3.1.0
 -----
