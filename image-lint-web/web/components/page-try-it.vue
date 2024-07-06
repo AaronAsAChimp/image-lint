@@ -1,5 +1,5 @@
 <script>
-import {defaults} from 'image-lint';
+import {defaults, ImageIdentifierRegistry} from 'image-lint';
 
 import 'vue-multiselect/dist/vue-multiselect.css';
 
@@ -15,6 +15,7 @@ export default {
 			'support': {},
 			'available': {
 				'color_space': ['G', 'RGB', 'CMYK', 'YCbCr', 'YCCK', 'LAB', 'HSV'],
+				'file_type': ImageIdentifierRegistry.get_all_extensions(),
 			},
 			'option': options,
 			'files': [],
@@ -64,6 +65,12 @@ export default {
 				Set the allowed color spaces.
 
 				<vue-multiselect v-model="option.color_space" :multiple="true" :options="available.color_space" />
+			</label>
+
+			<label class="lint-option lint-option-array">
+				Set the allowed file types.
+
+				<vue-multiselect v-model="option.file_type" :multiple="true" :options="available.file_type" />
 			</label>
 		</div>
 		<div class="pane pane-dropzone">

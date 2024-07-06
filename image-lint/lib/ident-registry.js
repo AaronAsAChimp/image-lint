@@ -80,6 +80,30 @@ export class ImageIdentifierRegistry {
 	}
 
 	/**
+	 * Normalize the file extension by making sure its lower case and starts
+	 * with a dot.
+	 *
+	 * @param  {string} ext The extension
+	 * @return {string}     The extension but normalized.
+	 */
+	static normalize_extension(ext) {
+		ext = ext.trim();
+
+		if (ext[0] !== '.') {
+			ext = '.' + ext;
+		}
+
+		// Get the canonical file extension for this type.
+		const ident = ImageIdentifierRegistry.from_extension(ext);
+
+		if (ident) {
+			return ident.get_extension();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct a new identifier using the file extension.
 	 *
 	 * @param {string} extension   The file extension of the file.

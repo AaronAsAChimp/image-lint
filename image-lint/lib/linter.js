@@ -12,16 +12,18 @@ import type { Dimensions, ImageInfo } from './image-info';
 import type Finder from './finder';
 import type {FileDescriptor} from './finder';
 import type {Log} from './logger';
+ */
 
-export type LinterOptions = {
-	color_space: string[],
-	duplicate: boolean,
-	bytes_per_pixel: number,
-	byte_savings: number,
-	mismatch: boolean,
-	help: boolean,
-	version: boolean
-};
+/**
+ * @typedef {Object} LinterOptions
+ * @property {string[]} color_space
+ * @property {string[]} file_type
+ * @property {boolean} duplicate
+ * @property {number} bytes_per_pixel
+ * @property {number} byte_savings
+ * @property {boolean} mismatch
+ * @property {boolean} help
+ * @property {boolean} version
  */
 
 /**
@@ -182,7 +184,9 @@ export class Linter extends EventEmitter {
 	lint(folder/*: string[] */, options/*: LinterOptions */)/*: Linter */ {
 		const handler = new WorkHandler();
 		const hasher = new Hasher();
-		let allowed_color_spaces/*: Set<ColorSpace> | null */ = null;
+
+		/** @type {Set<ColorSpace> | null } */
+		let allowed_color_spaces = null;
 
 		// Prepare the allowed color spaces.
 		if (options.color_space) {
@@ -195,6 +199,21 @@ export class Linter extends EventEmitter {
 
 				if (space) {
 					allowed_color_spaces.add(space);
+				}
+			}
+		}
+
+		/** @type {Set<string> | null } */
+		let allowed_file_types = null;
+
+		if (options.file_type) {
+			allowed_file_types = new Set();
+
+			for (const file_type of options.file_type) {
+				const normalized_type = ImageIdentifierRegistry.normalize_extension(file_type);
+
+				if (normalized_type) {
+					allowed_file_types.add(normalized_type);
 				}
 			}
 		}
@@ -248,6 +267,10 @@ export class Linter extends EventEmitter {
 					if (info.bytes_per_pixel >= min_bpp && (size_difference > min_savings)) {
 						logger.warn('The bytes per pixel (' + info.bytes_per_pixel.toFixed(2) + ') exceeds the minimum (' + min_bpp + ').');
 						logger.info('You can acheive a minimum savings of ' + size_difference + ' bytes by meeting this threshold.');
+					}
+
+					if (allowed_file_types && !allowed_file_types.has(identifier.get_extension())) {
+						logger.warn(`The file type of the image is ${ identifier.get_extension() }. It must be one of ${ Array.from(allowed_file_types).join(', ') }.`);
 					}
 
 					if (allowed_color_spaces) {

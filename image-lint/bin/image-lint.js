@@ -26,6 +26,7 @@ const argument_config/*: minimistOptions */ = {
 	],
 	'string': [
 		'color_space',
+		'file_type',
 	],
 	'number': [
 		'max_warnings',
@@ -44,6 +45,7 @@ const argument_config/*: minimistOptions */ = {
 		'bytes_per_pixel': 'Set the maximum bytes per pixel before giving a warning.',
 		'byte_savings': 'Set the minimum byte savings before giving a warning.',
 		'color_space': 'Set the allowed color spaces separated by a comma.',
+		'file_type': 'Set the allowed file types separated by a comma.',
 		'max_warnings': 'Set the maximum number of warnings allowed.',
 		'help': 'Print this message, then exit.',
 		'version': 'Print the version number and exit.',
@@ -72,6 +74,10 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	}
 
 	argv.color_space = argv.color_space.split(',');
+
+	if (argv.file_type) {
+		argv.file_type = argv.file_type.split(',');
+	}
 
 	cli_linter.lint(folder, argv)
 		.on('file.completed', (logger) => {
