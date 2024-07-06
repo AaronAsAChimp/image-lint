@@ -22,7 +22,7 @@ const argument_config = {
 		'help': 'h',
 	},
 	'default': defaults,
-	'-help-usage': 'image-explorer [options] [<files/folders/urls>...]',
+	'-help-usage': 'image-debugger [options] [<files/folders/urls>...]',
 	'-help-options': {
 	},
 };

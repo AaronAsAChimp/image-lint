@@ -28,7 +28,6 @@
         "url": "git+https://github.com/AaronAsAChimp/image-lint.git"
     },
     "scripts": {
-        "test": "echo \"Error: run tests from root\" && exit 1",
         "ci:lint": "eslint . --config .eslintrc.json --ext .js,.vue",
         "build": "BASE_PATH=\"/image-lint/\" parcel build --dist-dir ../docs --public-url /image-lint/",
         "serve": "parcel --dist-dir ../docs"
