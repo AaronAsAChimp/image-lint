@@ -1,5 +1,5 @@
-Next
----
+3.2.0
+-----
 
 - Detect files with the Acropalypse vulnerability.
 - Add validation for file type.
