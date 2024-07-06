@@ -59,6 +59,14 @@ $ image-lint --color_space CYMK,HSV,G ./images/
 
 **Remedy:** This kind of issue can be resolved by saving the image using the appropriate color mode.
 
+### File Type Validation `--file_type` ###
+
+Issue a warning if the file type is not one of allowed types. This is useful for checking if the file type is not of a supported type. The default is to allow all file types.
+
+```sh
+$ image-lint --file_type .jpg,.png,.gif ./images/
+```
+
 Adjusting the behavior of image-lint
 ------------------------------------
 
@@ -120,11 +128,11 @@ A number of formats are supported, though most are only for identification purpo
 | jpg          | ☑️️      |               |
 | jxl          | ☑️️      |               |
 | avif / heic  | ☑️️      |               |
+| webp         | ☑️️      |               |
 | bmp          |        |  ☑️️            |
 | psd          |        |  ☑️️            |
 | ico / cur    |        |  ☑️️            |
 | tiff         |        |  ☑️️            |
-| webp         |        |  ☑️️            |
 | svg          |        |  ☑️️            |
 | html         |        |  ☑️️            |
 
