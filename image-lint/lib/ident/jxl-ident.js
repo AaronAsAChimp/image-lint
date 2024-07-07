@@ -1,5 +1,3 @@
-/* @flow */
-
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {JXLInfoProvider} from '../image/jxl-info.js';
 

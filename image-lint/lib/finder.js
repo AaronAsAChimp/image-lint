@@ -1,33 +1,26 @@
-'use strict';
-/* @flow */
 
-
-/*::
-import type Loader from './loader';
-
-export interface FileDescriptor {
-	path: string;
-	extension: string;
-	loader: Loader;
-}
+/**
+ * @typedef {object} FileDescriptor
+ * @property {string} path The path to the referenced file
+ * @property {string} extension The extensions of the referenced file
+ * @property {import('./loader').Loader} loader The loader that will load the file
  */
 
 /**
  * A base class for finding files in different mediums.
  */
 export class Finder {
-	/*::
-	extensions: string[];
-	mimes: string[];
-	 */
-
 	/**
 	 * Construct a new Finder
+	 *
 	 * @param  {string[]} extensions The list of extensions to look for.
 	 * @param  {string[]} mimes      The list of MIME types to look for.
 	 */
-	constructor(extensions/*: string[] */, mimes/*: string[]*/) {
+	constructor(extensions, mimes) {
+		/** @type {string[]} */
 		this.extensions = extensions;
+
+		/** @type {string[]} */
 		this.mimes = mimes;
 	}
 
@@ -35,9 +28,10 @@ export class Finder {
 	 * Get an iterator of unresolved file descriptors.
 	 *
 	 * @abstract
-	 * @param {Promise<Iterable<FileDescriptor>>} initial_items The initial set of items to be searched for.
+	 * @param {string[]} initial_items The items to search through.
+	 * @returns {Promise<Iterable<FileDescriptor>>} initial_items The initial set of items to be searched for.
 	 */
-	get_files(initial_items/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
+	get_files(initial_items) {
 		throw new Error('Not Implemented');
 	}
 
@@ -46,9 +40,9 @@ export class Finder {
 	 * the constructor).
 	 *
 	 * @param {string}  ext The extension to check.
-	 * @return {boolean}    True if it is an image extension, false otherwise.
+	 * @returns {boolean}    True if it is an image extension, false otherwise.
 	 */
-	is_image_extension(ext/*: string */)/*: boolean */ {
+	is_image_extension(ext) {
 		return this.extensions.indexOf(ext) >= 0;
 	}
 
@@ -57,9 +51,9 @@ export class Finder {
 	 * the constructor).
 	 *
 	 * @param {string}  mime The MIME type to check.
-	 * @return {boolean}     True if it is an image MIME type, false otherwise.
+	 * @returns {boolean}     True if it is an image MIME type, false otherwise.
 	 */
-	is_image_mime(mime/*: string */)/*: boolean */ {
+	is_image_mime(mime) {
 		return this.mimes.indexOf(mime) >= 0;
 	}
 }

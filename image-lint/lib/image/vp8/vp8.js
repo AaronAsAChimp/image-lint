@@ -93,9 +93,10 @@ const VP8X_WIDTH_LENGTH = 3;
 
 /**
  * Read a Little-Endian 24 bit unsigned integer from a buffer
+ *
  * @param  {Buffer} buffer The buffer
  * @param  {number} offset The offset from the start of the buffer.
- * @return {number}        The 24bit integer.
+ * @returns {number}       The 24bit integer.
  */
 function readUint24LE(buffer, offset) {
 	const low_byte = buffer.readUInt8(offset);
@@ -144,9 +145,10 @@ export const VP8_CHUNK_TYPES = {
 
 /**
  * Read all of the chunks in the buffer.
+ *
  * @param  {Buffer} buffer The file buffer.
  * @param  {number} offset The off of the beginning of the chunks.
- * @return {BaseChunk[]}   The chunks.
+ * @returns {BaseChunk[]}  The chunks.
  */
 export function read_chunks(buffer, offset) {
 	return riff_read_chunks(buffer, offset, VP8_CHUNK_TYPES);

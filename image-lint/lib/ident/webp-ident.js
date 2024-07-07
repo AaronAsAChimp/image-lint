@@ -1,6 +1,3 @@
-/* @flow */
-'use strict';
-
 import {RIFFIdentifier} from './riff-ident.js';
 import {WEBPInfoProvider} from '../image/webp-info.js';
 import {read_chunks} from '../image/vp8/vp8.js';

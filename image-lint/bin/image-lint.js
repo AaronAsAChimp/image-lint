@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-/* @flow */
-'use strict';
-
-/*::
-import type {ExtendedOptions} from '../lib/args-helper.js';
-*/
 
 import minimist from 'minimist';
 import chalk from 'chalk';
@@ -17,7 +11,8 @@ import {ImageIdentifierRegistry} from '../lib/ident-registry.js';
 
 const DEFAULT_DIRECTORY = ['./'];
 
-const argument_config/*: minimistOptions */ = {
+/** @type {import('minimist').Opts} */
+const argument_config = {
 	'boolean': [
 		'mismatch',
 		'duplicate',
@@ -80,23 +75,23 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	}
 
 	cli_linter.lint(folder, argv)
-		.on('file.completed', (logger) => {
-			error_count += logger.get_error_count();
-			warning_count += logger.get_warning_count();
+			.on('file.completed', (logger) => {
+				error_count += logger.get_error_count();
+				warning_count += logger.get_warning_count();
 
-			if (logger.is_printable()) {
-				console.log(logger.toString());
-			}
-		})
-		.on('linter.completed', () => {
-			const has_errors = (error_count > 0 || warning_count > 0);
-			const warnings = warning_count > 0 ? chalk.yellow(warning_count) : warning_count;
-			const errors = error_count > 0 ? chalk.red(error_count) : error_count;
+				if (logger.is_printable()) {
+					console.log(logger.toString());
+				}
+			})
+			.on('linter.completed', () => {
+				const has_errors = (error_count > 0 || warning_count > 0);
+				const warnings = warning_count > 0 ? chalk.yellow(warning_count) : warning_count;
+				const errors = error_count > 0 ? chalk.red(error_count) : error_count;
 
-			if (has_errors) {
-				console.log(`\nTotal Warnings: ${ warnings }, Errors: ${ errors }`);
-			}
+				if (has_errors) {
+					console.log(`\nTotal Warnings: ${ warnings }, Errors: ${ errors }`);
+				}
 
-			process.exitCode = has_errors ? EXIT_CODE_LINT_ERROR : EXIT_CODE_OK;
-		});
+				process.exitCode = has_errors ? EXIT_CODE_LINT_ERROR : EXIT_CODE_OK;
+			});
 }

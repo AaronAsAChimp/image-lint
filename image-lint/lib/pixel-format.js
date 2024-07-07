@@ -1,36 +1,21 @@
-/* @flow */
-'use strict';
-
 /**
  * An enumeration of all of the color spaces
  */
 export class ColorSpace {
-	/*::
-	static G: ColorSpace;
-	static RGB: ColorSpace;
-	static YCbCr: ColorSpace;
-	static YCCK: ColorSpace;
-	static LAB: ColorSpace;
-	static HSV: ColorSpace;
-	static CMYK: ColorSpace;
-	static XYZ: ColorSpace;
-	static XYB: ColorSpace;
-
-	static all_names: Set<string>;
-
-	name: string;
-	channels: number;
-	unk_format: string | null;
-	*/
-
 	/**
 	 * Construct a new ColorSpace.
+	 *
 	 * @param  {string} name     The name of the color space.
 	 * @param  {number} channels The number of channels for this color space.
 	 */
-	constructor(name/*: string */, channels/*: number */) {
+	constructor(name, channels) {
+		/** @type {string} */
 		this.name = name;
+
+		/** @type {number} */
 		this.channels = channels;
+
+		/** @type {string | null} */
 		this.unk_format = null;
 
 		ColorSpace.all_names.add(name);
@@ -40,7 +25,7 @@ export class ColorSpace {
 	 * If this is 'ColorSpace.UNK' return the name of the color format that
 	 * was unknown.
 	 *
-	 * @return {String} The unknown format.
+	 * @returns {string} The unknown format.
 	 */
 	getUnkFormat() {
 		return this.unk_format;
@@ -48,15 +33,17 @@ export class ColorSpace {
 
 	/**
 	 * Get an existing color space with the given name.
+	 *
 	 * @param  {string} id   The name of the color space.
-	 * @return {ColorSpace}  The color space or null if no color space exists
+	 * @returns {ColorSpace | null}  The color space or null if no color space exists
 	 *                       with that name.
 	 */
-	static from(id/*: string*/)/*: ColorSpace | null */ {
-		let space/*: ColorSpace | null */ = null;
+	static from(id) {
+		/** @type {ColorSpace | null} */
+		let space = null;
 
 		if (this.all_names.has(id)) {
-			space = (ColorSpace/*: any */)[id];
+			space = ColorSpace[id];
 		}
 
 		return space;
@@ -67,7 +54,7 @@ export class ColorSpace {
 	 *
 	 * @param  {string} format      The name of the color space that was unknown.
 	 * @param  {number} [channels]  The number of channels.
-	 * @return {ColorSpace}         The unknown color space.
+	 * @returns {ColorSpace}         The unknown color space.
 	 */
 	static unkownFormat(format, channels=-1) {
 		const color_space = new ColorSpace('UNK', channels);
@@ -94,19 +81,20 @@ ColorSpace.XYB = new ColorSpace('XYB', 3);
  * The pixel format of an image.
  */
 export class PixelFormat {
-	/*::
-	color_space: ColorSpace;
-	indexed: boolean;
-	alpha: boolean;
-	bit_depth: { [channel: string]: number};
-	*/
-
 	/**
 	 * Construct a new PixelFormat
 	 */
 	constructor() {
+		/** @type {ColorSpace | null} */
+		this.color_space = null;
+
+		/** @type {boolean} */
 		this.indexed = false;
+
+		/** @type {boolean} */
 		this.alpha = false;
+
+		/** @type {Record<string, number>} */
 		this.bit_depth = {};
 	}
 }

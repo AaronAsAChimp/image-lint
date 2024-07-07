@@ -1,29 +1,30 @@
-/* @flow */
-
-/*::
-import type {BitStream} from './bit-stream';
-*/
-
 import {U32} from './bit-stream.js';
 
 /**
  * The JXL extra channel info header.
  */
 export class ExtraChannelInfo {
-	/*::
-	meaning: number;
-	red: number;
-	green: number;
-	blue: number;
-	solidity: number;
-	*/
+	/** @type {number} */
+	meaning;
+
+	/** @type {number} */
+	red;
+
+	/** @type {number} */
+	green;
+
+	/** @type {number} */
+	blue;
+
+	/** @type {number} */
+	solidity;
 
 	/**
 	 * Construct a new ExtraChannelInfo.
 	 *
-	 * @param  {BitStream} stream The bit stream to read teh ExtraChannelInfo from.
+	 * @param  {import('./bit-stream.js').BitStream} stream The bit stream to read teh ExtraChannelInfo from.
 	 */
-	constructor(stream/*: BitStream */) {
+	constructor(stream) {
 		this.meaning = stream.read_u32(
 			[U32.VAL, 0],
 			[U32.VAL, 1],

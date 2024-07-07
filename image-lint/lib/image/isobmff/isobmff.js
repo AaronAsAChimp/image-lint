@@ -34,18 +34,20 @@ const MAX_BLOCKS = 2048;
 export class ISOBMFFAtom {
 	/**
 	 * Construct a new ISOBMFFBlock.
+	 *
 	 * @param  {number} length   The length of the block.
 	 * @param  {string} tag      The block tag.
 	 */
-	constructor(length/*: number */, tag/*: string */) {
+	constructor(length, tag) {
 		this.length = length;
 		this.tag = tag;
 	}
 
 	/**
 	 * Describe this atom.
+	 *
 	 * @param {string} indent The indent to add to this description.
-	 * @return {string} The description of this atom.
+	 * @returns {string} The description of this atom.
 	 */
 	describe(indent='') {
 		return `${ indent } ${ this.tag } (length ${ this.length })\n`;
@@ -53,11 +55,12 @@ export class ISOBMFFAtom {
 
 	/**
 	 * Read a block from a buffer.
+	 *
 	 * @param  {Buffer} buffer  The buffer object to read from.
 	 * @param  {number} offset  The offset to the beginning of the block.
-	 * @return {ISOBMFFAtom}   The block that was read.
+	 * @returns {ISOBMFFAtom}   The block that was read.
 	 */
-	static read(buffer/*: Buffer*/, offset/*: number */) {
+	static read(buffer, offset) {
 		let block;
 		const length = buffer.readUInt32BE(offset);
 
@@ -84,6 +87,7 @@ export class ISOBMFFAtom {
 class ISOBMFFBlock extends ISOBMFFAtom {
 	/**
 	 * Construct a new ISOBMFF block
+	 *
 	 * @param  {number} length  The length of the block.
 	 * @param  {string} tag     The tag.
 	 * @param  {Buffer} buffer  The content of the block.
@@ -99,7 +103,8 @@ class ISOBMFFBlock extends ISOBMFFAtom {
 
 	/**
 	 * Lazy load the children.
-	 * @return {{string: BlockOrAtom}} The children of this block.
+	 *
+	 * @returns {{string: BlockOrAtom}} The children of this block.
 	 */
 	get children() {
 		const buffer = this._buffer;
@@ -145,8 +150,9 @@ class ISOBMFFBlock extends ISOBMFFAtom {
 
 	/**
 	 * Describe this block.
+	 *
 	 * @param {string} indent The indent to add to this description.
-	 * @return {string} The description of this block.
+	 * @returns {string} The description of this block.
 	 */
 	describe(indent='') {
 		const desc = super.describe(indent);
@@ -169,6 +175,7 @@ class ISOBMFFBlock extends ISOBMFFAtom {
 class UnknownAtom extends ISOBMFFAtom {
 	/**
 	 * Construct a new Unknown block.
+	 *
 	 * @param  {number} length   The length of the block.
 	 * @param  {string} tag      The block tag.
 	 * @param  {Buffer} content  The content of the block.
@@ -198,6 +205,7 @@ class NullAtom extends ISOBMFFAtom {
 export class RootBlock extends ISOBMFFBlock {
 	/**
 	 * Construct a new root block.
+	 *
 	 * @param  {Buffer} buffer The buffer that contains the file.
 	 */
 	constructor(buffer) {
@@ -212,6 +220,7 @@ export class RootBlock extends ISOBMFFBlock {
 class FtypAtom extends ISOBMFFAtom {
 	/**
 	 * Construct a new Ftyp block.
+	 *
 	 * @param  {number} length   The length of the block.
 	 * @param  {string} tag      The block tag.
 	 * @param  {Buffer} content  The content of the block.
@@ -232,9 +241,10 @@ class FtypAtom extends ISOBMFFAtom {
 
 	/**
 	 * Read a brand from a block.
+	 *
 	 * @param  {number} offset The offset to start reading at
 	 * @param  {Buffer} buffer The buffer to read from
-	 * @return {string}        The brand.
+	 * @returns {string}       The brand.
 	 */
 	readBrand(offset, buffer) {
 		return buffer.subarray(offset, offset + 4).toString('ascii');
@@ -247,6 +257,7 @@ class FtypAtom extends ISOBMFFAtom {
 class ISPEAtom extends ISOBMFFAtom {
 	/**
 	 * Construct a new ispe block.
+	 *
 	 * @param  {number} length   The length of the block.
 	 * @param  {string} tag      The block tag.
 	 * @param  {Buffer} content  The content of the block.
@@ -265,6 +276,7 @@ class ISPEAtom extends ISOBMFFAtom {
 class PIXIAtom extends ISOBMFFAtom {
 	/**
 	 * Construct a new pixi block.
+	 *
 	 * @param  {number} length   The length of the block.
 	 * @param  {string} tag      The block tag.
 	 * @param  {Buffer} buffer  The content of the block.
@@ -291,6 +303,7 @@ class PIXIAtom extends ISOBMFFAtom {
 class IINFBlock extends ISOBMFFBlock {
 	/**
 	 * Construct a new IINFBlock.
+	 *
 	 * @param  {number} length The length of the block
 	 * @param  {string} tag    The block tag
 	 * @param  {Buffer} buffer The buffer that contains the block content

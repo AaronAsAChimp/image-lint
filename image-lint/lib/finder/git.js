@@ -13,13 +13,13 @@ export class GitFinder extends VcsFinder {
 	prepare_workspace(clone_urls) {
 		const promises = clone_urls.map((url) => {
 			return this.get_workspace()
-				.then((file_path) => {
-					// eslint-disable-next-line new-cap
-					return Git.Clone(url, file_path)
-						.then(() => {
-							return file_path;
-						});
-				});
+					.then((file_path) => {
+						// eslint-disable-next-line new-cap
+						return Git.Clone(url, file_path)
+								.then(() => {
+									return file_path;
+								});
+					});
 		});
 
 		return Promise.all(promises);

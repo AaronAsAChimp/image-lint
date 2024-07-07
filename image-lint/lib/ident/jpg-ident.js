@@ -1,5 +1,3 @@
-/* @flow */
-
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {JPGInfoProvider} from '../image/jpg-info.js';
 import {JPEGImageLinter} from '../linter/jpg-linter.js';

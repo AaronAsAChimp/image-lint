@@ -1,14 +1,3 @@
-/* @flow */
-
-/*::
-import type {BitStream} from './bit-stream';
-*/
-
-/**
- * @typedef {import('./bit-stream.js').BitStream} BitStream
- */
-
-
 import {U32} from './bit-stream.js';
 
 const XSIZE_SEPARATE = 0; // xsize coded separately
@@ -24,21 +13,16 @@ const XSIZE_RATIO_2X1 = 7; // xsize = floor( ysize × 2 / 1)
  * The JXL size header
  */
 export class SizeHeader {
-	/*::
-	small: boolean;
-	ysize: number;
-	xsize: number;
-	ratio: number;
-	*/
-
 	/**
 	 * Construct a new SizeHeader
 	 *
-	 * @param  {BitStream} stream The bit stream to read the SizeHeader from.
+	 * @param  {import('./bit-stream.js').BitStream} stream The bit stream to read the SizeHeader from.
 	 */
-	constructor(stream/*: BitStream */) {
+	constructor(stream) {
 		let ysize;
 		let xsize;
+
+		/** @type {number} */
 		this.small = stream.read_boolean();
 
 		if (this.small) {
@@ -52,6 +36,7 @@ export class SizeHeader {
 			) + 1;
 		}
 
+		/** @type {number} */
 		this.ratio = stream.read_bits(3);
 
 		if (this.ratio === XSIZE_SEPARATE) {
@@ -83,40 +68,46 @@ export class SizeHeader {
 			throw new Error('SizeHeader: unknown aspect ratio.');
 		}
 
+		/** @type {number} */
 		this.ysize = ysize;
+
+		/** @type {number} */
 		this.xsize = xsize;
 	}
 
 	/**
 	 * Get whether or not this is a small image.
-	 * @return {boolean} True if small, false otherwise.
+	 *
+	 * @returns {boolean} True if small, false otherwise.
 	 */
-	get_small()/*: boolean */ {
+	get_small() {
 		return this.small;
 	}
 
 	/**
 	 * Get the y-size of the image.
 	 *
-	 * @return {number} The y-size.
+	 * @returns {number} The y-size.
 	 */
-	get_ysize()/*: number */ {
+	get_ysize() {
 		return this.ysize;
 	}
 
 	/**
 	 * Get the x-size of the image.
-	 * @return {number} The x-size.
+	 *
+	 * @returns {number} The x-size.
 	 */
-	get_xsize()/*: number */ {
+	get_xsize() {
 		return this.xsize;
 	}
 
 	/**
 	 * Get the aspect ratio.
-	 * @return {number} The ratio.
+	 *
+	 * @returns {number} The ratio.
 	 */
-	get_ratio()/*: number */ {
+	get_ratio() {
 		return this.ratio;
 	}
 }

@@ -1,15 +1,8 @@
-/* @flow */
-'use strict';
-
 import {Finder} from '../finder.js';
 import {HttpLoader} from '../loader/http.js';
 import url from 'url';
 import path from 'path';
 import puppeteer from 'puppeteer';
-
-/*::
-import type { FileDescriptor } from '../finder';
-*/
 
 /**
  * Find files on a webpage. This uses Puppeteer to load the page and extract
@@ -19,7 +12,7 @@ export class WebFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
-	async get_files(urls/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
+	async get_files(urls) {
 		// console.log('getting urls');
 		// console.log('spinnig up phantom');
 		const found = [];

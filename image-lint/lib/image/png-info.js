@@ -1,10 +1,3 @@
-/* @flow */
-'use strict';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 import {PNGChunk, SECTION_LENGTH_WIDTH, SECTION_HEADER_WIDTH, CHUNK_TYPE_IEND, IHDR_OFFSET, CRC_WIDTH} from './png/chunk.js';
@@ -31,7 +24,7 @@ export class PNGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible PNG, I'm assuming it will
 		// be mostly overhead.
 		return 67;
@@ -40,12 +33,12 @@ export class PNGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		let end_chunk = null;
 
 		try {
 			end_chunk = new PNGChunk(buffer, buffer.length - IEND_LENGTH);
-		} catch (e) {
+		} catch {
 			return true;
 		}
 
@@ -55,7 +48,7 @@ export class PNGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		return {
 			width: buffer.readUInt32BE(WIDTH_OFFSET),
 			height: buffer.readUInt32BE(HEIGHT_OFFSET),
@@ -66,7 +59,7 @@ export class PNGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		const format = new PixelFormat();
 		const bit_depth = buffer.readInt8(BIT_DEPTH_OFFSET);
 		const color_type = buffer.readInt8(COLOR_TYPE_OFFSET);

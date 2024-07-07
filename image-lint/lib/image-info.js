@@ -1,30 +1,24 @@
-/* @flow */
-'use strict';
 
-/*::
-import type { Log } from './logger.js';
-import type { FileDescriptor } from './finder.js';
-import type { LinterOptions } from './linter.js';
-import type { PixelFormat } from './pixel-format.js';
+/**
+ * @typedef {object} Dimensions
+ * @property {number} width  The width of the image
+ * @property {number} height The height of the image
+ * @property {number} frames The number of frames in the image
+ */
 
-export
-interface Dimensions {
-	width: number;
-	height: number;
-	frames: number;
-}
-
-export interface ImageInfo {
-	truncated: boolean;
-	dimensions?: Dimensions;
-	size?: number;
-	pixel_format?: PixelFormat;
-	bytes_per_pixel?: number;
-}
-*/
+/**
+ * @typedef {object} ImageInfo
+ * @property {boolean} truncated  True if the image file is truncated.
+ * @property {Dimensions} [dimensions]  The dimensions of the image if available.
+ * @property {number} [size]  The file size of the image.
+ * @property {import('./pixel-format').PixelFormat} [pixel_format]  The format of the pixels.
+ * @property {number} [bytes_per_pixel]  The number of bytes per pixel
+ */
 
 /**
  * Gather information about an image file.
+ *
+ * @abstract
  */
 export class InfoProvider {
 	/**
@@ -32,45 +26,52 @@ export class InfoProvider {
 	 *
 	 * @param  {Dimensions} dims The dimensions of the image.
 	 * @param  {number} size     The file size of the image.
-	 * @return {number}          The number of bytes per pixel.
+	 * @returns {number}          The number of bytes per pixel.
 	 */
-	calculate_bpp(dims/*: Dimensions */, size/*: number */)/*: number */ {
+	calculate_bpp(dims, size) {
 		return (size - this.get_overhead()) / (dims.width * dims.height * dims.frames);
 	}
 
 	/**
 	 * Get the number of bytes of overhead of this file format.
 	 *
-	 * @return {number} The number in bytes.
+	 * @returns {number} The number in bytes.
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		return 0;
 	}
 
 	/**
 	 * Get the dimensions of the image.
 	 *
+	 * @abstract
 	 * @param  {Buffer} buffer The file buffer.
+	 * @returns {Dimensions} The dimensions of the image.
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		throw new Error('Not Implemented');
 	}
 
 	/**
 	 * Get the pixel format of the image.
+	 *
+	 * @abstract
 	 * @param  {Buffer} buffer The file buffer.
+	 * @returns {import('./pixel-format').PixelFormat} The pixel format of the image.
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		throw new Error('Not Implemented');
 	}
 
 	/**
 	 * The the information for this file.
+	 *
 	 * @param  {Buffer} buffer The file buffer.
-	 * @return {ImageInfo}     This image information.
+	 * @returns {ImageInfo}    This image information.
 	 */
-	get_info(buffer/*: Buffer */)/*: ImageInfo */ {
-		const info/*: ImageInfo */ = {
+	get_info(buffer) {
+		/** @type {ImageInfo} */
+		const info = {
 			'truncated': this.is_truncated(buffer),
 		};
 
@@ -91,9 +92,9 @@ export class InfoProvider {
 	 *
 	 * @abstract
 	 * @param  {Buffer}    buffer A buffer containing a compressed image.
-	 * @return {Boolean}   True if the file is invalid due to it being truncated.
+	 * @returns {boolean}  True if the file is invalid due to it being truncated.
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		throw new Error('Not Implemented');
 	}
 }

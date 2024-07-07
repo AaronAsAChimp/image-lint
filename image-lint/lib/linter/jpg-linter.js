@@ -7,6 +7,7 @@ import {JPEGChunk, MARKER_LENGTH} from '../image/jpg/chunk.js';
 export class JPEGImageLinter extends ImageLinter {
 	/**
 	 * Create a new PNGImageLinter
+	 *
 	 * @param  {Buffer} buffer The image buffer
 	 */
 	constructor(buffer) {

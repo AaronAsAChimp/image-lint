@@ -1,5 +1,3 @@
-/* @flow */
-
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 import {GIFInfoProvider} from '../image/gif-info.js';
 

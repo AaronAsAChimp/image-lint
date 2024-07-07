@@ -1,40 +1,32 @@
-/* @flow */
-'use strict';
-
 import crypto from 'crypto';
 
 const TRIE_DEPTH = 3;
 const HASH_TYPE = 'sha1';
 
-/*::
-const Finder = require('./finder');
 
-import type { FileDescriptor } from './finder';
-
-type Trie = Map<string, Map<string, Map<string, Trie>>>;
-*/
+/**
+ * @typedef {Map<string, Map<string, Map<string, Trie>>>} Trie
+ */
 
 /**
  * Find duplicate files.
  */
 export class Hasher {
-	/*::
-	trie: Trie;
-	*/
-
 	/**
 	 * Construct a new Hasher.
 	 */
 	constructor() {
+		/** @type {Trie} */
 		this.trie = new Map();
 	}
 
 	/**
 	 * Retrive the branch of the Trie that would contain the given digest.
+	 *
 	 * @param  {string} digest A unique hash.
-	 * @return {Trie}          The sub Trie.w
+	 * @returns {Trie}          The sub Trie.w
 	 */
-	find(digest/*: string */)/*: Trie */ {
+	find(digest) {
 		let current = this.trie;
 		let depth = 0;
 
@@ -59,12 +51,13 @@ export class Hasher {
 	/**
 	 * Determine if the given buffer has already been seen. If not the hash and
 	 * path will be added to the Trie.
+	 *
 	 * @param  {string} path    The path to the file.
 	 * @param  {Buffer} buffer  The file's content
-	 * @return {boolean}        The path of the existing file with the
+	 * @returns {boolean}        The path of the existing file with the
 	 *                          same contents.
 	 */
-	contains(path/*: string */, buffer/*: Buffer */)/*: ?string */ {
+	contains(path, buffer) {
 		// The leaf should contain a map of digests to file names.
 		const hash = crypto.createHash(HASH_TYPE);
 

@@ -1,9 +1,3 @@
-/* @flow */
-
-/*::
-import type {BitStream} from './bit-stream';
-*/
-
 import {U32} from './bit-stream.js';
 import {ExtraChannelInfo} from './extra-channel-info.js';
 import {Extensions} from './extensions.js';
@@ -12,34 +6,39 @@ import {Extensions} from './extensions.js';
  * The JXL image metadata 2 header
  */
 export class ImageMetadata2 {
-	/*::
-	have_preview: boolean;
-	have_animation: boolean;
-	orientation_minus_1: number;
-	depth_bits: number;
-	depth_shift: number;
-	num_extra_channels: number;
-	extra_channel_bits: number;
-	extra_channel_info: ExtraChannelInfo[];
-	extensions: Extensions | null;
-	*/
-
 	/**
 	 * Construct a new ImageMetadata2.
 	 *
-	 * @param  {BitStream} stream The bit stream to read the ImageMetadata2 from.
+	 * @param  {import('./bit-stream.js').BitStream} stream The bit stream to read the ImageMetadata2 from.
 	 */
-	constructor(stream/*: BitStream */) {
+	constructor(stream) {
 		const all_default = stream.read_boolean();
 
+		/** @type {boolean} */
 		this.have_preview = false;
+
+		/** @type {boolean} */
 		this.have_animation = false;
+
+		/** @type {number} */
 		this.orientation_minus_1 = 0;
+
+		/** @type {number} */
 		this.depth_bits = 0;
+
+		/** @type {number} */
 		this.depth_shift = 0;
+
+		/** @type {number} */
 		this.num_extra_channels = 0;
+
+		/** @type {number} */
 		this.extra_channel_bits = 0;
+
+		/** @type {ExtraChannelInfo} */
 		this.extra_channel_info = []; // TODO: implement
+
+		/** @type {Extensions | null} */
 		this.extensions = null; // TODO: implement
 
 		if (!all_default) {

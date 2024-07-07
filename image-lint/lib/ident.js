@@ -1,32 +1,14 @@
-/* @flow */
-
-/**
- * @typedef {import('stream').Writable} Writable
- */
-
-/*::
-import {InfoProvider} from "./image-info.js";
-*/
-
 /**
  * Abstract class to identify the type of images.
+ *
+ * @abstract
  */
 export class ImageIdentifier {
-	/*::
-	_info_provider: InfoProvider | null
-
-	static _extension_registry: Map<string, ImageIdentifier>;
-	static _mime_registry: Map<string, ImageIdentifier>;
-	static _image_extensions: string[];
-	static _all_extensions: string[];
-	static _all_mimes: string[];
-	static _all_providers: ImageIdentifier[];
-	*/
-
 	/**
-	 * Construct an InfoProvider
+	 * Construct an ImageIdentifier
 	 */
 	constructor() {
+		/** @type {InfoProvider | null} */
 		this._info_provider = null;
 	}
 
@@ -34,9 +16,9 @@ export class ImageIdentifier {
 	 * Determine if this file type is identify-only or if there is an associated
 	 * information provider.
 	 *
-	 * @return {boolean} True if the file type is identify-only.
+	 * @returns {boolean} True if the file type is identify-only.
 	 */
-	identify_only()/*: boolean */ {
+	identify_only() {
 		return !this.get_info_provider();
 	}
 
@@ -46,41 +28,47 @@ export class ImageIdentifier {
 	 * @abstract
 	 * @param  {Buffer}  buffer The image buffer.
 	 */
-	is_of_file_type(buffer/*: Buffer */)/*: boolean */ {
+	is_of_file_type(buffer) {
 		throw new Error('Not Implemented');
 	}
 
 	/**
 	 * Get the most common extension for this type of file.
 	 *
-	 * @return {String} containing the extension '.jpg', '.png', etc.
+	 * @returns {string} containing the extension '.jpg', '.png', etc.
 	 */
-	get_extension()/*: string */ {
+	get_extension() {
 		return this.get_extensions()[0];
 	}
 
 	/**
 	 * Get the possible file extensions for this type of file having the
 	 * canonical extension as the first element.
+	 *
+	 * @abstract
+	 * @returns {string[]} the file extensions
 	 */
-	get_extensions()/*: string[] */ {
+	get_extensions() {
 		throw new Error('Not Implemented');
 	}
 
 	/**
 	 * Get the most common mime for this type of file.
 	 *
-	 * @return {String} containing the mime type 'image/jpeg', 'image/png', etc.
+	 * @returns {string} containing the mime type 'image/jpeg', 'image/png', etc.
 	 */
-	get_mime()/*: string */ {
+	get_mime() {
 		return this.get_mimes()[0];
 	}
 
 	/**
 	 * Get the possible MIME types for this type of file having the canonical
 	 * MIME type as the first element.
+	 *
+	 * @abstract
+	 * @returns {string[]} the MIME types.
 	 */
-	get_mimes()/*: string[] */ {
+	get_mimes() {
 		throw new Error('Not Implemented');
 	}
 
@@ -88,25 +76,26 @@ export class ImageIdentifier {
 	 * Determine if the buffer contains enough information to be validated.
 	 *
 	 * @param  {Buffer} buffer The image buffer.
-	 * @return {boolean} True if the image can be validated.
+	 * @returns {boolean} True if the image can be validated.
 	 */
-	can_validate(buffer/*: Buffer */)/*: boolean */ {
+	can_validate(buffer) {
 		return false;
 	}
 
 	/**
 	 * Get an instance of the info provider for this file type.
 	 *
-	 * @return {InfoProvider} The info provider.
+	 * @returns {typeof import('./image-info.js').InfoProvider | null} The info provider.
 	 */
-	get_info_provider()/*: Class<InfoProvider> | null */ {
+	get_info_provider() {
 		return null;
 	}
 
 	/**
 	 * Print debugging information for this type of file.
+	 *
 	 * @param  {Buffer} buffer       The image buffer.
-	 * @param  {Writable} write_stream Where to write the debugging
+	 * @param  {import('stream').Writable} write_stream Where to write the debugging
 	 *                                        output to.
 	 */
 	debug_print(buffer, write_stream) {
@@ -116,8 +105,9 @@ export class ImageIdentifier {
 	/**
 	 * Get an instance of the linter for specialized linting for this type
 	 * of file. Not all formats have additional linting.
+	 *
 	 * @param {Buffer} buffer The image bufer.
-	 * @return {ImageLinter} The linter.
+	 * @returns {import('./image-linter.js').ImageLinter} The linter.
 	 */
 	get_linter(buffer) {
 		return null;

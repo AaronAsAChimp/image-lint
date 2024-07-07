@@ -1,18 +1,13 @@
-/* @flow */
-
 import fs from 'fs';
 
-/*::
-import type {minimistOptions, minimistOutput} from 'minimist';
 
-export type ExtendedOptions = {
-	...minimistOptions,
-	'-help-usage': string,
-	'-help-options': {
-		[name: string]: string
-	},
-}
-*/
+/**
+ * @typedef {import('minimist').Opts} ExtendedOptions
+ * @property {string} '-help-usage'
+ *   The usage information for the application
+ * @property {Record<string, string>} '-help-options'
+ *   The descriptions of each option.
+ */
 
 /**
  * A helper class for command line arguments.
@@ -23,10 +18,10 @@ export class ArgsHelper {
 	 * and version.
 	 *
 	 * @param  { ExtendedOptions } config The minimist config
-	 * @param  { object } args            The parsed arguments from minimist.
-	 * @return { boolean }                Returns true if the process should exit.
+	 * @param  { any } args               The parsed arguments from minimist.
+	 * @returns { boolean }               Returns true if the process should exit.
 	 */
-	static argv(config/*: ExtendedOptions */, args/*: minimistOutput */)/*: boolean */ {
+	static argv(config, args) {
 		if (args.help) {
 			return this.help(config);
 		}
@@ -41,9 +36,9 @@ export class ArgsHelper {
 	/**
 	 * Load the package info JSON file.
 	 *
-	 * @return {any} The package JSON.
+	 * @returns {any} The package JSON.
 	 */
-	static load_package_info()/*: any */ {
+	static load_package_info() {
 		// Importing JSON files doesn't work in node v16 and gives warnings in
 		// later versions.
 		const package_location = new URL('../package.json', import.meta.url);
@@ -58,7 +53,7 @@ export class ArgsHelper {
 	 * @param  {string} name             The name of the option.
 	 * @param  {string} description      A description of the option.
 	 */
-	static print_option(config/*: ExtendedOptions */, name/*: string */, description/*: string */) {
+	static print_option(config, name, description) {
 		let aliases = [name];
 		let options = '';
 		let default_value = '';
@@ -97,9 +92,9 @@ export class ArgsHelper {
 	 * Add the help option to the configuration.
 	 *
 	 * @param  {any} config The argument configuration.
-	 * @return {boolean}    True if the process should exit.
+	 * @returns {boolean}   True if the process should exit.
 	 */
-	static help(config/*: ExtendedOptions */)/*: boolean */ {
+	static help(config) {
 		const info = this.load_package_info();
 
 		console.log(`${ info.name } - ${ info.description }`);
@@ -123,10 +118,10 @@ export class ArgsHelper {
 	/**
 	 * Add the version option to the configuration.
 	 *
-	 * @param  {minimistOptions} config The argument configuration.
-	 * @return {boolean}                True if the process should exit.
+	 * @param  {import('minimist').Opts} config The argument configuration.
+	 * @returns {boolean}               True if the process should exit.
 	 */
-	static version(config/*: minimistOptions */)/*: boolean */ {
+	static version(config) {
 		const info = this.load_package_info();
 
 		console.log(info.name + ' v' + info.version);

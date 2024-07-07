@@ -1,13 +1,7 @@
-/* @flow */
-
-/*::
-import type {BitStream, CustomXY} from './bit-stream';
-*/
-
 /**
  * Color Space enumeration.
  *
- * @type {Object}
+ * @type {Record<string, number>}
  */
 export const COLOR_SPACE = {
 	K_RGB: 0,
@@ -26,7 +20,8 @@ ENUM_COLOR_SPACE.add(COLOR_SPACE.K_XYZ);
 
 /**
  * White Point enumeration.
- * @type {Object}
+ *
+ * @type {Record<string, number>}
  */
 const WHITE_POINT = {
 	K_D65: 1,
@@ -44,7 +39,8 @@ ENUM_WHITE_POINT.add(WHITE_POINT.K_DCI);
 
 /**
  * Primaries enumeration.
- * @type {Object}
+ *
+ * @type {Record<string, number>}
  */
 const PRIMARIES = {
 	K_SRGB: 1,
@@ -61,7 +57,8 @@ ENUM_PRIMARIES.add(PRIMARIES.K_P3);
 
 /**
  * Transfer function enumeration.
- * @type {Object}
+ *
+ * @type {Record<string, number>}
  */
 const TRANSFER_FUNCTION = {
 	K_709: 1,
@@ -85,7 +82,8 @@ ENUM_TRANSFER_FUNCTION.add(TRANSFER_FUNCTION.K_HLG);
 
 /**
  * Rendering intent enumeration.
- * @type {Object}
+ *
+ * @type {Record<string, number>}
  */
 const RENDERING_INTENT = {
 	K_PERCEPTUAL: 0,
@@ -104,28 +102,51 @@ ENUM_RENDERING_INTENT.add(RENDERING_INTENT.K_ABSOLUTE);
  * The JXL color encoding header.
  */
 export class ColorEncoding {
-	/*::
-	received_icc: boolean;
-	opaque_icc: boolean;
-	color_space: number;
-	white_point: number;
-	white: CustomXY;
-	primaries: number;
-	red: CustomXY | null;
-	green: CustomXY | null;
-	blue: CustomXY | null;
-	have_gamma: boolean;
-	gamma: number;
-	transfer_function: number;
-	rendering_intent: number;
-	*/
+	/** @type {boolean} */
+	received_icc;
+
+	/** @type {boolean} */
+	opaque_icc;
+
+	/** @type {number} */
+	color_space;
+
+	/** @type {number} */
+	white_point;
+
+	/** @type {import('./bit-stream.js').CustomXY} */
+	white;
+
+	/** @type {number} */
+	primaries;
+
+	/** @type {import('./bit-stream.js').CustomXY | null} */
+	red;
+
+	/** @type {import('./bit-stream.js').CustomXY | null} */
+	green;
+
+	/** @type {import('./bit-stream.js').CustomXY | null} */
+	blue;
+
+	/** @type {boolean} */
+	have_gamma;
+
+	/** @type {number} */
+	gamma;
+
+	/** @type {number} */
+	transfer_function;
+
+	/** @type {number} */
+	rendering_intent;
 
 	/**
 	 * Construct a new ColorEncoding.
 	 *
-	 * @param  {BitStream} [stream] The bit stream to read the encoding from
+	 * @param  {import('./bit-stream.js').BitStream} [stream] The bit stream to read the encoding from
 	 */
-	constructor(stream/*: ?BitStream */) {
+	constructor(stream) {
 		this.received_icc = false;
 		this.opaque_icc = false;
 		this.color_space = COLOR_SPACE.K_RGB;

@@ -7,6 +7,7 @@ import {read_chunks, CHUNK_ID_LENGTH, CHUNK_LENGTH_LENGTH, SUBCHUNK_ID_LENGTH} f
 export class BaseChunk {
 	/**
 	 * Construct a new base chunk.
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {string} chunk_id The id of the chunk.
 	 * @param  {number} offset The offset of the beginning of the chunk.
@@ -24,7 +25,8 @@ export class BaseChunk {
 	/**
 	 * Get the total length of the chunk. This is different from the length
 	 * property that is only the data length.
-	 * @return {number} The length of the chunks.
+	 *
+	 * @returns {number} The length of the chunks.
 	 */
 	get_total_length() {
 		const padding_byte = this.length % 2;
@@ -34,7 +36,8 @@ export class BaseChunk {
 
 	/**
 	 * Describe this chunk.
-	 * @return {string} The description of this chunk.
+	 *
+	 * @returns {string} The description of this chunk.
 	 */
 	describe() {
 		return `${ this.header } (offset: ${ this.offset }, length: ${ this.length })`;
@@ -54,6 +57,7 @@ export class SimpleChunk extends BaseChunk {
 export class RIFFChunk extends BaseChunk {
 	/**
 	 * Construct a RIFF chunk.
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {string} chunk_id The id of the chunk.
 	 * @param  {number} offset The offset of the beginning of the chunk.

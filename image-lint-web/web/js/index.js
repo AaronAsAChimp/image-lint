@@ -39,10 +39,10 @@ const router = createRouter({
 });
 
 createApp(App)
-	.component('vue-multiselect', Multiselect)
-	.component('iml-image-collection', ImlImageCollection)
-	.component('iml-dropzone', ImlDropzone)
-	.use(router)
-	.mount(rootEl);
+		.component('vue-multiselect', Multiselect)
+		.component('iml-image-collection', ImlImageCollection)
+		.component('iml-dropzone', ImlDropzone)
+		.use(router)
+		.mount(rootEl);
 
 // console.log(md);

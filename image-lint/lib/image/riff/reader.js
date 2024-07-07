@@ -6,10 +6,11 @@ export const SUBCHUNK_ID_LENGTH = 4;
 
 /**
  * Read all of the chunks in the buffer.
+ *
  * @param  {Buffer} buffer The file buffer.
  * @param  {number} offset The off of the beginning of the chunks.
  * @param  {Record<string, BaseChunk>} chunk_types The types of chunks in this RIFF file
- * @return {BaseChunk[]}   The chunks.
+ * @returns {BaseChunk[]}  The chunks.
  */
 export function read_chunks(buffer, offset, chunk_types) {
 	const chunks = [];

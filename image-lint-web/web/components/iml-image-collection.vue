@@ -47,12 +47,12 @@ export default {
 						const result_list = [];
 
 						linter.lint(files, options)
-							.on('file.completed', (logger) => {
-								result_list.push(logger);
-							})
-							.on('linter.completed', () => {
-								resolve(result_list);
-							});
+								.on('file.completed', (logger) => {
+									result_list.push(logger);
+								})
+								.on('linter.completed', () => {
+									resolve(result_list);
+								});
 					}));
 				} catch (e) {
 					this.error = e;

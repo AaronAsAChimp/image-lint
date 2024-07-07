@@ -1,14 +1,7 @@
-'use strict';
-/* @flow */
-
 import {Finder} from '../finder.js';
 import {FsLoader} from '../loader/fs.js';
 import path from 'path';
 import fs from 'fs';
-
-/*::
-import type { FileDescriptor } from '../finder';
- */
 
 const EXCLUDES = new Set([
 	'node_modules',
@@ -23,7 +16,7 @@ export class FileFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
-	get_files(initital_items/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
+	get_files(initital_items) {
 		const queue = initital_items.slice(0);
 
 		if (!queue.length) {
@@ -37,8 +30,9 @@ export class FileFinder extends Finder {
 	 * Traverse the file system yielding any files it finds.
 	 *
 	 * @param {string[]} queue  The initial queue items.
+	 * @yields {FileDescriptor}
 	 */
-	* _search(queue/*: string[] */)/*: Iterable<FileDescriptor> */ {
+	* _search(queue) {
 		while (queue.length) {
 			const file_path = queue.shift();
 			const stats = fs.lstatSync(file_path);

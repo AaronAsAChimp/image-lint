@@ -1,12 +1,4 @@
-/* @flow */
-'use strict';
-
 import {JPEGChunk, EOI_MARKER} from './jpg/chunk.js';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
@@ -25,7 +17,7 @@ export class JPGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible JPG, I'm assuming it will
 		// be mostly overhead.
 		return 119;
@@ -34,14 +26,14 @@ export class JPGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		return buffer.readUInt16BE(buffer.length - 2) !== EOI_MARKER;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		let width = null;
 		let height = null;
 		const chunks = JPEGChunk.get_chunks(buffer, 0);
@@ -71,7 +63,7 @@ export class JPGInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		const format = new PixelFormat();
 		let channels = null;
 		const chunks = JPEGChunk.get_chunks(buffer, 0);

@@ -1,5 +1,3 @@
-/* @flow */
-
 export {Linter} from './linter.js';
 export {defaults} from './defaults.js';
 export {InfoProvider} from './image-info.js';

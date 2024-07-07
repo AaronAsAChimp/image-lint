@@ -1,7 +1,3 @@
-/**
- * @typedef {import('./ident.js').ImageIdentifier} ImageIdentifier
- */
-
 import PNGIdent from './ident/png-ident.js';
 import GIFIdent from './ident/gif-ident.js';
 import JPGIdent from './ident/jpg-ident.js';
@@ -23,9 +19,10 @@ import HTMLIdent from './ident/html-ident.js';
 export class ImageIdentifierRegistry {
 	/**
 	 * Add an image identifier to the registry.
-	 * @param  {function} Constructor The constructor of the identifier.
+	 *
+	 * @param  {typeof ImageIdentifier} Constructor The constructor of the identifier.
 	 */
-	static register(Constructor/*: Class<ImageIdentifier> */) {
+	static register(Constructor) {
 		const provider = new Constructor();
 		const is_identify_only = provider.identify_only();
 
@@ -64,18 +61,18 @@ export class ImageIdentifierRegistry {
 	/**
 	 * Get all of the know file extensions.
 	 *
-	 * @return {string[]} An array of file extension.
+	 * @returns {string[]} An array of file extension.
 	 */
-	static get_all_extensions()/*: string[] */ {
+	static get_all_extensions() {
 		return ImageIdentifierRegistry._all_extensions;
 	}
 
 	/**
 	 * Get all of the known MIME types.
 	 *
-	 * @return {string[]} An array of MIME types.
+	 * @returns {string[]} An array of MIME types.
 	 */
-	static get_all_mimes()/*: string[] */ {
+	static get_all_mimes() {
 		return ImageIdentifierRegistry._all_mimes;
 	}
 
@@ -84,7 +81,7 @@ export class ImageIdentifierRegistry {
 	 * with a dot.
 	 *
 	 * @param  {string} ext The extension
-	 * @return {string}     The extension but normalized.
+	 * @returns {string}     The extension but normalized.
 	 */
 	static normalize_extension(ext) {
 		ext = ext.trim();
@@ -107,19 +104,18 @@ export class ImageIdentifierRegistry {
 	 * Construct a new identifier using the file extension.
 	 *
 	 * @param {string} extension   The file extension of the file.
-	 * @return {ImageIdentifier}  The new image identifier.
+	 * @returns {import('./ident.js').ImageIdentifier}  The new image identifier.
 	 */
-	static from_extension(extension/*: string */)/*: ?ImageIdentifier */ {
+	static from_extension(extension) {
 		return ImageIdentifierRegistry._extension_registry.get(extension);
 	}
 
 	/**
 	 * Construct a new identifier using the file descriptor. This doesn't load
-	 * the file and only uses the metadata provided by the file
-	 * descriptor.
+	 * the file and only uses the metadata provided by the file descriptor.
 	 *
 	 * @param  {FileDescriptor} file The file descriptor.
-	 * @return {ImageIdentifier}     The new image identifier.
+	 * @returns {import('./ident.js').ImageIdentifier}     The new image identifier.
 	 */
 	static from_file_descriptor(file) {
 		return ImageIdentifierRegistry.from_extension(file.extension);
@@ -127,8 +123,11 @@ export class ImageIdentifierRegistry {
 
 	/**
 	 * Iterate all of the registered providers.
+	 *
+	 * @yields {import('./ident.js').ImageIdentifier}
+	 * @returns {Generator<import('./ident.js').ImageIdentifier, void, void>} a generator of all of the image identifiers.
 	 */
-	static* all_providers()/*: Generator<ImageIdentifier, void, void>*/ {
+	static* all_providers() {
 		yield* ImageIdentifierRegistry._all_providers;
 	}
 }

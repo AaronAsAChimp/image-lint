@@ -1,5 +1,3 @@
-/* @flow */
-
 import {WorkHandler} from './work-handler.js';
 import {Hasher} from './hasher.js';
 import {ColorSpace} from './pixel-format.js';
@@ -7,23 +5,16 @@ import {ROOT_LOGGER} from './logger.js';
 import {EventEmitter} from 'events';
 import {ImageIdentifierRegistry} from './ident-registry.js';
 
-/*::
-import type { Dimensions, ImageInfo } from './image-info';
-import type Finder from './finder';
-import type {FileDescriptor} from './finder';
-import type {Log} from './logger';
- */
-
 /**
- * @typedef {Object} LinterOptions
- * @property {string[]} color_space
- * @property {string[]} file_type
- * @property {boolean} duplicate
- * @property {number} bytes_per_pixel
- * @property {number} byte_savings
- * @property {boolean} mismatch
- * @property {boolean} help
- * @property {boolean} version
+ * @typedef {object} LinterOptions
+ * @property {string[]} color_space  The allowed color spaces
+ * @property {string[]} file_type  The allowed file types
+ * @property {boolean} duplicate  Check for dupes
+ * @property {number} bytes_per_pixel  Max bytes per pixel
+ * @property {number} byte_savings  Min byte savings
+ * @property {boolean} mismatch  Check for type mismatch
+ * @property {boolean} help  Print help information
+ * @property {boolean} version Print version information
  */
 
 /**
@@ -43,61 +34,61 @@ class LinterError extends Error {
  * The image linter.
  */
 export class Linter extends EventEmitter {
-	/*::
-	finder: Finder;
-	disable_color: boolean;
-	 */
-
 	/**
 	 * Construct a new Linter
-	 * @param  {Finder} finder The finder to use to locate the images.
+	 *
+	 * @param {import('./finder.js').Finder} finder The finder to use to locate the images.
 	 */
-	constructor(finder/*: Finder */) {
+	constructor(finder) {
 		super();
 
+		/** @type {import('./finder.js').Finder} */
 		this.finder = finder;
+
+		/** @type {boolean} */
 		this.disable_color = false;
 	}
 
 	/**
 	 * Calculate the optimal size of the image.
 	 *
-	 * @param  {Dimensions} dims   The dimensions of the image.
+	 * @param  {import('./image-info.js').Dimensions} dims The dimensions of the image.
 	 * @param  {number}     bpp    The bytes per pixel of the image.
-	 * @return {number}            The optimial size of the image.
+	 * @returns {number}            The optimial size of the image.
 	 */
-	calculate_optimial_size(dims/*: Dimensions */, bpp/*: number */)/*: number */ {
+	calculate_optimial_size(dims, bpp) {
 		return ((dims.width * dims.height * dims.frames) * bpp);
 	}
 
 	/**
 	 * Construct a description of an image file.
 	 *
-	 * @param  {Dimensions} dims    The dimensions of the image.
-	 * @return {string}             The description of the image.
+	 * @param  {import('./image-info.js').Dimensions} dims    The dimensions of the image.
+	 * @returns {string}             The description of the image.
 	 */
-	describe_file(dims/*: Dimensions */)/*: string */ {
+	describe_file(dims) {
 		return 'File properties: ' + dims.width + 'x' + dims.height + (dims.frames !== 1 ? ', ' + dims.frames + ' frames' : '');
 	}
 
 	/**
 	 * Get the information for the file.
 	 *
-	 * @param  {FileDescriptor} file    The file descriptor.
+	 * @param  {import('./finder.js').FileDescriptor} file    The file descriptor.
 	 * @param  {Buffer} buffer          The file buffer.
-	 * @param  {Log} logger             The logger for printing errors.
+	 * @param  {import('./logger').Log} logger             The logger for printing errors.
 	 * @param  {LinterOptions} options  The options for the linter.
-	 * @return {Promise<ImageIdentifier>}     The image info.
+	 * @returns {Promise<ImageIdentifier>}     The image info.
 	 */
 	get_identifier(
-		file/*: FileDescriptor */,
-		buffer/*: Buffer */,
-		logger/*: Log */,
-		options/*: LinterOptions */)/*: Promise<ImageInfo> */ {
+			file,
+			buffer,
+			logger,
+			options) {
 		return new Promise((resolve, reject) => {
 			const extension = file.extension.toLowerCase();
 			let identifier = ImageIdentifierRegistry.from_extension(extension);
-			let file_buffer/*: ?Buffer */ = null;
+			/** @type {Buffer | null} */
+			let file_buffer = null;
 			let is_of_file_type = false;
 
 			if (buffer instanceof Buffer) {
@@ -155,12 +146,11 @@ export class Linter extends EventEmitter {
 	 *
 	 * @param  {ImageIdentifier} identifier  The file identifier.
 	 * @param  {Buffer} buffer          The file buffer.
-	 * @param  {Log} logger             The logger for printing errors.
-	 * @return {ImageInfo}     The image info.
+	 * @returns {import('./image-info.js').ImageInfo}     The image info.
 	 */
 	get_info(
-		identifier,
-		buffer/*: Buffer */)/*: Promise<ImageInfo> */ {
+			identifier,
+			buffer) {
 		const ProviderClass = identifier.get_info_provider();
 		let image_info;
 
@@ -177,11 +167,12 @@ export class Linter extends EventEmitter {
 
 	/**
 	 * Run the linter
+	 *
 	 * @param  {string[]} folder        A list of folders to look for images in.
 	 * @param  {LinterOptions} options  The options for the linter.
-	 * @return {Linter}                 The linter for chaining.
+	 * @returns {Linter}                 The linter for chaining.
 	 */
-	lint(folder/*: string[] */, options/*: LinterOptions */)/*: Linter */ {
+	lint(folder, options) {
 		const handler = new WorkHandler();
 		const hasher = new Hasher();
 
@@ -218,7 +209,7 @@ export class Linter extends EventEmitter {
 			}
 		}
 
-		handler.on('next', async (file/*: FileDescriptor */, done/*: () => void */) => {
+		handler.on('next', async (/** @type {import('./finder.js').FileDescriptor} */file, /** @type {() => void} */ done) => {
 			const logger = ROOT_LOGGER.get_logger(file.path);
 
 			// console.log(file.path);

@@ -7,6 +7,7 @@ import {PNGChunk, FIRST_CHUNK_OFFSET} from '../image/png/chunk.js';
 export class PNGImageLinter extends ImageLinter {
 	/**
 	 * Create a new PNGImageLinter
+	 *
 	 * @param  {Buffer} buffer The image buffer
 	 */
 	constructor(buffer) {

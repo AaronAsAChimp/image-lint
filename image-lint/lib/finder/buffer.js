@@ -1,27 +1,24 @@
-/* @flow */
-
 import {Finder} from '../finder.js';
 import {BlobLoader} from '../loader/blob.js';
 import path from 'path';
-
-/*::
-import type { FileDescriptor } from '../finder';
- */
 
 /**
  * Finds files in a Browser Blob object.
  */
 export class BufferArrayFinder extends Finder {
-	/*::
-	filename: string;
-	path: string;
-	buffer: Buffer;
-	*/
+	/** @type {string} */
+	filename;
+
+	/** @type {string} */
+	path;
+
+	/** @type {Buffer} */
+	buffer;
 
 	/**
 	 * @inheritdoc
 	 */
-	get_files(initial_files/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
+	get_files(initial_files) {
 		return Promise.resolve(this._search.bind(this, initial_files));
 	}
 
@@ -29,8 +26,9 @@ export class BufferArrayFinder extends Finder {
 	 * Traverse the file system yielding any files it finds.
 	 *
 	 * @param {Blob[]} files  The initial queue items.
+	 * @yields {FileDescriptor}
 	 */
-	* _search(files/*: Blob[] */)/*: Generator<FileDescriptor, *, *> */ {
+	* _search(files) {
 		for (const file of files) {
 			const extension = path.extname(file.name);
 

@@ -1,4 +1,3 @@
-/* @flow */
 import got from 'got';
 import {Loader} from '../loader.js';
 
@@ -8,9 +7,10 @@ import {Loader} from '../loader.js';
 export class HttpLoader extends Loader {
 	/**
 	 * Load the file.
-	 * @return {Promise<Buffer>}  The loaded file.
+	 *
+	 * @returns {Promise<Buffer>}  The loaded file.
 	 */
-	async load()/*: Promise<Buffer> */ {
+	async load() {
 		const response = await got(this.getPath(), {
 			responseType: 'buffer',
 		});

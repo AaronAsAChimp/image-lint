@@ -9,10 +9,7 @@ import rehypeShiki from 'rehype-shiki';
 import rehypeStringify from 'rehype-stringify';
 
 /**
- * Load markdown and convert it to HTML
- *
- * @param {String} md The markdown content
- * @return {Promise<String>} The module content
+ * A transformer to convert markdown into vue components.
  */
 export default new Transformer({
 	async transform({config, options, asset}) {
@@ -22,14 +19,14 @@ export default new Transformer({
 
 		const md = await asset.getCode();
 		const html = await unified()
-			.use(remarkParse)
-			.use(remarkRehype)
-			.use(remarkGfm)
-			.use(rehypeShiki)
-			.use(rehypeSlug)
-			.use(rehypeToc)
-			.use(rehypeStringify)
-			.process(md);
+				.use(remarkParse)
+				.use(remarkRehype)
+				.use(remarkGfm)
+				.use(rehypeShiki)
+				.use(rehypeSlug)
+				.use(rehypeToc)
+				.use(rehypeStringify)
+				.process(md);
 
 		// console.log(`md: ${ md }`);
 		// console.log(`html: ${ html }`);

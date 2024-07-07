@@ -1,5 +1,3 @@
-/* @flow */
-
 import {ImageIdentifier} from '../ident.js';
 
 /**
@@ -8,15 +6,18 @@ import {ImageIdentifier} from '../ident.js';
 export class MagicNumberIdentifier extends ImageIdentifier {
 	/**
 	 * Get the magic number for this file type
+	 *
+	 * @abstract
+	 * @returns {Buffer} The magic number for this file type
 	 */
-	get_magic()/*: Buffer */ {
+	get_magic() {
 		throw new Error('Not Implemented');
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	is_of_file_type(buffer/*: Buffer */)/*: boolean */ {
+	is_of_file_type(buffer) {
 		const magic = this.get_magic();
 		const buffer_magic = buffer.slice(0, magic.length);
 
@@ -28,7 +29,7 @@ export class MagicNumberIdentifier extends ImageIdentifier {
 	/**
 	 * @inheritDoc
 	 */
-	can_validate(buffer/*: Buffer */)/*: boolean */ {
+	can_validate(buffer) {
 		const magic = this.get_magic();
 
 		return buffer.length >= magic.length;

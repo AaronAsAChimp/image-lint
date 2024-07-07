@@ -1,10 +1,3 @@
-/* @flow */
-'use strict';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
@@ -31,7 +24,7 @@ export class JXLInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible JPG, I'm assuming it will
 		// be mostly overhead.
 		return 119;
@@ -40,14 +33,14 @@ export class JXLInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		return buffer.readUInt8(buffer.length - 1) !== 0x00;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		const bit_stream = new BitStream(buffer, 0);
 
 		const size_header = new SizeHeader(bit_stream);
@@ -62,7 +55,7 @@ export class JXLInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		const bit_stream = new BitStream(buffer, 0);
 
 		// const size_header = new SizeHeader(bit_stream);

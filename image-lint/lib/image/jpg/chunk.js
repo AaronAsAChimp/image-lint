@@ -14,7 +14,8 @@ const SOS_MARKER = 0xFFDA;
 export class JPEGChunk {
 	/**
 	 * Describe this chunk.
-	 * @return {string} The description of this chunk.
+	 *
+	 * @returns {string} The description of this chunk.
 	 */
 	describe() {
 		return 'UNK';
@@ -24,7 +25,7 @@ export class JPEGChunk {
 	 * Determines if this chunk is an EOI chunk that signifies the end of
 	 * the image.
 	 *
-	 * @return {boolean} True if it is an EOI chunk.
+	 * @returns {boolean} True if it is an EOI chunk.
 	 */
 	is_eoi_chunk() {
 		return false;
@@ -34,9 +35,7 @@ export class JPEGChunk {
 	 * Determines if this chunk is a SOFn chunk that may conatain matadata for
 	 * this image.
 	 *
-	 * @param  {Buffer}  buffer The buffer source of the image.
-	 * @param  {number}  offset The offset of the start of the chunk
-	 * @return {Boolean}        Returns true if it is a SOFn chunk.
+	 * @returns {boolean}        Returns true if it is a SOFn chunk.
 	 */
 	is_sof_chunk() {
 		return false;
@@ -44,9 +43,10 @@ export class JPEGChunk {
 
 	/**
 	 * Parse all of the chunks from the provided buffer.
+	 *
 	 * @param  {Buffer} buffer The image buffer.
 	 * @param  {number} offset The offset of where to start parsing.
-	 * @return {JPEGChunk[]}   The chunks contained in the buffer.
+	 * @returns {JPEGChunk[]}  The chunks contained in the buffer.
 	 */
 	static get_chunks(buffer, offset) {
 		let found = false;
@@ -108,6 +108,7 @@ export class JPEGChunk {
 export class MarkerSegment {
 	/**
 	 * Construct a JPEG chunk
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {number} offset The offset of the beginning of the chunk.
 	 */
@@ -118,7 +119,8 @@ export class MarkerSegment {
 
 	/**
 	 * Describe this chunk.
-	 * @return {string} The description of this chunk.
+	 *
+	 * @returns {string} The description of this chunk.
 	 */
 	describe() {
 		const name = CHUNK_NAMES.get(this.marker_code) ?? 'UNK';
@@ -130,7 +132,7 @@ export class MarkerSegment {
 	 * Determines if this chunk is an EOI chunk that signifies the end of
 	 * the image.
 	 *
-	 * @return {boolean} True if it is an EOI chunk.
+	 * @returns {boolean} True if it is an EOI chunk.
 	 */
 	is_eoi_chunk() {
 		return EOI_MARKER === this.marker_code;
@@ -140,9 +142,7 @@ export class MarkerSegment {
 	 * Determines if this chunk is a SOFn chunk that may conatain matadata for
 	 * this image.
 	 *
-	 * @param  {Buffer}  buffer The buffer source of the image.
-	 * @param  {number}  offset The offset of the start of the chunk
-	 * @return {Boolean}        Returns true if it is a SOFn chunk.
+	 * @returns {boolean}       Returns true if it is a SOFn chunk.
 	 */
 	is_sof_chunk() {
 		const sof_byte = this.marker_code;
@@ -167,6 +167,7 @@ class StandaloneJPEGChunk extends MarkerSegment {
 class DataJPEGChunk extends MarkerSegment {
 	/**
 	 * Construct a JPEG data chunk
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {number} offset The offset of the beginning of the chunk.
 	 */
@@ -185,6 +186,7 @@ class DataJPEGChunk extends MarkerSegment {
 class SOSChunk extends MarkerSegment {
 	/**
 	 * Construct a SOS chunk
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {number} offset The offset of the beginning of the chunk.
 	 */
@@ -203,6 +205,7 @@ class SOSChunk extends MarkerSegment {
 class EntropyCodedSegment extends JPEGChunk {
 	/**
 	 * Construct a new EntropyCodedSegment
+	 *
 	 * @param  {Buffer} buffer The file buffer
 	 * @param  {number} offset The offset of the beginning of the segment.
 	 * @param  {number} length The length ofthe segment.
@@ -216,7 +219,8 @@ class EntropyCodedSegment extends JPEGChunk {
 
 	/**
 	 * Describe this chunk.
-	 * @return {string} The description of this chunk.
+	 *
+	 * @returns {string} The description of this chunk.
 	 */
 	describe() {
 		return `Entropy Coded Segment (offset ${ this.offset }, length ${ this.length })`;
@@ -224,9 +228,10 @@ class EntropyCodedSegment extends JPEGChunk {
 
 	/**
 	 * Read an EC segment from a buffer.
+	 *
 	 * @param  {Buffer} buffer The file buffer
 	 * @param  {number} offset The offset of the beginning of the segment.
-	 * @return {EntropyCodedSegment}   The segment read from the buffer.
+	 * @returns {EntropyCodedSegment}   The segment read from the buffer.
 	 */
 	static from_buffer(buffer, offset) {
 		// The entropy coded data always follows the SOS chunk.

@@ -1,5 +1,3 @@
-/* @flow */
-
 import {ImageIdentifierRegistry} from '../../lib/ident-registry.js';
 import {MagicNumberIdentifier} from './magic-number-ident.js';
 

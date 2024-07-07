@@ -1,5 +1,3 @@
-/* @flow */
-
 const WORD_SIZE = 8;
 const QUAD_WORD_SIZE = WORD_SIZE * 4;
 
@@ -8,19 +6,25 @@ const QUAD_WORD_SIZE = WORD_SIZE * 4;
  * A bitstream.
  */
 export class Bitstream {
-	/*::
-	buffer: Buffer;
-	offset: number;
-	sub_bit: number;
-	current_byte: number;
-	*/
+	/** @type {Buffer} */
+	buffer;
+
+	/** @type {number} */
+	offset;
+
+	/** @type {number} */
+	sub_bit;
+
+	/** @type {number} */
+	current_byte;
 
 	/**
 	 * Construct a new  Bitstream.
+	 *
 	 * @param  {Buffer} buffer The buffer that contains the image.
 	 * @param  {number} offset The offset from beginning of the buffer.
 	 */
-	constructor(buffer/*: Buffer */, offset/*: number */ = 0) {
+	constructor(buffer, offset = 0) {
 		this.buffer = buffer;
 		this.offset = offset;
 		this.sub_bit = 0;
@@ -34,9 +38,9 @@ export class Bitstream {
 	 * @param {number} offset  Which bit to start reading from.
 	 * @param {number} bits  The number of bits to read.
 	 *
-	 * @return {number} The bits that were read.
+	 * @returns {number} The bits that were read.
 	 */
-	read_from_byte(byte/*: number */, offset/*: number */, bits/*: number */)/*: number */ {
+	read_from_byte(byte, offset, bits) {
 		let value = byte;
 
 		// This builds the mask with the correct number of '1'. For example:
@@ -74,9 +78,9 @@ export class Bitstream {
 	 * Read a certain number of bits from the stream.
 	 *
 	 * @param  {number} bits  The number of bits to read.
-	 * @return {number}       The bits read as a number.
+	 * @returns {number}      The bits read as a number.
 	 */
-	read_bits(bits/*: number */)/*: number */ {
+	read_bits(bits) {
 		if (bits > QUAD_WORD_SIZE) {
 			throw new Error(`Can not read more than ${ QUAD_WORD_SIZE } bits at a time. Attempting to read ${ bits }`);
 		}
@@ -154,18 +158,18 @@ export class Bitstream {
 	/**
 	 * Read a boolean from the stream.
 	 *
-	 * @return {boolean}  The boolean read.
+	 * @returns {boolean}  The boolean read.
 	 */
-	read_boolean()/*: boolean */ {
+	read_boolean() {
 		return !!this.read_bits(1);
 	}
 
 	/**
 	 * Get the number of bits read from the stream.
 	 *
-	 * @return {number}  The number of bits read.
+	 * @returns {number}  The number of bits read.
 	 */
-	get_bits_read()/*: number */ {
+	get_bits_read() {
 		return (this.offset * 8) + this.sub_bit;
 	}
 }

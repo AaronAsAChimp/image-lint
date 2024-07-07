@@ -14,7 +14,7 @@ export class VcsFinder extends Finder {
 	 *
 	 * @abstract
 	 * @param { string[] } clone_urls An array of urls to clone.
-	 * @return {Promise<string[]>} A promise that resolves to an array of file paths.
+	 * @returns {Promise<string[]>} A promise that resolves to an array of file paths.
 	 */
 	prepare_workspace(clone_urls) {
 		throw new Error('Not Implemented');
@@ -24,8 +24,8 @@ export class VcsFinder extends Finder {
 	 * Get a temporary workspace folder that the files can be placed during the
 	 * `prepare_workspace()` method @return {[type]} [description]
 	 *
-	 * @return {Promise<string>} A promise that resolves to the path of
-	 *                           the folder
+	 * @returns {Promise<string>} A promise that resolves to the path of
+	 *                            the folder
 	 */
 	get_workspace() {
 		return new Promise((resolve, reject) => {
@@ -46,10 +46,10 @@ export class VcsFinder extends Finder {
 	 */
 	get_files(clone_urls) {
 		return this.prepare_workspace(clone_urls)
-			.then((paths) => {
-				const file_finder = new FileFinder(this.extensions, this.mimes);
+				.then((paths) => {
+					const file_finder = new FileFinder(this.extensions, this.mimes);
 
-				return file_finder.get_files(paths);
-			});
+					return file_finder.get_files(paths);
+				});
 	}
 }

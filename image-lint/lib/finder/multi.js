@@ -1,33 +1,26 @@
-/* @flow */
-'use strict';
-
 import {Finder} from '../finder.js';
 import {FileFinder} from './file.js';
 import {WebFinder} from './web-puppeteer.js';
 // import {GitFinder} from './git.js';
-
-/*::
-import type { FileDescriptor } from '../finder';
-*/
 
 /**
  * Use multiple strategies to find files. It will parse the paths passed to
  * `get_files()` and use that information to choose the correct finder.
  */
 export class MultiFinder extends Finder {
-	/*::
-	_num_finders: number;
-	finders: {
-		[name: string]: Finder
-	}
-	*/
+	/** @type {number} */
+	_num_finders;
+
+	/** @type {Record<string, Finder>} */
+	finders;
 
 	/**
 	 * Construct a new MultiFinder
+	 *
 	 * @param  {string[]} extensions The file extensions to look for.
 	 * @param  {string[]} mimes      The MIMEs to look for.
 	 */
-	constructor(extensions/*: string[] */, mimes/*: string[] */) {
+	constructor(extensions, mimes) {
 		super(extensions, mimes);
 
 		this._num_finders = 2;
@@ -42,7 +35,7 @@ export class MultiFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
-	get_files(files/*: string[] */)/*: Promise<Iterable<FileDescriptor>> */ {
+	get_files(files) {
 		const split_files = {};
 
 		// Split the list of files into lists of files appropriate for each type
@@ -85,8 +78,8 @@ export class MultiFinder extends Finder {
 					types_completed++;
 
 					this.finders[type].get_files(split_files[type])
-						.then(files_found, reject)
-						.catch(reject);
+							.then(files_found, reject)
+							.catch(reject);
 				}
 			}
 		});

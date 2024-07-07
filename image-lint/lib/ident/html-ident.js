@@ -1,5 +1,3 @@
-/* @flow */
-
 import {XMLIdentifier} from './xml-ident.js';
 
 /**

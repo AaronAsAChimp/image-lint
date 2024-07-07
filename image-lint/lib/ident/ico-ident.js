@@ -1,5 +1,3 @@
-/* @flow */
-
 import {ImageIdentifier} from '../ident.js';
 const FIRST_BYTE = 0;
 const ICO_MAGIC = 1;

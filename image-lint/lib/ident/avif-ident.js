@@ -1,5 +1,3 @@
-/* @flow */
-
 import {ImageIdentifier} from '../ident.js';
 import {AVIFInfoProvider} from '../image/avif-info.js';
 import {RootBlock} from '../image/isobmff/isobmff.js';

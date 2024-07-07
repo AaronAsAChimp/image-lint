@@ -13,35 +13,38 @@ export const IHDR_OFFSET = FIRST_CHUNK_OFFSET + SECTION_LENGTH_WIDTH;
  * A PNG chunk.
  */
 export class PNGChunk {
-	/*::
-	length: number;
-	header: number;
-	data: Buffer;
-	crc32: number;
-	*/
-
 	/**
 	 * Construct a new PNG chunk.
+	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {number} offset The offset of the beginning of the chunk.
 	 */
-	constructor(buffer/*: Buffer */, offset/*: number */) {
+	constructor(buffer, offset) {
+		/** @type {number} */
 		this.offset = offset;
+
+		/** @type {number} */
 		this.length = buffer.readUInt32BE(offset);
+
+		/** @type {number} */
 		this.header = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH);
+
+		/** @type {Buffer} */
 		this.data = buffer.subarray(
 			offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH,
 			offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length,
 		);
+
+		/** @type {number} */
 		this.crc32 = buffer.readUInt32BE(offset + SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length);
 	}
 
 	/**
 	 * Verify the CRC in the chunk.
 	 *
-	 * @return {boolean} True if its a valid chunk.
+	 * @returns {boolean} True if its a valid chunk.
 	 */
-	verify()/*: boolean */ {
+	verify() {
 		const header = Buffer.alloc(4);
 		let check = null;
 
@@ -56,7 +59,8 @@ export class PNGChunk {
 	/**
 	 * Get the total length of the chunk. This is different from the length
 	 * property that is only the data length.
-	 * @return {number} The length of the chunks.
+	 *
+	 * @returns {number} The length of the chunks.
 	 */
 	get_total_length() {
 		return SECTION_LENGTH_WIDTH + SECTION_HEADER_WIDTH + this.length + CRC_WIDTH;
@@ -64,7 +68,8 @@ export class PNGChunk {
 
 	/**
 	 * Describe this chunk.
-	 * @return {string} The description of this chunk.
+	 *
+	 * @returns {string} The description of this chunk.
 	 */
 	describe() {
 		const name = Buffer.from(this.header.toString(16), 'hex');
@@ -74,9 +79,10 @@ export class PNGChunk {
 
 	/**
 	 * Parse all of the chunks from the provided buffer.
+	 *
 	 * @param  {Buffer} buffer The image buffer.
 	 * @param  {number} offset The offset of where to start parsing.
-	 * @return {PNGChunk[]}       The chunks contained in the buffer.
+	 * @returns {PNGChunk[]}   The chunks contained in the buffer.
 	 */
 	static get_chunks(buffer, offset) {
 		let current_offset = offset;

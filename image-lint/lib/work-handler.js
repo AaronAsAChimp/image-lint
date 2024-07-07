@@ -1,6 +1,3 @@
-/* @flow */
-'use strict';
-
 import {EventEmitter} from 'events';
 
 // const MAX_ACTIVE_HANDLERS = 1;
@@ -14,25 +11,29 @@ const MAX_ACTIVE_HANDLERS = 10;
  * The 'next' event handler will be provided two parameter, the next item in the
  * iterable and a 'done' function to be called to release the work handler back
  * to the pool.
+ *
+ * @template T
  */
-export class WorkHandler /*:: <T> */ extends EventEmitter {
-	/*::
-	_active_handlers: number;
-	_active_processes: number;
-	_done_proxy: () => void;
-	_iterator: Iterator<T> | null;
-	*/
-
+export class WorkHandler extends EventEmitter {
 	/**
 	 * Construct a new WorkHandler
 	 */
 	constructor() {
 		super();
 
+		/** @type {number} */
 		this._active_handlers = 0;
+
+		/** @type {number} */
 		this._active_processes = 0;
+
+		/** @type {() => void} */
 		this._done_proxy = this._done.bind(this);
+
+		/** @type {Iterator<T> | null} */
 		this._iterator = null;
+
+		/** @type {boolean} */
 		this._stopped = false;
 
 		this.on('handler.available', this._handler_available.bind(this));
@@ -80,7 +81,8 @@ export class WorkHandler /*:: <T> */ extends EventEmitter {
 
 	/**
 	 * Determine if the work handler is stopped.
-	 * @return {boolean} true if the work handler is stopped.
+	 *
+	 * @returns {boolean} true if the work handler is stopped.
 	 */
 	is_stopped() {
 		return this._stopped;
@@ -88,38 +90,38 @@ export class WorkHandler /*:: <T> */ extends EventEmitter {
 
 	/**
 	 * Start the work handler.
+	 *
 	 * @param  {Promise<Iterable<T>>} promise An iterable of items that will
 	 *                                        be processed.
 	 */
-	start(promise/*: Promise<Iterable<T>> */) {
+	start(promise) {
 		if (this._iterator) {
 			throw new Error('Work is in progress');
 		}
 
 		this._active_handlers = 0;
 
-		promise
-			.then((iterator) => {
-				this._iterator = iterator();
+		promise.then((iterator) => {
+			this._iterator = iterator();
 
-				while (this._active_handlers < MAX_ACTIVE_HANDLERS) {
-					this.emit('handler.available');
-					this._active_handlers++;
-				}
-			}, (e/*: Error */) => {
-				if (e.stack) {
-					console.error(`${ e.name }: ${ e.message } \n`, e);
-				} else {
-					console.error('Error', e);
-				}
-			})
-			.catch((e/*: Error */) => {
-				if (e.stack) {
-					console.error(`${ e.name }: ${ e.message } \n`, e);
-				} else {
-					console.error('Error', e);
-				}
-			});
+			while (this._active_handlers < MAX_ACTIVE_HANDLERS) {
+				this.emit('handler.available');
+				this._active_handlers++;
+			}
+		}, (e) => {
+			if (e.stack) {
+				console.error(`${ e.name }: ${ e.message } \n`, e);
+			} else {
+				console.error('Error', e);
+			}
+		})
+				.catch((e) => {
+					if (e.stack) {
+						console.error(`${ e.name }: ${ e.message } \n`, e);
+					} else {
+						console.error('Error', e);
+					}
+				});
 	}
 
 	/**

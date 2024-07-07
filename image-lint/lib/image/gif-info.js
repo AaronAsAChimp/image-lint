@@ -1,10 +1,3 @@
-/* @flow */
-'use strict';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 
@@ -25,7 +18,7 @@ export class GIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible GIF, I'm assuming it will
 		// be mostly overhead.
 		return 35;
@@ -33,11 +26,12 @@ export class GIFInfoProvider extends InfoProvider {
 
 	/**
 	 * Get the offset of the next chunk.
+	 *
 	 * @param  {Buffer} buffer The file buffer
 	 * @param  {number} offset The offset in the buffer.
-	 * @return {number}        The offset of the next chunk.
+	 * @returns {number}       The offset of the next chunk.
 	 */
-	next_chunk(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+	next_chunk(buffer, offset) {
 		const block_length = 2 + buffer.readUInt8(offset + 2);
 
 		// console.log('block_length', block_length);
@@ -50,9 +44,9 @@ export class GIFInfoProvider extends InfoProvider {
 	 *
 	 * @param  {Buffer} buffer The file buffer
 	 * @param  {number} offset The offset in the buffer.
-	 * @return {number}        The length of the sub-block.
+	 * @returns {number}       The length of the sub-block.
 	 */
-	get_sub_block_length(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+	get_sub_block_length(buffer, offset) {
 		let sub_block_length = 0;
 		let size_byte = buffer.readUInt8(offset);
 
@@ -78,9 +72,9 @@ export class GIFInfoProvider extends InfoProvider {
 	 *
 	 * @param  {Buffer} buffer The file buffer.
 	 * @param  {number} offset The offset in the buffer.
-	 * @return {number}        The length of the color table.
+	 * @returns {number}       The length of the color table.
 	 */
-	get_color_table_length(buffer/*: Buffer */, offset/*: number */)/*: number */ {
+	get_color_table_length(buffer, offset) {
 		const color_table_bits = buffer.readUInt8(offset) & COLOR_TABLE_LENGTH_MASK;
 
 		// console.log('color table bits', color_table_bits.toString(16));
@@ -93,9 +87,9 @@ export class GIFInfoProvider extends InfoProvider {
 	 *
 	 * @param  {Buffer}  buffer The file buffer.
 	 * @param  {number}  offset The offset in buffer.
-	 * @return {boolean}        True if the file has a color table.
+	 * @returns {boolean}       True if the file has a color table.
 	 */
-	has_color_table(buffer/*: Buffer */, offset/*: number */)/*: boolean */ {
+	has_color_table(buffer, offset) {
 		// console.log('has color table', !!(buffer.readUInt8(offset) & COLOR_TABLE_AVAILABLE_MASK));
 		return !!(buffer.readUInt8(offset) & COLOR_TABLE_AVAILABLE_MASK);
 	}
@@ -104,16 +98,16 @@ export class GIFInfoProvider extends InfoProvider {
 	 * Get the version string.
 	 *
 	 * @param  {Buffer} buffer The file buffer
-	 * @return {string}        The version string.
+	 * @returns {string}       The version string.
 	 */
-	get_version(buffer/*: Buffer */)/*: string */ {
+	get_version(buffer) {
 		return buffer.toString('ascii', VERSION_OFFSET, HEIGHT_OFFSET);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		let frame_count = 0;
 		let found = false;
 		let offset = 0;
@@ -190,14 +184,14 @@ export class GIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		return buffer.readUInt8(buffer.length - 1) !== FILE_TRAILER;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format()/*: PixelFormat */ {
+	get_pixel_format() {
 		const format = new PixelFormat();
 
 		format.color_space = ColorSpace.RGB;

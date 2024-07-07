@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-'use strict';
-
 
 import minimist from 'minimist';
 import {ArgsHelper} from 'image-lint/lib/args-helper.js';

@@ -1,4 +1,3 @@
-/* @flow */
 import {Bitstream} from '../bitstream/bitstream.js';
 
 const U32_MAX = 0xFFFFFFFF;
@@ -7,31 +6,25 @@ const VAL = 0;
 const BITS = 1;
 const BITS_OFFSET = 2;
 
-/*::
-type Distribution =
-	[0, number] |
-	[1, number] |
-	[2, number, number];
+/**
+ * @typedef {[0, number] | [1, number] | [2, number, number]} Distribution
+ */
 
-type Distribution32 = [
-	Distribution,
-	Distribution,
-	Distribution,
-	Distribution
-];
+/** @typedef {[Distribution, Distribution, Distribution, Distribution]} Distribution32 */
 
-export type CustomXY = {
-	x: number,
-	y: number
-};
+/** @typedef {Set<number>} EnumTable */
 
-type EnumTable = Set<number>;
-*/
+/**
+ * @typedef {object} CustomXY
+ * @property {number} x The x component
+ * @property {number} y The y component
+ */
 
 /**
  * Format a byte as a string.
+ *
  * @param  {number} bits The byte as number.
- * @return {string}      The formatted byte.
+ * @returns {string}     The formatted byte.
  */
 // function dbg_byte(bits) {
 // 	return ('00000000' + bits.toString(2)).slice(-8);
@@ -53,9 +46,9 @@ export class BitStream extends Bitstream {
 	 * Read a 32bit unsigned integer from the stream.
 	 *
 	 * @param  {...Distribution32} distributions The distributions.
-	 * @return {number}  The number read.
+	 * @returns {number}  The number read.
 	 */
-	read_u32(...distributions/*: Distribution32 */)/*: number */ {
+	read_u32(...distributions) {
 		if (distributions.length > 4) {
 			throw new Error('U32: A u32 takes only 4 distributions.');
 		}
@@ -83,9 +76,9 @@ export class BitStream extends Bitstream {
 	 * Read a signed 32bit integer from the stream.
 	 *
 	 * @param  {...Distribution32} distributions The distributions.
-	 * @return {number}   The number read.
+	 * @returns {number}   The number read.
 	 */
-	read_s32(...distributions/*: Distribution32 */)/*: number */ {
+	read_s32(...distributions) {
 		const v = this.read_u32(...distributions);
 
 		if (v % 2 === 0) {
@@ -100,9 +93,9 @@ export class BitStream extends Bitstream {
 	/**
 	 * Read a 16bit float from the stream.
 	 *
-	 * @return {number}  The number read.
+	 * @returns {number}  The number read.
 	 */
-	read_f16()/*: number */ {
+	read_f16() {
 		const bits16 = this.read_bits(16);
 		const sign = bits16 >> 15;
 		const biased_exp = ( bits16 >> 10 ) & 0x1F;
@@ -129,9 +122,9 @@ export class BitStream extends Bitstream {
 	/**
 	 * Read a custom X, Y from the stream.
 	 *
-	 * @return {{x: number, y: number}} The value read.
+	 * @returns {CustomXY} The value read.
 	 */
-	read_customxy()/*: CustomXY */ {
+	read_customxy() {
 		return {
 			x: this.read_s32(
 				[BITS, 19],
@@ -152,9 +145,9 @@ export class BitStream extends Bitstream {
 	 * Read an enumeration from the stream.
 	 *
 	 * @param  {EnumTable} enum_table The table of enum values.
-	 * @return {number}            The enum value read.
+	 * @returns {number}            The enum value read.
 	 */
-	read_enum(enum_table/*: EnumTable */)/*: number */ {
+	read_enum(enum_table) {
 		const value = this.read_u32(
 			[VAL, 0],
 			[VAL, 1],

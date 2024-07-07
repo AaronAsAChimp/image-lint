@@ -10,8 +10,8 @@ export default (options = {}) => (tree) => {
 	/**
 	 * Process a node replacing slots with content from package.json
 	 *
-	 * @param  {any} node
-	 * @return {any}
+	 * @param  {import('posthtml').Node} node The node to process
+	 * @returns {import('posthtml').Node} The processed node
 	 */
 	function process_node(node) {
 		if (node.tag === 'package-json-metadata') {

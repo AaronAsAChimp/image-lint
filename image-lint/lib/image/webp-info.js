@@ -1,10 +1,3 @@
-/* @flow */
-'use strict';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 import {RIFFChunk} from './riff/chunk.js';
@@ -18,7 +11,7 @@ export class WEBPInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible AVIF, I'm assuming it will
 		// be mostly overhead.
 		return 333;
@@ -27,7 +20,7 @@ export class WEBPInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		// TODO: implement
 		return false;
 	}
@@ -35,7 +28,7 @@ export class WEBPInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		const root = read_chunks(buffer, 0)[0];
 		let dimensions_chunk;
 
@@ -53,7 +46,7 @@ export class WEBPInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		const format = new PixelFormat();
 		format.color_space = ColorSpace.RGB;
 

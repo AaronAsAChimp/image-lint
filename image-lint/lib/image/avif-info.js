@@ -1,10 +1,3 @@
-/* @flow */
-'use strict';
-
-/*::
-import type {Dimensions} from '../image-info.js';
-*/
-
 import {InfoProvider} from '../image-info.js';
 import {PixelFormat, ColorSpace} from '../pixel-format.js';
 import {RootBlock} from '../image/isobmff/isobmff.js';
@@ -17,7 +10,7 @@ export class AVIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_overhead()/*: number */ {
+	get_overhead() {
 		// This is the size of the smallest possible AVIF, I'm assuming it will
 		// be mostly overhead.
 		return 333;
@@ -26,7 +19,7 @@ export class AVIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	is_truncated(buffer/*: Buffer */)/*: boolean */ {
+	is_truncated(buffer) {
 		// TODO: implement
 		return false;
 	}
@@ -34,7 +27,7 @@ export class AVIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_dimensions(buffer/*: Buffer */)/*: Dimensions */ {
+	get_dimensions(buffer) {
 		const root = new RootBlock(buffer);
 		const ispeAtom = root.children.meta.children.iprp.children.ipco.children.ispe;
 
@@ -48,7 +41,7 @@ export class AVIFInfoProvider extends InfoProvider {
 	/**
 	 * @inheritdoc
 	 */
-	get_pixel_format(buffer/*: Buffer */)/*: PixelFormat */ {
+	get_pixel_format(buffer) {
 		const root = new RootBlock(buffer);
 		const format = new PixelFormat();
 		format.color_space = ColorSpace.RGB;

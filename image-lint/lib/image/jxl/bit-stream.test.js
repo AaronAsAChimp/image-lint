@@ -1,7 +1,3 @@
-/* @flow */
-/*::
-import {test, expect} from 'jest';
-*/
 import {U32, BitStream, IllformedStreamError} from './bit-stream.js';
 
 test('read individual bits from a bit stream', () => {

@@ -1,35 +1,34 @@
-/* @flow */
-
-/*::
-import type {BitStream} from './bit-stream';
-*/
-
 import {U32} from './bit-stream.js';
 import {ColorEncoding} from './color-encoding.js';
-
-/*::
-import type {ImageMetadata2} from './image-metadata2.js';
-*/
 
 /**
  * The JXL image metadata header.
  */
 export class ImageMetadata {
-	/*::
-	have_icc: boolean;
-	bits_per_sample: number;
-	color_encoding: ColorEncoding | null;
-	alpha_bits: number;
-	target_nits: number;
-	m2: ImageMetadata2 | null;
-	*/
+	/** @type {boolean} */
+	have_icc;
+
+	/** @type {number} */
+	bits_per_sample;
+
+	/** @type {ColorEncoding | null} */
+	color_encoding;
+
+	/** @type {number} */
+	alpha_bits;
+
+	/** @type {number} */
+	target_nits;
+
+	/** @type {import('./image-metadata2.js').ImageMetadata2 | null} */
+	m2;
 
 	/**
 	 * Construct a new ImageMetadata.
 	 *
-	 * @param  {BitStream} stream The bit stream to read the ImageMetadata from.
+	 * @param  {import('./bit-stream.js').BitStream} stream The bit stream to read the ImageMetadata from.
 	 */
-	constructor(stream/*: BitStream */) {
+	constructor(stream) {
 		const all_default = stream.read_boolean();
 
 		if (!all_default) {

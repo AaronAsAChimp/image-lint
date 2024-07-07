@@ -1,4 +1,3 @@
-/* @flow */
 import fs from 'fs';
 import {Loader} from '../loader.js';
 
@@ -8,9 +7,10 @@ import {Loader} from '../loader.js';
 export class FsLoader extends Loader {
 	/**
 	 * Load the file.
-	 * @return {Promise<Buffer>}  The loaded file.
+	 *
+	 * @returns {Promise<Buffer>}  The loaded file.
 	 */
-	load()/*: Promise<Buffer> */ {
+	load() {
 		return new Promise((resolve, reject) => {
 			fs.readFile(this.getPath(), (err, buffer) => {
 				if (err) {
