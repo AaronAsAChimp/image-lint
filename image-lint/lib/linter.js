@@ -13,6 +13,7 @@ import {ImageIdentifierRegistry} from './ident-registry.js';
  * @property {number} bytes_per_pixel  Max bytes per pixel
  * @property {number} byte_savings  Min byte savings
  * @property {boolean} mismatch  Check for type mismatch
+ * @property {number} max_warnings  Max number of warnings.
  * @property {boolean} help  Print help information
  * @property {boolean} version Print version information
  */

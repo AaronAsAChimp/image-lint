@@ -22,9 +22,9 @@ You can specify a list of file paths and URLs to run the checks against. It will
 $ image-lint ./images/ http://example.com ./logos/logo1.png
 ```
 
-### Maximum Bytes Per Pixel `-b`, `--bytes_per_pixel` ###
+### Maximum Bytes Per Pixel `-b`, `--bytes-per-pixel` ###
 
-By default `image-lint` will give warnings for any image that exceeds 3 bytes per pixel (bpp). You can adjust this limit using the `-b` or `--bytes_per_pixel` flag.
+By default `image-lint` will give warnings for any image that exceeds 3 bytes per pixel (bpp). You can adjust this limit using the `-b` or `--bytes-per-pixel` flag.
 
 The value of 3bpp was chosen as a optimistic default. Its common that compressed images are much less-- as little as 0.4bpp. It is recommended that you set this value to the lowest value you can resonably tolerate.
 
@@ -34,7 +34,7 @@ $ image-lint -b 1 ./images/
 
 **Remedy:** This kind of issue can be resolved by using a compression optimizer, or resaving the image using sensible settings.
 
-### Minimum Byte Savings `-s`, `--byte_savings` ###
+### Minimum Byte Savings `-s`, `--byte-savings` ###
 
 An image must be at least be this many bytes larger than the optimum size before triggering a file size warning. The optimum size is determined by: max bytes per pixel &times; number of pixels. The default value is 500 bytes.
 
@@ -62,12 +62,12 @@ $ image-lint --duplicate true ./images/
 
 **Remedy:** This kind of issue can be resolved by removing the duplicate images, then pointing all references to the one remaining image.
 
-### Color Space Validation `--color_space` ###
+### Color Space Validation `--color-space` ###
 
 Color space validation will check the color space of the image and will issue a warning if it is not in the set of the allowed color spaces. This is useful to find images that have been saved for print but are used on the web. The default set is Grayscale (G), and RGB.
 
 ```sh
-$ image-lint --color_space CYMK,HSV,G ./images/
+$ image-lint --color-space CYMK,HSV,G ./images/
 ```
 
 **Remedy:** This kind of issue can be resolved by saving the image using the appropriate color mode.
@@ -75,12 +75,12 @@ $ image-lint --color_space CYMK,HSV,G ./images/
 Adjusting the behavior of image-lint
 ------------------------------------
 
-### Maximum warnings `--max_warnings` ###
+### Maximum warnings `--max-warnings` ###
 
 This flag will emit an error and stop linting when more than the maximum number of warnings are found. The default is to allow all warnings.
 
 ```sh
-$ image-lint --max_warnings=10 ./images/
+$ image-lint --max-warnings=10 ./images/
 ```
 
 **Remedy:** Address the warnings to be at or below the maximum.
