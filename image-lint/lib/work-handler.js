@@ -91,8 +91,8 @@ export class WorkHandler extends EventEmitter {
 	/**
 	 * Start the work handler.
 	 *
-	 * @param  {Promise<Iterable<T>>} promise An iterable of items that will
-	 *                                        be processed.
+	 * @param  {Promise<Generator<T, void, void>>} promise
+	 *   An iterable of items that will be processed.
 	 */
 	start(promise) {
 		if (this._iterator) {

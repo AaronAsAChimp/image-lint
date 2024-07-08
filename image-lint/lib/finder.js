@@ -29,7 +29,8 @@ export class Finder {
 	 *
 	 * @abstract
 	 * @param {string[]} initial_items The items to search through.
-	 * @returns {Promise<Iterable<FileDescriptor>>} initial_items The initial set of items to be searched for.
+	 * @returns {Promise<Generator<FileDescriptor, void, void>>}
+	 *   The initial set of items to be searched for.
 	 */
 	get_files(initial_items) {
 		throw new Error('Not Implemented');

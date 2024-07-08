@@ -7,6 +7,10 @@
     "target": "ES2022",
     "allowJs": true,
     "checkJs": true,
+    "types": [
+      "...",
+      "@types/jest"
+    ]
   },
-  "include": ["lib/**/*", "bin/**/*"],
+  "include": ["lib/**/*", "bin/**/*"]
 }

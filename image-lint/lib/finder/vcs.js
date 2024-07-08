@@ -22,7 +22,7 @@ export class VcsFinder extends Finder {
 
 	/**
 	 * Get a temporary workspace folder that the files can be placed during the
-	 * `prepare_workspace()` method @return {[type]} [description]
+	 * `prepare_workspace()` method.
 	 *
 	 * @returns {Promise<string>} A promise that resolves to the path of
 	 *                            the folder

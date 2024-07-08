@@ -185,11 +185,11 @@ export class Linter extends EventEmitter {
 
 			allowed_color_spaces = new Set();
 
-			for (let space of spaces) {
-				space = ColorSpace.from(space);
+			for (const space of spaces) {
+				const color_space = ColorSpace.from(space);
 
 				if (space) {
-					allowed_color_spaces.add(space);
+					allowed_color_spaces.add(color_space);
 				}
 			}
 		}

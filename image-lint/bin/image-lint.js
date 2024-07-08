@@ -11,7 +11,7 @@ import {ImageIdentifierRegistry} from '../lib/ident-registry.js';
 
 const DEFAULT_DIRECTORY = ['./'];
 
-/** @type {import('minimist').Opts} */
+/** @type { import('minimist').Opts & ArgsHelperOpts } */
 const argument_config = {
 	'boolean': [
 		'mismatch',

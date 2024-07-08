@@ -2,14 +2,6 @@ import fs from 'fs';
 
 
 /**
- * @typedef {import('minimist').Opts} ExtendedOptions
- * @property {string} '-help-usage'
- *   The usage information for the application
- * @property {Record<string, string>} '-help-options'
- *   The descriptions of each option.
- */
-
-/**
  * A helper class for command line arguments.
  */
 export class ArgsHelper {
@@ -17,7 +9,7 @@ export class ArgsHelper {
 	 * Process the arguments to handle the standard arguments like help
 	 * and version.
 	 *
-	 * @param  { ExtendedOptions } config The minimist config
+	 * @param  { import('minimist').Opts & ArgsHelperOpts } config The minimist config
 	 * @param  { any } args               The parsed arguments from minimist.
 	 * @returns { boolean }               Returns true if the process should exit.
 	 */
@@ -49,7 +41,7 @@ export class ArgsHelper {
 	/**
 	 * Print an option for display purposes.
 	 *
-	 * @param  {ExtendedOptions} config  The argument configuration.
+	 * @param  {import('minimist').Opts & ArgsHelperOpts} config  The argument configuration.
 	 * @param  {string} name             The name of the option.
 	 * @param  {string} description      A description of the option.
 	 */
@@ -91,7 +83,8 @@ export class ArgsHelper {
 	/**
 	 * Add the help option to the configuration.
 	 *
-	 * @param  {any} config The argument configuration.
+	 * @param  {import('minimist').Opts & ArgsHelperOpts} config
+	 *   The argument configuration.
 	 * @returns {boolean}   True if the process should exit.
 	 */
 	static help(config) {

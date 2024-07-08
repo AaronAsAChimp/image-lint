@@ -30,7 +30,8 @@ export class FileFinder extends Finder {
 	 * Traverse the file system yielding any files it finds.
 	 *
 	 * @param {string[]} queue  The initial queue items.
-	 * @yields {FileDescriptor}
+	 * @yields {import('../finder.js').FileDescriptor}
+	 * @returns {Generator<import('../finder.js').FileDescriptor, void, void>} A generator of files
 	 */
 	* _search(queue) {
 		while (queue.length) {

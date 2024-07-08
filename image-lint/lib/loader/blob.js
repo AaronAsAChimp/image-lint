@@ -1,4 +1,3 @@
-/* @flow */
 import {Loader} from '../loader.js';
 
 /**

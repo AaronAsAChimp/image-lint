@@ -1,4 +1,4 @@
-import VcsFinder from './vcs.js';
+import {VcsFinder} from './vcs.js';
 import Git from 'nodegit';
 
 

@@ -22,7 +22,7 @@ export class SizeHeader {
 		let ysize;
 		let xsize;
 
-		/** @type {number} */
+		/** @type {boolean} */
 		this.small = stream.read_boolean();
 
 		if (this.small) {

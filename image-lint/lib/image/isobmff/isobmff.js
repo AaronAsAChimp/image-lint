@@ -85,6 +85,9 @@ export class ISOBMFFAtom {
  * A ISO BMFF Atom that can contains other Blocks or Atoms.
  */
 class ISOBMFFBlock extends ISOBMFFAtom {
+	/** @type {Record<string, BlockOrAtom>} */
+	_children;
+
 	/**
 	 * Construct a new ISOBMFF block
 	 *
@@ -104,7 +107,7 @@ class ISOBMFFBlock extends ISOBMFFAtom {
 	/**
 	 * Lazy load the children.
 	 *
-	 * @returns {{string: BlockOrAtom}} The children of this block.
+	 * @returns {Record<string, BlockOrAtom>} The children of this block.
 	 */
 	get children() {
 		const buffer = this._buffer;
@@ -282,7 +285,7 @@ class PIXIAtom extends ISOBMFFAtom {
 	 * @param  {Buffer} buffer  The content of the block.
 	 */
 	constructor(length, tag, buffer) {
-		super(length, tag, buffer);
+		super(length, tag);
 
 		const UNKNOWN_BITS = 4;
 

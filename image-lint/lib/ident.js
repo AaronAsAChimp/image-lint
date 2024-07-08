@@ -8,7 +8,7 @@ export class ImageIdentifier {
 	 * Construct an ImageIdentifier
 	 */
 	constructor() {
-		/** @type {InfoProvider | null} */
+		/** @type {import('./image-info.js').InfoProvider | null} */
 		this._info_provider = null;
 	}
 
@@ -27,6 +27,7 @@ export class ImageIdentifier {
 	 *
 	 * @abstract
 	 * @param  {Buffer}  buffer The image buffer.
+	 * @returns {boolean} True if the file is of the file type.
 	 */
 	is_of_file_type(buffer) {
 		throw new Error('Not Implemented');

@@ -35,11 +35,11 @@ export class ImageMetadata2 {
 		/** @type {number} */
 		this.extra_channel_bits = 0;
 
-		/** @type {ExtraChannelInfo} */
-		this.extra_channel_info = []; // TODO: implement
+		/** @type {ExtraChannelInfo[]} */
+		this.extra_channel_info = [];
 
 		/** @type {Extensions | null} */
-		this.extensions = null; // TODO: implement
+		this.extensions = null;
 
 		if (!all_default) {
 			this.have_preview = stream.read_boolean();

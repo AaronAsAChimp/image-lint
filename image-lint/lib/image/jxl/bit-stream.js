@@ -2,8 +2,11 @@ import {Bitstream} from '../bitstream/bitstream.js';
 
 const U32_MAX = 0xFFFFFFFF;
 
+/** @type {0} */
 const VAL = 0;
+/** @type {1} */
 const BITS = 1;
+/** @type {2} */
 const BITS_OFFSET = 2;
 
 /**
@@ -45,7 +48,7 @@ export class BitStream extends Bitstream {
 	/**
 	 * Read a 32bit unsigned integer from the stream.
 	 *
-	 * @param  {...Distribution32} distributions The distributions.
+	 * @param  {Distribution32} distributions The distributions.
 	 * @returns {number}  The number read.
 	 */
 	read_u32(...distributions) {
@@ -75,7 +78,7 @@ export class BitStream extends Bitstream {
 	/**
 	 * Read a signed 32bit integer from the stream.
 	 *
-	 * @param  {...Distribution32} distributions The distributions.
+	 * @param  {Distribution32} distributions The distributions.
 	 * @returns {number}   The number read.
 	 */
 	read_s32(...distributions) {
