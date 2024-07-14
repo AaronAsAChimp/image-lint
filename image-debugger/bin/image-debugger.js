@@ -41,8 +41,13 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	}
 
 	const files = await finder.get_files(folder);
+	const iteratable = {
+		[Symbol.iterator]() {
+			return files;
+		}
+	}
 
-	for (const file of files()) {
+	for (const file of iteratable) {
 		const ident = ImageIdentifierRegistry.from_file_descriptor(file);
 		const buffer = await file.loader.load();
 

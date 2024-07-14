@@ -239,7 +239,7 @@ export class Linter extends EventEmitter {
 
 				const identifier = await this.get_identifier(file, buffer, logger, options);
 
-				const info = await this.get_info(identifier, buffer);
+				const info = this.get_info(identifier, buffer);
 
 				// We could still be parsing a file when a fatal error
 				// occurs so check the status of the handler before continuing.

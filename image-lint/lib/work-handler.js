@@ -91,7 +91,7 @@ export class WorkHandler extends EventEmitter {
 	/**
 	 * Start the work handler.
 	 *
-	 * @param  {Promise<Generator<T, void, void>>} promise
+	 * @param  {Promise<Iterator<T, void, void>>} promise
 	 *   An iterable of items that will be processed.
 	 */
 	start(promise) {
@@ -102,7 +102,7 @@ export class WorkHandler extends EventEmitter {
 		this._active_handlers = 0;
 
 		promise.then((iterator) => {
-			this._iterator = iterator();
+			this._iterator = iterator;
 
 			while (this._active_handlers < MAX_ACTIVE_HANDLERS) {
 				this.emit('handler.available');

@@ -29,7 +29,7 @@ export class Finder {
 	 *
 	 * @abstract
 	 * @param {string[]} initial_items The items to search through.
-	 * @returns {Promise<Generator<FileDescriptor, void, void>>}
+	 * @returns {Promise<Iterator<FileDescriptor, void, void>>}
 	 *   The initial set of items to be searched for.
 	 */
 	get_files(initial_items) {

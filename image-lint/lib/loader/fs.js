@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import {Loader} from '../loader.js';
 
 /**
@@ -10,15 +10,7 @@ export class FsLoader extends Loader {
 	 *
 	 * @returns {Promise<Buffer>}  The loaded file.
 	 */
-	load() {
-		return new Promise((resolve, reject) => {
-			fs.readFile(this.getPath(), (err, buffer) => {
-				if (err) {
-					reject(err);
-				}
-
-				resolve(buffer);
-			});
-		});
+	async load() {
+		return await fs.readFile(this.getPath());
 	}
 }

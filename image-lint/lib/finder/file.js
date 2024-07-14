@@ -16,14 +16,14 @@ export class FileFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
-	get_files(initital_items) {
+	async get_files(initital_items) {
 		const queue = initital_items.slice(0);
 
 		if (!queue.length) {
 			throw new Error('No files or folders specified');
 		}
 
-		return Promise.resolve(this._search.bind(this, queue));
+		return this._search(queue);
 	}
 
 	/**

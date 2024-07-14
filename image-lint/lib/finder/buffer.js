@@ -18,8 +18,8 @@ export class BufferArrayFinder extends Finder {
 	/**
 	 * @inheritdoc
 	 */
-	get_files(initial_files) {
-		return Promise.resolve(this._search.bind(this, initial_files));
+	async get_files(initial_files) {
+		return this._search(initial_files);
 	}
 
 	/**
