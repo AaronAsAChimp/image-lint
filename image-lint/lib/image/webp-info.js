@@ -33,7 +33,11 @@ export class WEBPInfoProvider extends InfoProvider {
 		let dimensions_chunk;
 
 		if (root instanceof RIFFChunk) {
-			dimensions_chunk = root.subchunks.find((chunk) => chunk.header === 'VP8X' || chunk.header === 'VP8L');
+			dimensions_chunk = root.subchunks.find((chunk) => chunk.header === 'VP8X' || chunk.header === 'VP8L' || chunk.header === 'VP8 ');
+		}
+
+		if (!dimensions_chunk) {
+			throw new Error('No frame found in WEBP image');
 		}
 
 		return {
