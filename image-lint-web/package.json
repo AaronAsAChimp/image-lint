@@ -29,7 +29,7 @@
     },
     "scripts": {
         "ci:lint": "eslint . -c eslint.config.mjs",
-        "build": "BASE_PATH=\"/image-lint/\" parcel build --dist-dir ../docs --public-url /image-lint/",
+        "build": "BASE_PATH=\"/image-lint/\" parcel build --dist-dir ../docs --public-url /image-lint/ && cp ./web/sitemap.xml ../docs/",
         "serve": "parcel --dist-dir ../docs"
     },
     "bugs": {
