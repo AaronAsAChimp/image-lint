@@ -44,8 +44,8 @@ if (ArgsHelper.argv(argument_config, argv)) {
 	const iteratable = {
 		[Symbol.iterator]() {
 			return files;
-		}
-	}
+		},
+	};
 
 	for (const file of iteratable) {
 		const ident = ImageIdentifierRegistry.from_file_descriptor(file);
