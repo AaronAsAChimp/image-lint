@@ -71,6 +71,6 @@ export class Hasher {
 			hashes.set(digest, path);
 		}
 
-		return found_name;
+		return !!found_name;
 	}
 }

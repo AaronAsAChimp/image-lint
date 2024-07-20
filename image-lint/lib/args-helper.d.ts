@@ -1,4 +1,4 @@
-interface ArgsHelperOpts {
+export interface ArgsHelperOpts {
 	/**
 	 * The usage information for the application
 	 */

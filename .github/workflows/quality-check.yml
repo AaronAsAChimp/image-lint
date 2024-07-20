@@ -63,4 +63,4 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test -w image-lint
+        run: npm test --workspaces --if-present

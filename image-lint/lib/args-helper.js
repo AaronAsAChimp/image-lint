@@ -9,7 +9,7 @@ export class ArgsHelper {
 	 * Process the arguments to handle the standard arguments like help
 	 * and version.
 	 *
-	 * @param  { import('minimist').Opts & ArgsHelperOpts } config The minimist config
+	 * @param  { import('minimist').Opts & import('./args-helper').ArgsHelperOpts } config The minimist config
 	 * @param  { any } args               The parsed arguments from minimist.
 	 * @returns { boolean }               Returns true if the process should exit.
 	 */
@@ -41,7 +41,7 @@ export class ArgsHelper {
 	/**
 	 * Print an option for display purposes.
 	 *
-	 * @param  {import('minimist').Opts & ArgsHelperOpts} config  The argument configuration.
+	 * @param  {import('minimist').Opts & import('./args-helper').ArgsHelperOpts} config  The argument configuration.
 	 * @param  {string} name             The name of the option.
 	 * @param  {string} description      A description of the option.
 	 */
@@ -83,7 +83,7 @@ export class ArgsHelper {
 	/**
 	 * Add the help option to the configuration.
 	 *
-	 * @param  {import('minimist').Opts & ArgsHelperOpts} config
+	 * @param  {import('minimist').Opts & import('./args-helper').ArgsHelperOpts} config
 	 *   The argument configuration.
 	 * @returns {boolean}   True if the process should exit.
 	 */

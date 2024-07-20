@@ -17,10 +17,16 @@ import HTMLIdent from './ident/html-ident.js';
  * A registry for image identifiers.
  */
 export class ImageIdentifierRegistry {
+	static _extension_registry = new Map();
+	static _mime_registry = new Map();
+	static _all_providers = [];
+	static _all_extensions = [];
+	static _all_mimes = [];
+
 	/**
 	 * Add an image identifier to the registry.
 	 *
-	 * @param  {typeof ImageIdentifier} Constructor The constructor of the identifier.
+	 * @param  {typeof import('./ident.js').ImageIdentifier} Constructor The constructor of the identifier.
 	 */
 	static register(Constructor) {
 		const provider = new Constructor();
@@ -114,7 +120,7 @@ export class ImageIdentifierRegistry {
 	 * Construct a new identifier using the file descriptor. This doesn't load
 	 * the file and only uses the metadata provided by the file descriptor.
 	 *
-	 * @param  {FileDescriptor} file The file descriptor.
+	 * @param  {import('./finder.js').FileDescriptor} file The file descriptor.
 	 * @returns {import('./ident.js').ImageIdentifier}     The new image identifier.
 	 */
 	static from_file_descriptor(file) {
@@ -122,21 +128,14 @@ export class ImageIdentifierRegistry {
 	}
 
 	/**
-	 * Iterate all of the registered providers.
+	 * Get a list of all of the identifiers in the registry.
 	 *
-	 * @yields {import('./ident.js').ImageIdentifier}
-	 * @returns {Generator<import('./ident.js').ImageIdentifier, void, void>} a generator of all of the image identifiers.
+	 * @returns {import('./ident.js').ImageIdentifier[]} A list of all identifiers
 	 */
-	static* all_providers() {
-		yield* ImageIdentifierRegistry._all_providers;
+	static all_providers() {
+		return Array.from(ImageIdentifierRegistry._all_providers);
 	}
 }
-
-ImageIdentifierRegistry._extension_registry = new Map();
-ImageIdentifierRegistry._mime_registry = new Map();
-ImageIdentifierRegistry._all_providers = [];
-ImageIdentifierRegistry._all_extensions = [];
-ImageIdentifierRegistry._all_mimes = [];
 
 
 ImageIdentifierRegistry.register(PNGIdent);
