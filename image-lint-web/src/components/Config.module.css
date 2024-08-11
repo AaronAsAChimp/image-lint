@@ -1,0 +1,34 @@
+
+.lint-options-title {
+	margin-top: 0;
+}
+
+.lint-option {
+	display: block;
+	margin: 1.1em 0;
+	line-height: 1.3;
+}
+
+.lint-option-check {
+	display:  grid;
+	grid-template-columns: 1.4em auto;
+	gap: 0.4em;
+}
+
+.lint-option-check [type=checkbox] {
+	align-self: start;
+	height: 1.4em;
+}
+
+.lint-option-number,
+.lint-option-array {
+	display: flex;
+	flex-direction: column;
+}
+
+.lint-option-number [type=number],
+.lint-option-array .multiselect {
+	margin-top: 0.4em;
+	font-size:  1em;
+	padding:  0.2em;
+}

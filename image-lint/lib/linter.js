@@ -8,14 +8,12 @@ import {ImageIdentifierRegistry} from './ident-registry.js';
 /**
  * @typedef {object} LinterOptions
  * @property {string[]} color_space  The allowed color spaces
- * @property {string[]} file_type  The allowed file types
+ * @property {string[] | null} file_type  The allowed file types
  * @property {boolean} duplicate  Check for dupes
  * @property {number} bytes_per_pixel  Max bytes per pixel
  * @property {number} byte_savings  Min byte savings
  * @property {boolean} mismatch  Check for type mismatch
  * @property {number} max_warnings  Max number of warnings.
- * @property {boolean} help  Print help information
- * @property {boolean} version Print version information
  */
 
 /**
@@ -169,7 +167,7 @@ export class Linter extends EventEmitter {
 	/**
 	 * Run the linter
 	 *
-	 * @param  {string[]} folder        A list of folders to look for images in.
+	 * @param  {string[] | File[]} folder        A list of folders to look for images in.
 	 * @param  {LinterOptions} options  The options for the linter.
 	 * @returns {Linter}                 The linter for chaining.
 	 */
@@ -266,6 +264,7 @@ export class Linter extends EventEmitter {
 					}
 
 					if (allowed_color_spaces) {
+						console.log(color_space, allowed_color_spaces);
 						if (color_space.name === 'UNK') {
 							const channels = color_space.channels > 0 ? color_space.channels : 'an unknown number of';
 

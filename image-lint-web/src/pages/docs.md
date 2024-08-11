@@ -1,4 +1,7 @@
-# Docs
+---
+layout: '../layouts/DocsLayout.astro'
+---
+# Documentation
 
 Usage
 -----

@@ -1,0 +1,86 @@
+---
+import '../css/variables.css';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/image-lint/favicon.svg" />
+		<title>{title}</title>
+		<link rel="sitemap" href="/image-lint/sitemap-index.xml" />
+	</head>
+	<body>
+		<div class="page-wrapper">
+			<slot />
+		</div>
+	</body>
+</html>
+<style is:global>
+	@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+	:root {
+		--accent: 136, 58, 234;
+		--accent-light: 224, 204, 250;
+		--accent-dark: 49, 10, 101;
+		--accent-gradient: linear-gradient(
+			45deg,
+			rgb(var(--accent)),
+			rgb(var(--accent-light)) 30%,
+			white 60%
+		);
+	}
+	html {
+		font-family: Lato, sans-serif;
+		letter-spacing: 0.5px;
+		background: #13151a;
+		font-size: 20px;
+	}
+
+	h1 {
+		font-size: 2.55em;
+		font-weight: 700;
+		line-height: 1;
+		margin: 0.8em 0 1em;
+	}
+
+	a {
+		color: var(--color-status-good);
+	}
+
+	code {
+		font-family:
+			Menlo,
+			Monaco,
+			Lucida Console,
+			Liberation Mono,
+			DejaVu Sans Mono,
+			Bitstream Vera Sans Mono,
+			Courier New,
+			monospace;
+	}
+
+	.page-wrapper {
+		margin: auto;
+		padding: 1rem;
+		width: 575px;
+		max-width: calc(100% - 2rem);
+		color: white;
+		line-height: 1.6;
+	}
+
+	.astro-code {
+		font-size: 0.85em;
+		padding: 1em 1.4em;
+		margin: 0 -1.4em;
+		border-radius: 0.5em;
+	}
+</style>

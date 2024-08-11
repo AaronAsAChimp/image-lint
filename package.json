@@ -5,6 +5,7 @@
     "workspaces": [
         "image-lint",
         "image-lint-web",
+        "image-lint-astro",
         "image-debugger"
     ]
 }

@@ -1,3 +1,6 @@
+---
+layout: '../layouts/DocsLayout.astro'
+---
 # Getting Started
 
 image-lint is an application for finding issues with images. Its main focus is

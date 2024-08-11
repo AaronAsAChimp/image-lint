@@ -1,6 +1,21 @@
 import {Finder} from '../finder.js';
 import {BlobLoader} from '../loader/blob.js';
-import path from 'path';
+
+/**
+ * A browser friendly implementation of path.extname.
+ *
+ * @param {string} path The path to get the extension from.
+ * @returns {string} The extension for an empty string if there is none.
+ */
+function extname(path) {
+	const dot_index = path.lastIndexOf('.');
+
+	if (dot_index > 0) {
+		return path.substring(dot_index);
+	} else {
+		return '';
+	}
+}
 
 /**
  * Finds files in a Browser Blob object.
@@ -25,12 +40,12 @@ export class BufferArrayFinder extends Finder {
 	/**
 	 * Traverse the file system yielding any files it finds.
 	 *
-	 * @param {Blob[]} files  The initial queue items.
+	 * @param {File[]} files  The initial queue items.
 	 * @yields {FileDescriptor}
 	 */
 	* _search(files) {
 		for (const file of files) {
-			const extension = path.extname(file.name);
+			const extension = extname(file.name);
 
 			yield {
 				'path': file.name,

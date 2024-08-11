@@ -1,0 +1,26 @@
+---
+import Nav from "./Nav.astro"
+import packageJson from '../../../image-lint/package.json'
+---
+<div class="page-header">
+	<div class="page-title">{packageJson.name}<span class="title-version">v{packageJson.version}</span></div>
+	<Nav />
+</div>
+<style>
+	.page-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+	}
+
+	.page-title {
+		position: relative;
+	}
+
+	.title-version {
+		font-size: 0.6em;
+		position: absolute;
+		bottom: -1em;
+		right: 0;
+	}
+</style>

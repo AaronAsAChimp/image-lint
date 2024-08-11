@@ -1,49 +1,61 @@
-@import "./variables.css";
+---
+import Layout from './Layout.astro'
+import Header from '../components/Header.astro'
+import '../css/variables.css';
 
-.docs-page {
+const { frontmatter } = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+	<Header />
+	<main>
+		<slot />
+	</main>
+</Layout>
+<style is:global>
+
+pre {
 	padding: 2em;
-	max-width: 60em;
-	margin: 0 auto;
 }
 
-.docs-page pre {
-	padding: 2em;
-}
-
-.docs-page h1 {
+h1 {
 	margin: 1em 0 0.5em;
 }
 
-.docs-page h2 {
-	margin: 2em 0 0.5em;
+h2 {
+	margin: 1.6em 0 0.5em;
 }
 
-.docs-page p {
+h3 {
+	margin: 1.6em 0 0.5em;
+}
+
+p {
 	line-height: 1.8;
 	margin: 0.5em 0;
 }
 
-.docs-page table {
+table {
 	margin: 0 auto;
 	background: #505050;
 	border-collapse: collapse;
 }
 
-.docs-page thead {
+thead {
 	background: #656565;
 }
 
-.docs-page tbody tr:nth-child(even) {
+tbody tr:nth-child(even) {
 	background: #434343;
 }
 
-.docs-page th,
-.docs-page td {
+th,
+td {
 	padding: 0.6em 1.2em;
 /*	border: 1px solid black;*/
 }
 
-.docs-page .toc {
+.toc {
 	background: var(--color-layer-bg);
 	padding: 1em;
 	float: right;
@@ -52,29 +64,30 @@
 	margin-right: 0;
 }
 
-.docs-page .toc-level {
+.toc-level {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.docs-page .toc-level .toc-level {
+.toc-level .toc-level {
 	padding-left: 0.6em;
 }
 
-.docs-page .toc-link {
+.toc-link {
 	display: block;
 	padding: 0.4em;
 	text-decoration: none;
 }
 
-.docs-page .toc-link-h1 {
+.toc-link-h1 {
 	font-weight: bold;
 }
 
 @media (width < 800px) {
-	.docs-page .toc {
+	.toc {
 		position: static;
 		float: none;
 	}
 }
+</style>

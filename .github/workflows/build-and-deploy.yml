@@ -39,13 +39,12 @@ jobs:
           node-version: 21
           cache: 'npm'
       - run: npm ci
-      - name: Parcel build
+      - name: Astro build
         run: npm run build -w image-lint-web
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: './docs/'
+          path: './image-lint-web/dist/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2

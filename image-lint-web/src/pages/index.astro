@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Code } from 'astro:components';
+import '../css/variables.css';
+
+import {TryIt} from '../components/TryIt.tsx';
+---
+
+<Layout title="image-lint">
+	<main>
+		<div class="home-hero">
+			<h1>image-lint</h1>
+
+			<TryIt client:load>
+				<p>
+					Streamline your asset workflow, deploy confidently, reduce bandwidth, and more.
+				</p>
+
+				<p>
+					Drop images here to try it!
+				</p>
+
+				<Code lang="sh" code="npm install -g image-lint" />
+			</TryIt>
+
+			<div class="hero-ctas">
+				<a class="cta-button" href="./getting-started/">Getting Started</a>
+				<a class="cta-button" href="./docs/">Documentation</a>
+			</div>
+		</div>
+
+		<h2>Give feedback faster.</h2>
+		<p>
+		We're not always in control of the assets we work with. image-lint can validate hundreds of images for color space, file type, and more in seconds.
+		</p>
+		<Code lang="sh" code="image-lint --color_space RGB,G ./totally-not-print-assets/" />
+
+		<h2>Never fear a bad upload again.</h2>
+		<p>
+		Check websites for broken images, but not just 404s. It can also find images that are corrupted and identify image formats that browsers don't support.
+		</p>
+
+		<Code lang="sh" code="image-lint https://aaronasachimp.github.io/image-lint" />
+		
+		<h2>Saving bytes can save money.</h2>
+		<p>
+		image-lint uses a smart algorithm to determine if your images could be smaller. It takes into account the size and type to give you accurate recommendations that wont waste your time.
+		</p>
+
+		<Code lang="sh" code="image-lint --bytes_per_pixel 1 ./img/" />
+	</main>
+</Layout>
+<style>
+	.home-hero {
+		margin-bottom: 1em;
+	}
+
+	.hero-ctas {
+		display: flex;
+		gap: 1.45em;
+		margin: 1.6em 0;
+	}
+
+	.cta-button {
+		padding: 0.5em 1.27em;
+		background: var(--color-status-good);
+		color: var(--color-status-good-contrast);
+		text-decoration: none;
+		border-radius: 0.4em;
+	}
+
+	.cta-button:hover {
+		background: var(--color-status-warn);
+	}
+</style>
