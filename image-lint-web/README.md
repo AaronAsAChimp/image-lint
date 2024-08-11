@@ -6,5 +6,5 @@
 From the project root.
 
 ```sh
-npm run build:image-lint-web --workspace=image-lint-web
+npm run build --workspace=image-lint-web
 ```

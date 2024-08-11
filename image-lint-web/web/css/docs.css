@@ -2,6 +2,8 @@
 
 .docs-page {
 	padding: 2em;
+	max-width: 60em;
+	margin: 0 auto;
 }
 
 .docs-page pre {
