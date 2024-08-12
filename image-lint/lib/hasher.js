@@ -1,11 +1,11 @@
-import crypto from 'crypto';
-
-const TRIE_DEPTH = 3;
-const HASH_TYPE = 'sha1';
+// This alleviates the need to pull in a browser compatible version of
+// the 'crypto' module.
+const crypto = globalThis.crypto;
+const HASH_TYPE = 'SHA-1';
 
 
 /**
- * @typedef {Map<string, Map<string, Map<string, Trie>>>} Trie
+ * @typedef {Map<string, Map<string, Map<string, Map<ArrayBuffer, string>>>>} Trie
  */
 
 /**
@@ -23,47 +23,52 @@ export class Hasher {
 	/**
 	 * Retrive the branch of the Trie that would contain the given digest.
 	 *
-	 * @param  {string} digest A unique hash.
-	 * @returns {Trie}          The sub Trie.w
+	 * @param  {ArrayBuffer} digest        A unique hash.
+	 * @returns {Map<ArrayBuffer, string>} The sub Trie.
 	 */
 	find(digest) {
-		let current = this.trie;
-		let depth = 0;
+		let byte = digest[0];
+		let lvl1 = this.trie.get(byte);
 
-		// Descend down the trie to find the leaf that contains this digest.
-		while (depth <= TRIE_DEPTH) {
-			const previous = current;
-			const byte = digest[depth];
-
-			current = current.get(byte);
-
-			if (!current) {
-				current = new Map();
-				previous.set(byte, current);
-			}
-
-			depth++;
+		if (!lvl1) {
+			lvl1 = new Map();
+			this.trie.set(byte, lvl1);
 		}
 
-		return current;
+		byte = digest[1];
+		let lvl2 = lvl1.get(byte);
+
+		if (!lvl2) {
+			lvl2 = new Map();
+			lvl1.set(byte, lvl2);
+		}
+
+
+		byte = digest[2];
+		let lvl3 = lvl2.get(byte);
+
+		if (!lvl3) {
+			lvl3 = new Map();
+			lvl2.set(byte, lvl3);
+		}
+
+		return lvl3;
 	}
 
 	/**
-	 * Determine if the given buffer has already been seen. If not the hash and
+	 * Determine if the given buffer has already been seen. If not, the hash and
 	 * path will be added to the Trie.
 	 *
 	 * @param  {string} path    The path to the file.
 	 * @param  {Buffer} buffer  The file's content
-	 * @returns {boolean}        The path of the existing file with the
-	 *                          same contents.
+	 *
+	 * @returns {Promise<boolean>}
+	 *     The path of the existing file with the same contents.
 	 */
-	contains(path, buffer) {
+	async contains(path, buffer) {
 		// The leaf should contain a map of digests to file names.
-		const hash = crypto.createHash(HASH_TYPE);
 
-		hash.update(buffer);
-
-		const digest = hash.digest('binary');
+		const digest = await crypto.subtle.digest(HASH_TYPE, buffer)
 		const hashes = this.find(digest);
 		const found_name = hashes.get(digest);
 

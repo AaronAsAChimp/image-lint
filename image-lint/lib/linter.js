@@ -230,7 +230,7 @@ export class Linter extends EventEmitter {
 				}
 
 				if (options.duplicate === true) {
-					const found = hasher.contains(file.path, buffer);
+					const found = await hasher.contains(file.path, buffer);
 
 					if (found) {
 						logger.warn('This file is a duplicate of: ' + found);
