@@ -68,7 +68,7 @@ export class Hasher {
 	async contains(path, buffer) {
 		// The leaf should contain a map of digests to file names.
 
-		const digest = await crypto.subtle.digest(HASH_TYPE, buffer)
+		const digest = await crypto.subtle.digest(HASH_TYPE, buffer);
 		const hashes = this.find(digest);
 		const found_name = hashes.get(digest);
 
