@@ -1,4 +1,4 @@
-import { useRef, useState, type DragEvent, type PropsWithChildren } from "react";
+import {useRef, useState, type DragEvent, type PropsWithChildren} from 'react';
 
 interface DropZoneProps {
 	onDrop: (files: File[]) => void,
@@ -6,10 +6,23 @@ interface DropZoneProps {
 	onDragOut?: () => void
 }
 
-export function DropZone ({children, onDrop, onDragIn, onDragOut}: PropsWithChildren<DropZoneProps>) {
+/**
+ * A component for dropping files on to.
+ *
+ * @param {PropsWithChildren<DropZoneProps>} The props
+ * @returns {JSX.Element} The component
+ */
+export function DropZone({children, onDrop, onDragIn, onDragOut}: PropsWithChildren<DropZoneProps>) {
 	const dropRef = useRef<HTMLDivElement>(null);
 	const [active, setActive] = useState(false);
 
+	/**
+	 * Get all of the files from a data transfer object.
+	 *
+	 * @param {DataTransfer} dt The data transfer object.
+	 *
+	 * @yields {File} The files.
+	 */
 	function* getFiles(dt: DataTransfer): Generator<File, void, undefined> {
 		if (dt.items) {
 			for (const i of dt.items) {
@@ -24,6 +37,11 @@ export function DropZone ({children, onDrop, onDragIn, onDragOut}: PropsWithChil
 		}
 	}
 
+	/**
+	 * Handle the drop event.
+	 *
+	 * @param  {DragEvent} e The event object.
+	 */
 	function onDropEvent(e: DragEvent) {
 		const dt = e.dataTransfer;
 
@@ -36,57 +54,70 @@ export function DropZone ({children, onDrop, onDragIn, onDragOut}: PropsWithChil
 		setActive(false);
 
 		if (onDragOut) {
-			onDragOut()
+			onDragOut();
 		}
 
 		const files = Array.from(getFiles(dt));
 
-		onDrop(files)
+		onDrop(files);
 
 		// this.$emit('update:modelValue', files);
 	}
 
+	/**
+	 * Handle the drag leav event.
+	 *
+	 * @param  {DragEvent} e The event object.
+	 */
 	function onDragLeave(e: DragEvent) {
-
 		if (active && dropRef.current) {
 			const size = dropRef.current?.getBoundingClientRect();
 
-			if (!(e.pageX >= size.left && e.pageX <= size.right
-				&& e.pageY >= size.top && e.pageY <= size.bottom)) {
+			if (!(e.pageX >= size.left && e.pageX <= size.right &&
+				e.pageY >= size.top && e.pageY <= size.bottom)) {
 				setActive(false);
 				if (onDragOut) {
-					onDragOut()
+					onDragOut();
 				}
 			}
 		}
 	}
 
-
+	/**
+	 * Handle the drag enter event.
+	 *
+	 * @param  {DragEvent} e The event object.
+	 */
 	function onDragEnter(e: DragEvent<HTMLDivElement>) {
 		if (!active && dropRef.current) {
 			const size = dropRef.current?.getBoundingClientRect();
 
-			if (e.pageX >= size.left && e.pageX <= size.right
-				&& e.pageY >= size.top && e.pageY <= size.bottom) {
+			if (e.pageX >= size.left && e.pageX <= size.right &&
+				e.pageY >= size.top && e.pageY <= size.bottom) {
 				setActive(true);
 				if (onDragIn) {
-					onDragIn()
+					onDragIn();
 				}
 			}
 		}
 	}
 
+	/**
+	 * Handle the drag over event.
+	 *
+	 * @param  {DragEvent} e The event object.
+	 */
 	function onDragOver(e: DragEvent) {
-		e.preventDefault()
+		e.preventDefault();
 	}
 
 	return 	<div className={'drop-target' + (active ? ' active' : '')}
-			style={{'border': active ? '1px solid var(--color-status-good)' : 'none'}}
-			ref={dropRef}
-			onDrop={onDropEvent}
-			onDragEnter={onDragEnter}
-			onDragLeave={onDragLeave}
-			onDragOver={onDragOver}>
+		style={{'border': active ? '1px solid var(--color-status-good)' : 'none'}}
+		ref={dropRef}
+		onDrop={onDropEvent}
+		onDragEnter={onDragEnter}
+		onDragLeave={onDragLeave}
+		onDragOver={onDragOver}>
 		{children}
-	</div>
+	</div>;
 }
