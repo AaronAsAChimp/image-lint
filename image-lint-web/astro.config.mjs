@@ -27,7 +27,7 @@ export default defineConfig({
 			},
 		},
 		optimizeDeps: {
-			include: ['buffer', 'process'],
+			include: ['image-lint > node-stdlib-browser > buffer', 'process'],
 		},
 		plugins: [
 			{
