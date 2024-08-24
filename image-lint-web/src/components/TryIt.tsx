@@ -118,7 +118,6 @@ export function TryIt({children}: PropsWithChildren<TryItProps>) {
 
 	const [springs, api] = useSpring(() => {
 		return {
-			x: -200,
 			right: '35em',
 			opacity: 0,
 		};
