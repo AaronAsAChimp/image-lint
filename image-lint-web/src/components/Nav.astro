@@ -1,7 +1,11 @@
+---
+import GithubIcon from "./GithubIcon.astro"
+---
 <nav class="page-nav">
 	<a href="/image-lint/">Home</a>
 	<a href="/image-lint/getting-started/">Getting Started</a>
 	<a href="/image-lint/docs/">Docs</a>
+	<a href="https://github.com/AaronAsAChimp/image-lint"><GithubIcon /></a>
 </nav>
 <style>
 	.page-nav {
@@ -11,8 +15,16 @@
 
 	.page-nav a {
 		display: inline-block;
-		padding: 1em 1.4em;
+		padding: 1em 1.4em 1em 0;
 		color: white;
 		text-decoration: none;
+
+		&:hover {
+			color: var(--color-status-good-light)
+		}
+
+		&:first-child {
+			padding-left: 1.4em;
+		}
 	}
 </style>

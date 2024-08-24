@@ -4,6 +4,7 @@ import { Code } from 'astro:components';
 import '../css/variables.css';
 
 import {TryIt} from '../components/TryIt.tsx';
+import GithubIcon from '../components/GithubIcon.astro';
 ---
 
 <Layout title="image-lint">
@@ -24,8 +25,9 @@ import {TryIt} from '../components/TryIt.tsx';
 			</TryIt>
 
 			<div class="hero-ctas">
-				<a class="cta-button" href="./getting-started/">Getting Started</a>
-				<a class="cta-button" href="./docs/">Documentation</a>
+				<a class="cta-button" href="/image-lint/getting-started/">Getting Started</a>
+				<a class="cta-button" href="/image-lint/docs/">Documentation</a>
+				<a class="icon-button" href="https://github.com/AaronAsAChimp/image-lint"><GithubIcon /> Github</a>
 			</div>
 		</div>
 
@@ -71,5 +73,16 @@ import {TryIt} from '../components/TryIt.tsx';
 
 	.cta-button:hover {
 		background: var(--color-status-warn);
+	}
+
+	.icon-button {
+		display: flex;
+		padding: 0.5em;
+		gap: 0.7em;
+		text-decoration: none;
+
+		&:hover {
+			color: var(--color-bg-contrast);
+		}
 	}
 </style>
