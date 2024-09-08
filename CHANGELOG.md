@@ -4,6 +4,7 @@
 - Detect files with the Acropalypse vulnerability.
 - Add validation for file type.
 - Bump puppeteer version to v22.12.1
+- Add linting support for WEBP
 
 3.1.0
 -----
@@ -11,7 +12,6 @@
 - Enforce the minimum node version of v16
 - Prevent printing stack traces for linter errors.
 - Fix error when printing help.
-
 
 3.0.0
 ----
